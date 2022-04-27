@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.log.mapper.logMapper">
+	<insert id="insert" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_VISITLOG(
+				LOG_ID,
+				TOPICCODE,
+				TAG_CODE,
+				TAG_VALUE,
+				VISIT_SOURCE,
+				VISIT_USERCODE,
+				VISIT_USERNAME,
+				VISIT_DATE,
+				VISIT_IP,
+				TAG_ALIAS
+			) VALUES (
+				#{LogId,jdbcType=VARCHAR},
+				#{topicCode,jdbcType=VARCHAR},
+				#{TagCode,jdbcType=VARCHAR},
+				#{TagValue,jdbcType=VARCHAR},
+				#{VisitSource,jdbcType=VARCHAR},
+				#{UserCode,jdbcType=VARCHAR},
+				#{UserName,jdbcType=VARCHAR},
+				#{VisitDate,jdbcType=TIMESTAMP},
+				#{VisitIP,jdbcType=VARCHAR},
+				#{tagAlias,jdbcType=VARCHAR}
+			)	
+	</insert>
+	
+	<!-- 删除表中7天以前的的日志 -->
+	<delete id="delete" parameterType="java.util.Map">
+	<![CDATA[
+		DELETE
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_VISITLOG 
+		WHERE VISIT_DATE < (SELECT MAX(VISIT_DATE)-7 FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_VISITLOG )
+	 ]]>
+	</delete>	
+	
+	<select id="list"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			A.*
+		FROM(
+			SELECT V.*,D.TAG_NAME,E.ENTITY_NAME 
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_VISITLOG V,${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE D,${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY E
+			WHERE V.TAG_CODE=D.TAG_CODE AND D.ENTITY_ID=E.ENTITY_ID
+			<if test="entityId != null and entityId != ''">
+				AND E.ENTITY_ID = #{entityId,jdbcType=VARCHAR}
+			</if>	
+			<if test="tagCode != null and tagCode != ''">
+				AND V.TAG_CODE IN 
+				<foreach collection="tagCodes" item="TAG_CODE"  index="index"  open="(" separator="," close=")">
+				        #{TAG_CODE,jdbcType=VARCHAR}
+				</foreach>				
+			</if>
+			
+			UNION
+			
+			<!-- 汇聚实体 -->
+			SELECT V.*,D.TAG_NAME,E.GENTITY_NAME ENTITY_NAME 
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_VISITLOG V,${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE D,${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER E
+			WHERE V.TAG_CODE=D.TAG_CODE AND D.ENTITY_ID=E.GENTITY_ID
+			<if test="entityId != null and entityId != ''">
+				AND E.GENTITY_ID = #{entityId,jdbcType=VARCHAR}
+			</if>	
+			<if test="tagCode != null and tagCode != ''">
+				AND V.TAG_CODE IN 
+				<foreach collection="tagCodes" item="TAG_CODE"  index="index"  open="(" separator="," close=")">
+				        #{TAG_CODE,jdbcType=VARCHAR}
+				</foreach>				
+			</if>
+		)A
+	</select>	
+</mapper>
+

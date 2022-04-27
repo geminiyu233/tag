@@ -1,0 +1,590 @@
+package $packageName;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import ths.jdp.api.OuApi;
+import ths.jdp.core.consts.PubConstants;
+import ths.jdp.core.dao.base.Paging;
+import ths.jdp.core.datasource.DBContextHolder;
+import ths.jdp.core.model.FormModel;
+import ths.jdp.core.web.base.BaseController;
+import ths.jdp.custom.util.DateUtil;
+import ths.jdp.eform.model.EformColumnsModel;
+import ths.jdp.eform.model.EformTableModel;
+import ths.jdp.eform.service.EformService;
+import ths.jdp.eform.service.components.tree.TreeService;
+import ths.jdp.eform.service.settings.dictionary.DictionaryUtils;
+import ths.jdp.eform.web.common.EformCommonService;
+import ths.jdp.project.web.LoginCache;
+import ths.jdp.util.SqlUtils;
+import ths.jdp.util.Tool;
+
+@Controller
+public class ${className}Controller extends BaseController {
+	
+	@Autowired
+	private EformService eformService;
+	@Autowired
+	private EformCommonService eformCommonService;
+	@Autowired
+	private TreeService treeService;
+	private OuApi ouApi = new OuApi();
+	
+	private String fieldDictionarys_str = "$!{fieldDictionarys}";
+	
+	/**
+	 * 普通列表
+	 * @param pageInfo
+	 * @param formModel
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/${classNameLowerCase}/list")
+	public ModelAndView list(Paging<Map<String, Object>> pageInfo, FormModel formModel, HttpServletRequest request) throws Exception{
+		ModelAndView mav = new ModelAndView("${classNameLowerCase}/${jspName}_list");
+		String table_datasource = "${table_datasource}";
+		String mainTableCode = "${mainTableCode}";
+		String mainPkColumn = "${mainPkColumn}";
+		String formParam = "&businessKey=%s";
+		for(String key : formModel.getForm().keySet()){
+			formParam += "&form[" + key + "]=" + formModel.getForm().get(key);
+		}
+		formParam = "${formParam}" + formParam; //表主键，外键（打开编辑页面用）
+		//查询条件，组装sql
+		Map<String, Object> queryMap = formModel.getForm();
+		if(mainTableCode != null){
+			List<String> pkid_list = new ArrayList<String>();
+			Map<String, Object> compare_map = new HashMap<String, Object>();
+			Map<String, Object> data_map=new HashMap<String, Object>();
+			for (Map.Entry<String, Object> entry : queryMap.entrySet()) {
+				if(!entry.getKey().endsWith(":_DATE_") && !entry.getKey().endsWith("_THSNAME")&&!Tool.isNull(String.valueOf(entry.getValue()))){
+					if(!pkid_list.contains(entry.getKey())){
+						if(entry.getKey().endsWith(":equal")){
+							String pkid=entry.getKey().substring(0,entry.getKey().length()-":equal".length());
+							pkid_list.add(pkid);
+							compare_map.put(pkid, "=");
+							data_map.put(pkid, entry.getValue());
+						}else{
+							pkid_list.add(entry.getKey());
+							compare_map.put(entry.getKey(), "like");
+							data_map.put(entry.getKey(), entry.getValue());
+						}
+					}
+				}else if(entry.getKey().endsWith(":_DATE_")){
+					String pkid=entry.getKey().substring(0,entry.getKey().length()-":_DATE_".length());
+					if(!Tool.isNull((String)queryMap.get(pkid))){
+						if(!pkid_list.contains(pkid))
+							pkid_list.add(pkid);
+						String dialet = DBContextHolder.getDialet();
+						compare_map.put(pkid, "datelike:"+dialet+":"+entry.getValue());
+						data_map.put(pkid,queryMap.get(pkid));
+					}
+				}else{
+					data_map.put(entry.getKey(), entry.getValue());
+				}
+			}
+			String sql = SqlUtils.getSelectSql(mainTableCode, pkid_list, compare_map, data_map, null);
+			if(!Tool.isNull(pageInfo.getOrderBy())){
+				sql += " ORDER BY " + pageInfo.getOrderBy();
+			}
+			//----------------------------此处切换数据源
+			pageInfo = eformService.getPageFromSql(pageInfo, sql, table_datasource);
+		}
+		Map<String,List<Map<String,String>>> dictionarys = eformCommonService.getFormDictionarys(fieldDictionarys_str, formModel.getForm());
+		if(pageInfo != null && pageInfo.getList() != null && pageInfo.getList().size() > 0){
+			for(Map<String, Object> record : pageInfo.getList()){
+				EformColumnsModel eformColumnsModel = new EformColumnsModel();
+				eformColumnsModel.setColumn(record);
+				EformTableModel eformTableModel = new EformTableModel();
+				eformTableModel.getTable().put(mainTableCode, eformColumnsModel);
+				initNameByCode(eformTableModel, dictionarys);
+			}
+		}
+		mav.addObject("dictionarys", dictionarys);
+		mav.addObject("pageInfo", pageInfo);
+		mav.addObject("form", formModel.getForm());
+		mav.addObject("mainTableCode", mainTableCode);
+		mav.addObject("mainPkColumn", mainPkColumn);
+		mav.addObject("formParam", formParam);
+		mav.addObject("dataSource", table_datasource);
+		return mav;
+	}
+	
+	/**
+	 * 工作流列表
+	 * @param pageInfo
+	 * @param formModel
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/${classNameLowerCase}/bpmlist")
+	public ModelAndView bpmList(Paging<Map<String, Object>> pageInfo, FormModel formModel, HttpServletRequest request) throws Exception{
+		ModelAndView mav = new ModelAndView("${classNameLowerCase}/${jspName}_bpmlist");
+		String table_datasource = "${table_datasource}";
+		String mainTableCode = "${mainTableCode}";
+		String mainPkColumn = "${mainPkColumn}";
+		String formParam = "&businessKey=%s";
+		for(String key : formModel.getForm().keySet()){
+			formParam += "&form[" + key + "]=" + formModel.getForm().get(key);
+		}
+		formParam = "${formParam}" + formParam; //表主键，外键（打开编辑页面用）
+		String processDefKey = "${processDefKey}";
+		//查询条件，组装sql
+		Map<String, Object> queryMap = formModel.getForm();
+		String handleState = (String)queryMap.get("HANDLE_STATE");
+		if(handleState == null){
+			handleState="V_JDP_BPM_TODO_TASKS";
+		}
+		queryMap.put("HANDLE_STATE", handleState);
+		if(mainTableCode != null){
+			String dialet = DBContextHolder.getDialet();
+			List<String> pkid_list = new ArrayList<String>();
+			String loginName = LoginCache.getLoginUser(request).getLoginName();
+			String sql = "SELECT VJBTT.ID_ AS TASK_ID_, E.* FROM " + mainTableCode + " E INNER JOIN "+handleState+" VJBTT ON E.INSTANCE_ID=VJBTT.PROC_INST_ID_ WHERE VJBTT.KEY_='" + processDefKey + "' AND VJBTT.ASSIGNEE_='" + loginName + "'";
+			for (String key : queryMap.keySet()) {
+				if(!key.endsWith("_THSNAME") && !key.equals("HANDLE_STATE") && !Tool.isNull(String.valueOf(queryMap.get(key)))){
+					if(key.endsWith("_DATE_")){
+						String field = key.split(":")[0];
+						String format = String.valueOf(queryMap.get(key));
+						if(!Tool.isNull(queryMap.get(field).toString())){
+							if(!pkid_list.contains(field)){
+								pkid_list.add(field);
+								sql += " AND " + SqlUtils.dateFieldToChar(field, format,dialet) + " LIKE '%" + queryMap.get(field).toString() + "%'";
+							}
+						}
+					}else{
+						if(key.endsWith(":equal")){
+							key=key.split(":")[0];
+							sql += " AND " + key + " = '" + queryMap.get(key+":equal").toString() + "'";
+						}else{
+							sql += " AND " + key + " LIKE '%" + queryMap.get(key).toString() + "%'";
+						}
+					}
+				}
+			}
+			if(!Tool.isNull(pageInfo.getOrderBy())){
+				sql += " ORDER BY " + pageInfo.getOrderBy();
+			}
+			//----------------------------此处切换数据源
+			pageInfo = eformService.getPageFromSql(pageInfo, sql,table_datasource);
+			mav.addObject("processDefKey", processDefKey);
+		}
+		Map<String,List<Map<String,String>>> dictionarys = eformCommonService.getFormDictionarys(fieldDictionarys_str, formModel.getForm());
+		if(pageInfo != null && pageInfo.getList() != null && pageInfo.getList().size() > 0){
+			for(Map<String, Object> record : pageInfo.getList()){
+				EformColumnsModel eformColumnsModel = new EformColumnsModel();
+				eformColumnsModel.setColumn(record);
+				EformTableModel eformTableModel = new EformTableModel();
+				eformTableModel.getTable().put(mainTableCode, eformColumnsModel);
+				initNameByCode(eformTableModel, dictionarys);
+			}
+		}
+		mav.addObject("dictionarys", dictionarys);
+		mav.addObject("handleStates", DictionaryUtils.getDictionarysByCode("HANDLE_STATE"));
+		mav.addObject("pageInfo", pageInfo);
+		mav.addObject("form", formModel.getForm());
+		mav.addObject("mainTableCode", mainTableCode);
+		mav.addObject("mainPkColumn", mainPkColumn);
+		mav.addObject("formParam", formParam);
+		mav.addObject("dataSource", table_datasource);
+		return mav;
+	}
+	
+	/**
+	 * 表单记录批量删除
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/${classNameLowerCase}/delete")
+	@ResponseBody
+	public String delete(@RequestParam Map<String,String> paramMap) throws Exception{
+		String dataSource = paramMap.get("dataSource");
+		String tableName=paramMap.get("table_name");
+		String pkName=paramMap.get("pk_name");
+		String ids=paramMap.get("id");
+		try{
+			 DBContextHolder.setDataSource(dataSource);
+			eformService.deleteTableRecords(tableName, pkName, ids);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}finally{
+			DBContextHolder.setDefaultSource();
+		}
+		return PubConstants.SUCCESS;
+	}
+	
+	/**
+	 * 详细页
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/${classNameLowerCase}/detail")
+	public ModelAndView detail(EformTableModel eformTableModel, @RequestParam String businessKey, FormModel eformVariable) throws Exception{
+		ModelAndView mav = new ModelAndView("${classNameLowerCase}/${jspName}_detail");
+		eformService.getEformTableModel(eformTableModel);
+		Map<String,List<Map<String,String>>> dictionarys = eformCommonService.getFormDictionarys(fieldDictionarys_str, eformVariable.getForm());
+		initNameByCode(eformTableModel, dictionarys);
+		mav.addObject("table", eformTableModel.getTable());
+		mav.addObject("multirowtable", eformTableModel.getMultirowtable());
+		mav.addObject("businessKey", businessKey);
+		return mav;
+	}
+	
+	/**
+	 * 编辑页
+	 * @param eformTableModel
+	 * @param taskId
+	 * @param processDefKey
+	 * @param eformVariable
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/${classNameLowerCase}/edit")
+	public ModelAndView edit(EformTableModel eformTableModel, String taskId, String processDefKey, 
+			String businessKey,FormModel eformVariable) throws Exception{
+		eformVariable.getForm().put("CUR_DATE", DateUtil.getCurrentDateTimeAsString());
+		eformVariable.getForm().put("CUR_LOGINNAME", LoginCache.getLoginUser().getLoginName());
+		ModelAndView mav = new ModelAndView("${classNameLowerCase}/${jspName}_edit");
+		mav.addObject("taskId", taskId);
+		mav.addObject("processDefKey", processDefKey);
+		eformTableModel = eformService.getEformTableModel(eformTableModel);
+		String eformVariableStr = "";
+		for(String key : eformVariable.getForm().keySet()){
+			mav.addObject(key, eformVariable.getForm().get(key));
+			eformVariableStr += "&" + key + "=" + String.valueOf(eformVariable.getForm().get(key));
+		}
+		initDefaultValue(eformTableModel, eformVariable.getForm());
+		Map<String,List<Map<String,String>>> dictionarys = eformCommonService.getFormDictionarys(fieldDictionarys_str, eformVariable.getForm());
+		initNameByCode(eformTableModel, dictionarys);
+		mav.addObject("table", eformTableModel.getTable());
+		mav.addObject("multirowtable", eformTableModel.getMultirowtable());
+		mav.addObject("dictionarys_map", dictionarys);
+		mav.addObject("eformVariable", eformVariableStr);
+		mav.addObject("businessKey", businessKey);
+		return mav;
+	}
+	
+	/**
+	 * 保存
+	 * @param eformTableModel
+	 * @param dataSource
+	 * @return
+	 */
+	@RequestMapping("/${classNameLowerCase}/save")
+	@ResponseBody
+	public String save(EformTableModel eformTableModel, String dataSource) throws Exception{
+		List<String> sql_list = eformService.getSqlListFromEformTableModel(eformTableModel, dataSource);
+		System.out.println("保存表单执行的SQL语句开始----------------------------------------------------");
+		for(int i=0;i<sql_list.size();i++){
+			System.out.println(sql_list.get(i));
+		}
+		System.out.println("保存表单执行的SQL语句结束----------------------------------------------------");
+		if(sql_list.size() > 0){
+			eformService.batchSqlUpdate(sql_list, dataSource);
+		}
+		return PubConstants.SUCCESS;
+	}
+	
+	/**
+	 * 初始化默认值
+	 * @param eformTableModel
+	 * @param eformVariable
+	 */
+	private void initDefaultValue(EformTableModel eformTableModel, Map<String, Object> eformVariable){
+		//主表字段默认值设置
+#foreach($formCell in $formCells )##
+#if($formCell.FIELD_CODE)##
+#FUNC_GET_DEF_VALUE_TABLE($formCell)##
+#end##
+#end##
+		//子表字段默认值设置
+		for(String mutitable : eformTableModel.getMultirowtable().keySet()){
+			if(eformTableModel.getMultirowtable().get(mutitable).getRow().size() > 0){
+				for(EformColumnsModel eformColumnsModel : eformTableModel.getMultirowtable().get(mutitable).getRow()){
+#foreach($formCell in $formCells )##
+#if($formCell.P_FORMCELL_ID)##
+#FUNC_GET_DEF_VALUE_MUTIROWTABLE($formCell)##
+#end##
+#end##
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 初始化值（code转Name）
+	 * @param eformTableModel
+	 * @param eformVariable
+	 */
+	private void initNameByCode(EformTableModel eformTableModel, Map<String,List<Map<String,String>>> dictionarys){
+		
+		//主表字段code值转Name
+#foreach($formCell in $formCells )##
+#if(!$formCell.P_FORMCELL_ID && $formCell.FIELD_CODE)##
+#FUNC_GET_NAME_BY_CODE_TABLE($formCell)##
+#end##
+#end##
+		//子表字段code值转Name
+		for(String mutitable : eformTableModel.getMultirowtable().keySet()){
+			if(eformTableModel.getMultirowtable().get(mutitable).getRow().size() > 0){
+				for(EformColumnsModel eformColumnsModel : eformTableModel.getMultirowtable().get(mutitable).getRow()){
+#foreach($formCell in $formCells )##
+#if($formCell.P_FORMCELL_ID)##
+#FUNC_GET_NAME_BY_CODE_MUTIROWTABLE($formCell)##
+#end##
+#end##
+				}
+			}
+		}
+	}
+}
+
+#macro(FUNC_GET_DEF_VALUE_TABLE $formCell)
+#if($formCell.FORMCELL_DEF_TYPE.equals("CUSTOM") && $formCell.FORMCELL_DEF)##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") == null){
+			eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("$formCell.FIELD_CODE", "$formCell.FORMCELL_DEF");
+		}
+#elseif($formCell.FORMCELL_DEF_TYPE.equals("VARIABLE") && $formCell.FORMCELL_DEF_TYPE)##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") == null
+				&& eformVariable.containsKey("$formCell.FORMCELL_DEF")){
+			eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("$formCell.FIELD_CODE", eformVariable.get("$formCell.FORMCELL_DEF").toString());
+		}
+#end##
+#end
+
+#macro(FUNC_GET_DEF_VALUE_MUTIROWTABLE $formCell)
+#if($formCell.FORMCELL_DEF_TYPE.equals("CUSTOM") && $formCell.FORMCELL_DEF)##
+		if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") == null){
+			eformColumnsModel.getColumn().put("$formCell.FIELD_CODE", "$formCell.FORMCELL_DEF");
+		}
+#elseif($formCell.FORMCELL_DEF_TYPE.equals("VARIABLE") && $formCell.FORMCELL_DEF_TYPE)##
+		if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") == null
+				&& eformVariable.containsKey("$formCell.FORMCELL_DEF")){
+			eformColumnsModel.getColumn().put("$formCell.FIELD_CODE", eformVariable.get("$formCell.FORMCELL_DEF").toString());
+		}
+#end##
+#end
+
+##table
+#macro(FUNC_GET_NAME_BY_CODE_TABLE $formCell)
+#if($!formCell.FORMCELL_TYPECODE.equals("DATE"))
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			String dateType = "$formCell.FORMCELL_DATETYPE";
+			Object dateObj = eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE");
+			String str = eformCommonService.getFormatDateValue(dateObj, dateType);
+			if(str != null){
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("$formCell.FIELD_CODE", str);
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIO") ||$!formCell.FORMCELL_TYPECODE.equals("CHECKBOX") ||$!formCell.FORMCELL_TYPECODE.equals("SELECT") || $!formCell.FORMCELL_TYPECODE.equals("OPENRADIO") || $!formCell.FORMCELL_TYPECODE.equals("OPENCHECKBOX") || $!formCell.FORMCELL_TYPECODE.equals("RADIOTREE") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXTREE"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			String formcell_name = "";
+			List<Map<String, String>> dictionaryList = dictionarys.get("$formCell.FORMCELL_DICTIONARY");
+			if(dictionaryList != null && dictionaryList.size() > 0){
+				for(Map<String, String> dictionary : dictionaryList){
+					if(("," + eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString() + ",").contains("," + dictionary.get("dictionary_code") + ",")
+							|| ("," + eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString() + ",").contains("," + dictionary.get("dictionary_id") + ",")){
+						formcell_name += "," + dictionary.get("dictionary_name");
+					}
+				}
+				if(!Tool.isNull(formcell_name)){
+					eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+				}
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("AREATREE"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			Map<String, Object> queryMap = new HashMap<String, Object>();
+			queryMap.put("mapperid", "jdp_region_tree");
+			queryMap.put("REGION_CODE", eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE"));
+			List<Map<String, Object>> result = treeService.tree(queryMap);
+			if(result != null && result.size() > 0){
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", result.get(0).get("TREE_NAME"));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("TRADETREE"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			Map<String, Object> queryMap = new HashMap<String, Object>();
+			queryMap.put("mapperid", "jdp_trade_tree");
+			queryMap.put("TRADECODE", eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE"));
+			List<Map<String, Object>> result = treeService.tree(queryMap);
+			if(result != null && result.size() > 0){
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", result.get(0).get("TREE_NAME"));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOUSER") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXUSER"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			List<Map<String, Object>> results = ouApi.getUsersByLoginNames(eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString());
+			if(results != null && results.size() > 0){
+				String formcell_name = "";
+				for(Map<String, Object> result : results){
+					formcell_name += "," + result.get("USER_NAME").toString();
+				}
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIODEPT") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXDEPT"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			List<Map<String, Object>> results = ouApi.getDeptsByDeptCodes(eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString());
+			if(results != null && results.size() > 0){
+				String formcell_name = "";
+				for(Map<String, Object> result : results){
+					formcell_name += "," + result.get("DEPT_NAME").toString();
+				}
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOROLE") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXROLE"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			List<Map<String, Object>> results = ouApi.getRolesByRoleCodes(eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString());
+			if(results != null && results.size() > 0){
+				String formcell_name = "";
+				for(Map<String, Object> result : results){
+					formcell_name += "," + result.get("ROLE_NAME").toString();
+				}
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOPOSI") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXPOSI"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			List<Map<String, Object>> results = ouApi.getPosisByPosiCodes(eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString());
+			if(results != null && results.size() > 0){
+				String formcell_name = "";
+				for(Map<String, Object> result : results){
+					formcell_name += "," + result.get("POSI_NAME").toString();
+				}
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+			}
+		}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOGROUP") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXGROUP"))##
+		if(eformTableModel.getTable().containsKey("$formCell.TABLE_CODE") && eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE") != null){
+			List<Map<String, Object>> results = ouApi.getGroupsByGroupCodes(eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().get("$formCell.FIELD_CODE").toString());
+			if(results != null && results.size() > 0){
+				String formcell_name = "";
+				for(Map<String, Object> result : results){
+					formcell_name += "," + result.get("POSI_NAME").toString();
+				}
+				eformTableModel.getTable().get("$formCell.TABLE_CODE").getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+			}
+		}
+#end##
+#end
+##mutirowtable列
+#macro(FUNC_GET_NAME_BY_CODE_MUTIROWTABLE $formCell)
+#if($!formCell.FORMCELL_TYPECODE.equals("DATE"))
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						String dateType = "$formCell.FORMCELL_DATETYPE";
+						Object dateObj = eformColumnsModel.getColumn().get("$formCell.FIELD_CODE");
+						String str = eformCommonService.getFormatDateValue(dateObj, dateType);
+						if(str != null){
+							eformColumnsModel.getColumn().put("$formCell.FIELD_CODE", str);
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIO") ||$!formCell.FORMCELL_TYPECODE.equals("CHECKBOX") ||$!formCell.FORMCELL_TYPECODE.equals("SELECT") || $!formCell.FORMCELL_TYPECODE.equals("OPENRADIO") || $!formCell.FORMCELL_TYPECODE.equals("OPENCHECKBOX") || $!formCell.FORMCELL_TYPECODE.equals("RADIOTREE") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXTREE"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						String formcell_name = "";
+						List<Map<String, String>> dictionaryList = dictionarys.get("$formCell.FORMCELL_DICTIONARY");
+						if(dictionaryList != null && dictionaryList.size() > 0){
+							for(Map<String, String> dictionary : dictionaryList){
+								if(("," + eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString() + ",").contains("," + dictionary.get("dictionary_code") + ",")
+										|| ("," + eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString() + ",").contains("," + dictionary.get("dictionary_id") + ",")){
+									formcell_name += "," + dictionary.get("dictionary_name");
+								}
+							}
+							if(!Tool.isNull(formcell_name)){
+								eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+							}
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("AREATREE"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						Map<String, Object> queryMap = new HashMap<String, Object>();
+						queryMap.put("mapperid", "jdp_region_tree");
+						queryMap.put("REGION_CODE", eformColumnsModel.getColumn().get("$formCell.FIELD_CODE"));
+						List<Map<String, Object>> result = treeService.tree(queryMap);
+						if(result != null && result.size() > 0){
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", result.get(0).get("TREE_NAME"));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("TRADETREE"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						Map<String, Object> queryMap = new HashMap<String, Object>();
+						queryMap.put("mapperid", "jdp_trade_tree");
+						queryMap.put("TRADECODE", eformColumnsModel.getColumn().get("$formCell.FIELD_CODE"));
+						List<Map<String, Object>> result = treeService.tree(queryMap);
+						if(result != null && result.size() > 0){
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", result.get(0).get("TREE_NAME"));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOUSER") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXUSER"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						List<Map<String, Object>> results = ouApi.getUsersByLoginNames(eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString());
+						if(results != null && results.size() > 0){
+							String formcell_name = "";
+							for(Map<String, Object> result : results){
+								formcell_name += "," + result.get("USER_NAME").toString();
+							}
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIODEPT") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXDEPT"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						List<Map<String, Object>> results = ouApi.getDeptsByDeptCodes(eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString());
+						if(results != null && results.size() > 0){
+							String formcell_name = "";
+							for(Map<String, Object> result : results){
+								formcell_name += "," + result.get("DEPT_NAME").toString();
+							}
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOROLE") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXROLE"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						List<Map<String, Object>> results = ouApi.getRolesByRoleCodes(eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString());
+						if(results != null && results.size() > 0){
+							String formcell_name = "";
+							for(Map<String, Object> result : results){
+								formcell_name += "," + result.get("ROLE_NAME").toString();
+							}
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOPOSI") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXPOSI"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						List<Map<String, Object>> results = ouApi.getPosisByPosiCodes(eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString());
+						if(results != null && results.size() > 0){
+							String formcell_name = "";
+							for(Map<String, Object> result : results){
+								formcell_name += "," + result.get("POSI_NAME").toString();
+							}
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+						}
+					}
+#elseif($!formCell.FORMCELL_TYPECODE.equals("RADIOGROUP") || $!formCell.FORMCELL_TYPECODE.equals("CHECKBOXGROUP"))##
+					if(mutitable.equals("$formCell.TABLE_CODE") && eformColumnsModel.getColumn().get("$formCell.FIELD_CODE") != null){
+						List<Map<String, Object>> results = ouApi.getGroupsByGroupCodes(eformColumnsModel.getColumn().get("$formCell.FIELD_CODE").toString());
+						if(results != null && results.size() > 0){
+							String formcell_name = "";
+							for(Map<String, Object> result : results){
+								formcell_name += "," + result.get("POSI_NAME").toString();
+							}
+							eformColumnsModel.getColumn().put("${formCell.FIELD_CODE}_THSNAME", formcell_name.substring(1));
+						}
+					}
+#end##
+#end

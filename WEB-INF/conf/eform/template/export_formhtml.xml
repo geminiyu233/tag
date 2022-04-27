@@ -1,0 +1,341 @@
+#parse("export_base.vm")
+#if($templateId.equals("INPUT"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_INPUT($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("INPUTNUMBER"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right" >
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				 #EXPORT_BASE_INPUTNUMBER($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("TEXTAREA"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"  >
+				#EXPORT_BASE_TEXTAREA($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("DATE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right" >
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_DATE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("SELECT"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_SELECT($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("RADIO"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right" >
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_RADIO($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOX"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOX($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("INPUTHIDDEN"))
+	    	<i  id="li_$FORMCELL_ID" class="ace-icon fa fa-sliders blue bigger-125 " style="position:fiexd;top:0;padding-left:15px"></i>
+	    	#EXPORT_BASE_INPUTHIDDEN($paramMap)
+#elseif($templateId.equals("OPENRADIO"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_OPENRADIO($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("OPENCHECKBOX"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_OPENCHECKBOX($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("AREATREE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_AREATREE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("TRADETREE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_TRADETREE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("RADIOTREE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_RADIOTREE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXTREE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXTREE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("RADIOUSER"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_RADIOUSER($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXUSER"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXUSER($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("RADIODEPT"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_RADIODEPT($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXDEPT"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXDEPT($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXROLE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXROLE($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXPOSI"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXPOSI($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("CHECKBOXGROUP"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_CHECKBOXGROUP($paramMap)
+			</div>
+		</span>
+#elseif($templateId.equals("LABEL"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			#EXPORT_BASE_LABEL($paramMap)
+		</span>
+#elseif($templateId.equals("FILE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				#if($FORMCELL_REQUIRED.equals("true"))	
+				<i class="ace-icon fa fa-asterisk red smaller-70"></i> 
+				#end
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				#EXPORT_BASE_FILE($paramMap)
+			</div>
+		</span>
+## 子表格模板
+#elseif($templateId.equals("TABLE"))
+		<span id="cell_$FORMCELL_ID" class="col-sm-$FORMCELL_WIDTH padding_1" title="$!FORMCELL_TITLE">
+			<label class="col-sm-$FORMCELL_LABLEWIDTH control-label no-padding-right">
+				$FORMCELL_DESCR
+			</label>
+			<div class="col-sm-$FORMCELL_LABLEWIDTH_REMAIN"   >
+				<table class="table table-bordered table-hover">
+                	<thead>
+                		<tr>
+	                		#foreach($table_formcell in $TABLE_FORMCELLS )
+								<th class="center" style="#if($table_formcell.FORMCELL_TYPECODE.equals("INPUTHIDDEN") && $table_formcell.isdesign == false)display: none;#end #if($!table_formcell.FORMCELL_TABLE_COLUMN_WIDTH !="")width: ${table_formcell.FORMCELL_TABLE_COLUMN_WIDTH};#end">
+									#if($FORMCELL_REQUIRED.equals("true") and !$table_formcell.FORMCELL_TYPECODE.equals("FILE"))<i class="ace-icon fa fa-asterisk red smaller-70"></i>#end
+									#if(!$table_formcell.FORMCELL_TYPECODE.equals("INPUTHIDDEN"))
+									$table_formcell.FORMCELL_DESCR
+									#end
+								</th>
+							#end
+							<th class="center" style="width:40px;">
+								<a href="javascript:void(0);" onclick="jdp_eform_addTableRow(this);">
+	                        		<i class="ace-icon fa fa-plus"></i>
+	                      		</a>
+							</th>
+						</tr>
+                	</thead>
+                	<tbody>
+                		<c:choose>
+	                		<c:when test='#literal()${#end multirowtable != null && multirowtable["$TABLE_CODE"].row != null && fn:length(multirowtable["$TABLE_CODE"].row) > 0 #literal()}#end'>
+	                			<c:forEach var="item" items='#literal()${#end multirowtable["$TABLE_CODE"].row #literal()}#end' varStatus="rowStatus" >
+	                				#set($TABLE_ROW_INDEX="rowStatus.index")
+	                				#set($multi_table_row="1")
+	                				#EXPORT_BASE_TABLE($TABLE_FORMCELLS, $TABLE_ROW_INDEX, $multi_table_row)
+	                			</c:forEach>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<c:forEach var="index" begin="1" end="$FORMCELL_TABLE_ROW_INIT_NUM">
+	                				#set($TABLE_ROW_INDEX="index - 1")
+	                				#set($multi_table_row="")
+								  	#EXPORT_BASE_TABLE($TABLE_FORMCELLS, $TABLE_ROW_INDEX)
+								</c:forEach>
+	                		</c:otherwise>
+	                	</c:choose>
+                	</tbody>
+                </table>
+			</div>
+		</span>
+#elseif($templateId.equals("ROWHTML"))
+<div  id="row_$FORMROW_ID"  class="form-group $INITROWCLASS">
+	$CONTENT
+	#if($isdesign != false)
+	<div class="actions-wrapper">
+		<a class="js-duplicate fb-button" title="Duplicate Row" onclick="window.parent.doSaveRow('$FORMROW_ID')"><i class="fa fa-plus-circle"></i></a>
+		<a class="js-clear fb-button" title="Remove Row" onclick="window.parent.doDeleteRow('$FORMROW_ID')"><i class="fa fa-minus-circle"></i></a>
+	</div>
+	#end
+</div>
+##表单控件关系
+#elseif($templateId.equals("RELATION_SCRIPT"))
+	<script>
+		$(function(){
+			##绑定事件
+			#foreach($relation in $relationMap.entrySet())
+				$("#$relation.key").bind('input propertychange', function() {
+					#foreach($expression in $relation.value)
+						$('#$expression.split("=")[1]').val($expression.split("=")[0]);
+					#end
+				});
+			#end
+			//IE9 back键触发不了input事件
+			if(navigator && navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g,"")=="MSIE9.0"){
+				#foreach($relation in $relationMap.entrySet())
+					$("#$relation.key").keyup(function() {
+						#foreach($expression in $relation.value)
+							$('#$expression.split("=")[1]').val($expression.split("=")[0]);
+						#end
+					});
+				#end
+			}
+		});
+	</script>
+#end

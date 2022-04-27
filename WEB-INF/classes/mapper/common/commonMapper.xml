@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ths.project.tag.entity.mapper.commonMapper">
+	<!-- 查询数据源信息 -->
+	<select id="searchDatasource"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			pkid id,
+			DATASOURCENAME name,
+			'root' pid 
+		FROM
+			${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE
+	</select>
+	
+	<!-- 查询数据源信息 -->
+	<select id="getDataSourceInfo"  parameterType="java.util.Map" resultType="java.util.Map">
+ 			SELECT 
+	      		TQ.PKID, 
+	      		TQ.DATASOURCECODE, 
+	      		TQ.DATASOURCENAME, 
+	      		TQ.ADAPTERCODE, 
+	      		TQ.ADAPTERNAME, 
+	      		TQ.DIRVERCLASS, 
+	      		TQ.JDBCURL, 
+	      		TQ.USERNAME, 
+	      		TQ.PASSWORD, 
+	      		TQ.SORTNO, 
+	      		TQ.REMARKS,
+	      		TQ.CREATE_USER,
+				TQ.CREATE_USERNAME, 
+	      		TQ.UPDATETIME
+	      	FROM ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE TQ
+	      	WHERE TQ.PKID = #{pkid}
+	</select>
+	
+	<select id="getDictionaryList" parameterType="java.util.Map" resultType="java.util.Map">
+    <![CDATA[
+    	SELECT DICTIONARYCODE,DICTIONARYNAME from ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY
+    	WHERE ISAVALIABLE = '1' AND DICTIONARYCATALOGCODE = #{catalogCode, jdbcType=VARCHAR} 
+    	ORDER BY DICTIONARYSORTINDEX
+    ]]>
+	</select>	
+	
+</mapper>
+

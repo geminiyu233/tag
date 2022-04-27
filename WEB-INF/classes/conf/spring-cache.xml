@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bean="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<cache:annotation-driven cache-manager="cacheManager" key-generator="customKeyGenerator" cache-resolver="jdpCacheResolver" /> 
+	<!-- 自定义的cache key生成器 -->
+    <bean id="customKeyGenerator" class="ths.jdp.core.cache.CustomKeyGenerator"/>
+    <!-- 自定义的缓存Resolver,缓存选择器，根据注解决定使用那个缓存cachename-->
+    <bean id="jdpCacheResolver" class="ths.jdp.core.cache.JdpCacheResolver">
+    	<property name="cacheManager" ref="cacheManager" />
+    </bean>
+    
+    <!-- 为JdpCache静态类指定默认Cache和CacheManager -->
+	<bean class="ths.jdp.core.cache.JdpCache">
+		<property name="defaultCache" value="${jdp.default.cache}" />
+		<property name="cacheManager" ref="cacheManager" />
+	</bean>
+	
+	<!-- 启用redis作为缓存服务-->
+	<import resource="spring-cache-redis.xml" /> 
+	<!-- 启用ehcache作为缓存服务-->
+	<!-- <import resource="spring-cache-ehcache.xml" />  -->
+
+	<bean id="tagCache" class="ths.util.cache.TagCache">
+		<property name="cacheManager" ref="cacheManagerWeek" />
+	</bean>
+</beans>

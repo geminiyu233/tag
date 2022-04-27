@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.topic.mapper.topicMapper">
+	<select id="list" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			*
+		FROM(
+			SELECT
+				A.TOPIC_ID,
+				A.TOPIC_NAME,
+				A.TOPIC_CODE,
+				A.ENTITY_ID,
+				A.STATUS,
+				A.CREATE_DATE,
+				A.UPDATE_DATE,
+				B.ENTITY_NAME
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC A
+			INNER JOIN 	${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY B ON A.ENTITY_ID = B.ENTITY_ID
+			WHERE  1=1  
+			<if test='ENTITY_ID!=null and ENTITY_ID!="" ' >
+				AND A.ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+			</if>
+			<if test='TOPIC_NAME!=null and TOPIC_NAME!="" '>
+	   			<bind name="pattern2" value="'%' + _parameter.TOPIC_NAME + '%'" />
+	   			AND A.TOPIC_NAME LIKE #{pattern2,jdbcType=VARCHAR} 
+			</if>
+			
+			UNION
+			
+			<!-- 汇聚实体关联的主题数据 -->
+			SELECT
+				A.TOPIC_ID,
+				A.TOPIC_NAME,
+				A.TOPIC_CODE,
+				A.ENTITY_ID,
+				A.STATUS,
+				A.CREATE_DATE,
+				A.UPDATE_DATE,
+				B.GENTITY_NAME ENTITY_NAME
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC A
+			INNER JOIN 	${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER B ON A.ENTITY_ID = B.GENTITY_ID
+			WHERE  1=1  
+			<if test='ENTITY_ID!=null and ENTITY_ID!="" ' >
+				AND A.ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+			</if>
+			<if test='TOPIC_NAME!=null and TOPIC_NAME!="" '>
+	   			<bind name="pattern2" value="'%' + _parameter.TOPIC_NAME + '%'" />
+	   			AND A.TOPIC_NAME LIKE #{pattern2,jdbcType=VARCHAR} 
+			</if>
+		)A WHERE 1=1
+	</select>
+	
+	<update id="update"  parameterType="java.util.Map">
+		UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC 
+		SET 
+				TOPIC_NAME =#{TOPIC_NAME ,jdbcType=VARCHAR},
+				TOPIC_CODE =#{TOPIC_CODE ,jdbcType=VARCHAR},
+				ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR},
+				STATUS =#{ STATUS,jdbcType=NUMERIC},
+				TOPIC_DESC = #{TOPIC_DESC,jdbcType=VARCHAR},
+				MENUID = #{MENUID,jdbcType=VARCHAR},
+				HIDDENTAGS = #{hiddenTags,jdbcType=VARCHAR},
+				UPDATE_DATE =#{UPDATE_DATE,jdbcType=TIMESTAMP}
+		WHERE TOPIC_ID =#{TOPIC_ID,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insert"  parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC (
+				TOPIC_ID,
+				TOPIC_NAME,
+				TOPIC_CODE,
+				ENTITY_ID,
+				STATUS,
+				TOPIC_DESC,
+				MENUID,
+				HIDDENTAGS,
+				CREATE_DATE,
+				UPDATE_DATE
+		)
+		VALUES (
+				#{TOPIC_ID ,jdbcType=VARCHAR},
+				#{TOPIC_NAME ,jdbcType=VARCHAR},
+				#{TOPIC_CODE ,jdbcType=VARCHAR},
+				#{ENTITY_ID,jdbcType=VARCHAR},
+				#{STATUS,jdbcType=NUMERIC},
+				#{TOPIC_DESC,jdbcType=VARCHAR},
+				#{MENUID,jdbcType=VARCHAR},
+				#{hiddenTags,jdbcType=VARCHAR},
+				#{CREATE_DATE,jdbcType=TIMESTAMP},
+				#{UPDATE_DATE,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<select id="get"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+				t.*,
+				e.ENTITY_CODE
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC t
+		LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY e ON t.ENTITY_ID = e.ENTITY_ID
+		WHERE 1=1 
+		<if test='TOPIC_ID!=null and TOPIC_ID!="" '>
+			AND  TOPIC_ID = #{TOPIC_ID ,jdbcType=VARCHAR}
+		</if>		
+		<if test='TOPIC_CODE!=null and TOPIC_CODE!="" '>
+			AND  TOPIC_CODE = #{TOPIC_CODE ,jdbcType=VARCHAR}
+		</if>		
+	</select>
+	
+	<delete id="deleteTopicTag" parameterType="java.util.Map" >
+        DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG WHERE TOPIC_ID =#{TOPIC_ID ,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteTopicTagByPkid" parameterType="java.util.Map" >
+        DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG WHERE PKID =#{PKID ,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insertTopicTag"  parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG (
+				PKID,
+				TOPIC_ID,
+				NODE_NAME,
+				NODE_TYPE,
+				NODE_PID,
+				PATH,
+				TAG_ID,
+				SORT,
+				ISSEARCH,
+				SEARCHTYPE,
+				VALUETYPERANGEVALUE
+		)
+		VALUES (
+				#{id,jdbcType=VARCHAR},
+				#{topicId,jdbcType=VARCHAR},
+				#{name,jdbcType=VARCHAR},
+				#{iconSkin,jdbcType=VARCHAR},
+				#{pId,jdbcType=VARCHAR},
+				#{path,jdbcType=VARCHAR},
+				#{tagId,jdbcType=VARCHAR},
+				#{sort,jdbcType=NUMERIC},
+				#{isSearch,jdbcType=NUMERIC},
+				#{searchType,jdbcType=NUMERIC},
+				#{valueTypeRangeValue,jdbcType= VARCHAR}
+				
+		)
+	</insert>
+	<update id="updateTopicTag"  parameterType="java.util.Map">
+		UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG 
+		SET 
+				PKID =#{id,jdbcType=VARCHAR},
+				TOPIC_ID =#{topicId,jdbcType=VARCHAR},
+				NODE_NAME =#{name,jdbcType=VARCHAR},
+				NODE_TYPE =#{iconSkin,jdbcType=VARCHAR},
+				NODE_PID = #{pId,jdbcType=VARCHAR},
+				PATH = #{path,jdbcType=VARCHAR},
+				TAG_ID =#{tagId,jdbcType=VARCHAR},
+				SORT =#{sort,jdbcType=NUMERIC}
+		WHERE PKID =#{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete" >
+        	DELETE FROM  ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC WHERE  TOPIC_ID IN 
+        	<!-- 如果是数组，collection="array",如果是List，collection="list" -->
+        	<foreach collection="array" item="TOPIC_ID"  index="index"  open="(" separator="," close=")">
+		        #{TOPIC_ID,jdbcType=VARCHAR}
+		  </foreach>
+	</delete>
+	
+	<delete id="deleteTopicTags" >
+        	DELETE FROM  ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG WHERE  TOPIC_ID IN 
+        	<!-- 如果是数组，collection="array",如果是List，collection="list" -->
+        	<foreach collection="array" item="TOPIC_ID"  index="index"  open="(" separator="," close=")">
+		        #{TOPIC_ID,jdbcType=VARCHAR}
+		  </foreach>
+	</delete>
+	<delete id="deleteTopicTagsByPkid" >
+        	DELETE FROM  ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG WHERE  PKID IN 
+        	<!-- 如果是数组，collection="array",如果是List，collection="list" -->
+        	<foreach collection="array" item="PKID"  index="index"  open="(" separator="," close=")">
+		        #{PKID,jdbcType=VARCHAR}
+		  </foreach>
+	</delete>
+	
+	<select id="selectTopicTree"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+		a.PKID as "id",
+		a.NODE_NAME as "name",
+		a.NODE_TYPE as "iconSkin",
+		a.NODE_PID as "pId",
+		a.TAG_ID as "tagId",
+		b.TAG_CODE as "tagCode",
+		c.ENTITY_ID as "entityId",
+		'true' as "open",
+		a.ISSEARCH as "isSearch", 
+		a.SEARCHTYPE as "searchType", 
+		b.VALUE_TYPE as "valueType", 
+		a.VALUETYPERANGEVALUE as "valueTypeRangeValue" 
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG a 
+		join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC C on a.TOPIC_ID=C.TOPIC_ID
+		left join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE b  on a.TAG_ID=b.TAG_ID 
+		<where>
+		<if test='TOPIC_ID!=null and TOPIC_ID!="" ' >
+		a.TOPIC_ID=#{TOPIC_ID,jdbcType=VARCHAR} 
+		</if>
+		<if test='topicCode!=null and topicCode!="" ' >
+		AND C.TOPIC_CODE=#{topicCode,jdbcType=VARCHAR} 
+		</if>
+		<if test='TYPE!=null and TYPE!="" ' >
+		AND a.NODE_TYPE=#{TYPE,jdbcType=VARCHAR} 
+		</if>
+		</where>
+		ORDER BY a.SORT ASC
+	</select>	
+	
+	<select id="selectTagTreeByTopicCode"  parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT TOPICTAG.PKID AS "nodeId",TOPICTAG.NODE_NAME AS "nodeName",TOPICTAG.NODE_TYPE AS "nodeType",
+			TOPICTAG.NODE_PID AS "parentId",TOPICTAG.TAG_ID AS "tagId",TAG.TAG_CODE AS "tagCode",TAG.STATUS AS "tagStatus",
+			TAG.TAG_VALUE_TYPE AS "tagValueType",TAG.RANGE_TYPE AS "rangeType",TAG.RANGE_VALUE AS "rangeService",TAG.CODE_COLOR AS "tagColor",
+			TOPICTAG.ISSEARCH as "isSearch",TOPICTAG.SEARCHTYPE as "searchType",TOPICTAG.VALUETYPERANGEVALUE as "valueTypeRangeValue",
+			TAG.VALUE_TYPE as "valueType",TAG.TAG_WEIGHT,TAG.isBoolean "isBoolean"
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC TOPIC 
+				INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG TOPICTAG ON TOPIC.TOPIC_ID = TOPICTAG.TOPIC_ID 
+				LEFT OUTER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE TAG ON TOPICTAG.TAG_ID = TAG.TAG_ID
+				<if test='TAG_STATUS!=null and TAG_STATUS!="" '>
+					AND TAG.STATUS = #{TAG_STATUS,jdbcType=VARCHAR} 
+				</if>
+				WHERE TOPIC.TOPIC_CODE = #{TOPIC_CODE,jdbcType=VARCHAR}  
+					AND TOPIC.STATUS = 10 
+				<if test='isSearch!=null and isSearch!="" '>
+					AND (TOPICTAG.ISSEARCH = #{isSearch,jdbcType=NUMERIC} OR TOPICTAG.NODE_TYPE = 'group')
+				</if>				
+				<if test='nodePids!=null and nodePids!="" '>
+					and
+				<foreach collection="nodePids" index="index" item="item" open="(" separator="or" close=")">
+					TOPICTAG.PATH LIKE #{item,jdbcType=VARCHAR}
+				</foreach>
+				</if>
+			ORDER BY TOPICTAG.SORT ASC	
+	</select>	
+	
+	<select id="selectTopicByTopicCode"  parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT 
+				TOPIC.TOPIC_CODE AS "topicCode",
+				TOPIC.TOPIC_NAME AS "topicName",
+				TOPIC.TOPIC_DESC AS "topicDesc",
+				TOPIC.HIDDENTAGS AS "hiddenTags",
+				ENTITY.ENTITY_CODE AS "entityCode",
+				ENTITY.ENTITY_NAME AS "entityName"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC TOPIC 
+			INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY ENTITY ON TOPIC.ENTITY_ID = ENTITY.ENTITY_ID
+			WHERE TOPIC.TOPIC_CODE=#{TOPIC_CODE,jdbcType=VARCHAR} AND TOPIC.STATUS = 10
+	</select>
+	<select id="selectQuickTagsByTopicCode"  parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT
+		<if test='_databaseId == "sqlserver"'>
+			<if test='topNum!=null and topNum!="" '>
+				top ${topNum}
+			</if>
+		</if>
+			 EVA.TAG_CODE,TAG.TAG_NAME,EVA.TAGVALUE,EVA.TAGALIAS,TAG.VALUE_TYPE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE EVA
+			join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE TAG on EVA.TAG_CODE=TAG.TAG_CODE
+			<where>
+				AND EVA.TOPICCODE=#{TOPIC_CODE,jdbcType=VARCHAR}
+				AND EVA.TAGVALUE !='_v_all'
+				AND TAG.TAG_ID not in(select tptag.TAG_ID from ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC tp 
+				join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG tptag on tp.TOPIC_ID=tptag.TOPIC_ID
+				WHERE MENUID='dc.tag.theme_quick_side' and tptag.TAG_ID is not null)
+			<if test='TAG_STATUS!=null and TAG_STATUS!="" '>
+				AND TAG.STATUS = #{TAG_STATUS,jdbcType=VARCHAR} 
+			</if>
+			<if test='PERIOD!=null and PERIOD!="" '>
+				AND EVA.PERIOD = #{PERIOD,jdbcType=VARCHAR} 
+			</if>
+				<if test='_databaseId == "db2" or _databaseId == "oracle"'>
+					<if test='topNum!=null and topNum!="" '>
+						and rownum<![CDATA[ <= ]]> #{topNum,jdbcType=VARCHAR}
+					</if>
+				</if>
+			</where>
+			order by EVA.VISIT_COUNT desc
+		<if test='_databaseId == "mysql"'>
+			<if test='topNum!=null and topNum!="" '>
+				limit #{topNum,jdbcType=VARCHAR}
+			</if>
+		</if>
+	</select>
+	<select id="selectTopicCodeByEntityId"  parameterType="java.util.Map" resultType="java.util.Map">
+			 SELECT a.TOPIC_CODE,a.MENUID,b.ENTITY_CODE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC a
+ 				join ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY b on a.ENTITY_ID=b.ENTITY_ID
+			<where>
+				AND b.ENTITY_CODE = #{entityCode,jdbcType=VARCHAR} 
+			<if test='menuId!=null and menuId!="" '>
+				AND MENUID = #{menuId,jdbcType=VARCHAR} 
+			</if>
+			</where>
+	</select>	
+
+	<!-- 校验数据是否存在 -->
+	<select id="getCheckMenuid" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+      		COUNT(1) CNUM
+      	FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC
+      	WHERE  1=1 
+    	<if test='menuid != null and menuid != ""'> 
+			AND MENUID = #{menuid,jdbcType=VARCHAR}
+		</if>
+		<if test='entity_id != null and entity_id != ""'> 
+			AND ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+		</if>
+	</select>
+	<select id="searchTopicTagList"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		    tpt.PKID,tpt.NODE_NAME,tpt.SORT,tpt.TAG_ID,tag.CODE_TYPE,tag.ENTITY_ID,
+			tag.STATUS,tag.LTS_RUN_NODE,tag.RULE_TYPE,tag.DATASET_ID,t.NODE_NAME GROUPNAME 
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG tpt
+		    left join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG t on tpt.NODE_PID=t.PKID and t.NODE_TYPE='group'
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC tp ON tpt.TOPIC_ID=tp.TOPIC_ID
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE tag on tpt.TAG_ID=tag.TAG_ID
+		WHERE 1=1
+		<if test='topicCode!=null and topicCode!="" '>
+		    AND tp.TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+		</if>
+		<if test='id!=null and id!="" '>
+			<bind name="pid" value="'%' + _parameter.id + '%'" />
+			AND tpt.PATH like #{pid,jdbcType=VARCHAR} 
+		</if>
+		<if test='tagName!=null and tagName!="" '>
+			<bind name="pattern" value="'%' + _parameter.tagName + '%'" />
+			AND tpt.NODE_NAME like #{pattern,jdbcType=VARCHAR} 
+		</if>	
+		<if test='orderBySort=="true" '>
+			ORDER BY tpt.SORT
+		</if>				
+	</select>
+	<select id="searchTopicTagGroupById"  parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT b.ENTITY_ID,A.PKID,A.TOPIC_ID,A.NODE_NAME,A.PATH,A.SORT,C.PKID TOPICGROUPID,C.NODE_NAME TOPICGROUPNAME FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG a
+	join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC b on a.TOPIC_ID=b.TOPIC_ID
+	join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG c on a.NODE_PID=c.PKID and c.NODE_TYPE='group'
+	WHERE a.PKID=#{pkid,jdbcType=VARCHAR} and b.TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+	</select>
+	<select id="searchTopicTagGroupByGroupId"  parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT distinct b.ENTITY_ID, b.TOPIC_ID, A.PATH,C.PKID TOPICGROUPID,C.NODE_NAME TOPICGROUPNAME FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG a
+	join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC b on a.TOPIC_ID=b.TOPIC_ID
+	join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG c on a.NODE_PID=c.PKID and c.NODE_TYPE='group'
+	WHERE c.PKID=#{topicGroupId,jdbcType=VARCHAR}
+	</select>
+	<select id="searchTopicByCode"  parameterType="java.util.Map" resultType="java.util.Map">
+	select * from ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC t
+	where t.TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+	</select>	
+</mapper>
+

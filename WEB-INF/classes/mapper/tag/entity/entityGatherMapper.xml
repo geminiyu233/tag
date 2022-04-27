@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 标签实体汇聚 -->
+<mapper namespace="ths.project.tag.entity.mapper.EntityGatherMapper">
+
+    <!-- 获取实体汇聚的列表 -->
+    <select id="getEntityGatherList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        GENTITY_ID,
+        GENTITY_NAME,
+        GENTITY_CODE,
+        GENTITY_PORTRAIT,
+        IDENTITY_CODE,
+        IDENTITY_NAME,
+        SPACE_TYPE,
+        SPACE_CODE,
+        SPACE_NAME,
+        SPACE_POLYGON_CODE,
+        SPACE_POLYGON_NAME,
+        LEGEND_CODE,
+        LEGEND_NAME,
+        SYNC_CRON,
+        GENTITY_DESC,
+        LTS_RUN_NODE,
+        RUNSTATUS,
+        SORT_NUM,
+        DATA_TYPE,
+        TASKSTRATEGY,
+        CREATE_DATE,
+        UPDATE_DATE
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER
+        WHERE 1=1
+        <if test='gentity_id !=null and gentity_id !=""'>
+            AND GENTITY_ID = #{gentity_id, jdbcType=VARCHAR}
+        </if>
+        <if test='gentity_name !=null and gentity_name !=""'>
+            <bind name="gentity_name_like" value="'%' + gentity_name + '%'"/>
+            AND GENTITY_NAME like #{gentity_name_like,jdbcType=VARCHAR}
+        </if>
+        <if test='runstatus !=null and runstatus !=""'>
+            AND RUNSTATUS = #{runstatus, jdbcType=VARCHAR}
+        </if>
+        ORDER BY SORT_NUM ASC, CREATE_DATE DESC
+    </select>
+
+    <!--  获取实体汇聚关联的实体对象信息 -->
+    <select id="getEntityMappingCode" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        TTEM.ENTITY_ID,
+        TTE.ENTITY_CODE,
+        TTE.ENTITY_NAME
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING TTEM
+        LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY TTE ON TTE.ENTITY_ID = TTEM.ENTITY_ID
+        WHERE 1=1
+        <if test='gentity_id !=null and gentity_id !=""'>
+            AND TTEM.GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+        </if>
+        GROUP BY TTEM.ENTITY_ID, TTE.ENTITY_CODE, TTE.ENTITY_NAME
+    </select>
+
+    <!-- 获取标签实体列表信息 -->
+    <select id="getEntityListInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        ENTITY_ID,
+        ENTITY_CODE,
+        ENTITY_NAME,
+        DATASOURCE_ID,
+        DATATABLE,
+        IDENTITY_CODE,
+        IDENTITY_NAME,
+        DATA_SQL,
+        DATA_TYPE,
+        SORT_NUM,
+        RUNSTATUS
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY
+        WHERE 1=1
+        <if test='entity_name !=null and entity_name != ""'>
+            <bind name="entity_name_like" value="'%' + _parameter.entity_name + '%'"/>
+            AND ENTITY_NAME like #{entity_name_like,jdbcType=VARCHAR}
+        </if>
+        <if test='entity_id !=null and entity_id != ""'>
+            AND ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+        </if>
+        ORDER BY SORT_NUM ASC
+    </select>
+
+    <!-- 实体数据获取方式[1、表；2、SQL] -->
+    <select id="getEntityFieldList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			PKID,
+			FIELD_CODE,
+			FIELD_NAME,
+			ENTITY_ID
+		FROM  ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD
+		WHERE ENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+	</select>
+
+    <!-- 获取实体汇聚已匹配了的属性字段信息 -->
+    <select id="getMatchEntityFiled" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        A.*
+        FROM(
+        SELECT
+        A.PKID,
+        A.ENTITY_ID,
+        A.ENTITY_FIELD_ID,
+        A.ENTITY_FIELD_CODE,
+        A.ENTITY_FIELD_NAME,
+        A.GENTITY_ID,
+        A.GENTITY_FIELD_ID,
+        A.GENTITY_FIELD_CODE,
+        A.GENTITY_FIELD_NAME,
+        A.SORT_NUM,
+        '1' DATA_TYPE
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING A
+        WHERE
+        NOT EXISTS(
+        SELECT 1 FROM TTAG.T_TAG_ENTITYMAPPING_T B
+        WHERE A.ENTITY_ID = B.ENTITY_ID
+        AND A.GENTITY_ID = B.GENTITY_ID
+        AND A.GENTITY_FIELD_CODE = B.GENTITY_FIELD_CODE
+        AND A.ENTITY_FIELD_CODE = B.ENTITY_FIELD_CODE
+        AND B.OPT_TYPE = '2'
+        AND B.BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+        )
+        AND A.GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+        AND A.ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+        <if test='gentity_field_code !=null and gentity_field_code != ""'>
+            AND A.GENTITY_FIELD_CODE = #{gentity_field_code,jdbcType=VARCHAR}
+        </if>
+        UNION
+        SELECT
+        PKID,
+        ENTITY_ID,
+        ENTITY_FIELD_ID,
+        ENTITY_FIELD_CODE,
+        ENTITY_FIELD_NAME,
+        GENTITY_ID,
+        GENTITY_FIELD_ID,
+        GENTITY_FIELD_CODE,
+        GENTITY_FIELD_NAME,
+        SORT_NUM,
+        '2' DATA_TYPE
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+        WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR} AND ENTITY_ID = #{entity_id,jdbcType=VARCHAR} AND BATCHNUM =
+        #{batchnum,jdbcType=VARCHAR}
+        AND OPT_TYPE='1'
+        <if test='gentity_field_code !=null and gentity_field_code != ""'>
+            AND GENTITY_FIELD_CODE = #{gentity_field_code,jdbcType=VARCHAR}
+        </if>
+        <if test='entity_field_code !=null and entity_field_code != ""'>
+            AND ENTITY_FIELD_CODE = #{entity_field_code,jdbcType=VARCHAR}
+        </if>
+        )A ORDER BY A.SORT_NUM
+    </select>
+
+    <!-- 新增标签实体汇聚信息 -->
+    <insert id="doAddEntityGather" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER(
+			GENTITY_ID,
+			GENTITY_NAME,
+			GENTITY_CODE,
+			GENTITY_PORTRAIT,
+			IDENTITY_CODE,
+			IDENTITY_NAME,
+			SPACE_TYPE,
+			SPACE_CODE,
+			SPACE_NAME,
+			SPACE_POLYGON_CODE,
+            SPACE_POLYGON_NAME,
+			LEGEND_CODE,
+			LEGEND_NAME,
+			SYNC_CRON,
+			GENTITY_DESC,
+			LTS_RUN_NODE,
+			RUNSTATUS,
+			SORT_NUM,
+			DATA_TYPE,
+			TASKSTRATEGY,
+			CREATE_DATE,
+			UPDATE_DATE
+		) VALUES (
+			#{gentity_id, jdbcType=VARCHAR}, 
+			#{gentity_name, jdbcType=VARCHAR}, 
+			#{gentity_code, jdbcType=VARCHAR}, 
+			#{gentity_portrait, jdbcType=VARCHAR}, 
+			#{identity_code, jdbcType=VARCHAR}, 
+			#{identity_name, jdbcType=VARCHAR},
+			#{space_type, jdbcType=VARCHAR},
+			#{space_code, jdbcType=VARCHAR}, 
+			#{space_name, jdbcType=VARCHAR},
+			#{space_polygon_code, jdbcType=VARCHAR},
+			#{space_polygon_name, jdbcType=VARCHAR},
+			#{legend_code, jdbcType=VARCHAR}, 
+			#{legend_name, jdbcType=VARCHAR}, 
+			#{sync_cron, jdbcType=VARCHAR}, 
+			#{gentity_desc, jdbcType=VARCHAR}, 
+			#{lts_run_node, jdbcType=VARCHAR}, 
+			#{runstatus, jdbcType=VARCHAR}, 
+			#{sort_num, jdbcType=NUMERIC}, 
+			#{data_type, jdbcType=NUMERIC}, 
+			#{taskstrategy, jdbcType=VARCHAR}, 
+			#{create_date, jdbcType=TIMESTAMP}, 
+			#{update_date, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+    <!-- 更新标签实体汇聚信息 -->
+    <update id="doUpdateEntityGather" parameterType="java.util.Map">
+		UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER 
+		SET
+			GENTITY_NAME = #{gentity_name, jdbcType=VARCHAR}, 
+			GENTITY_PORTRAIT = #{gentity_portrait, jdbcType=VARCHAR}, 
+			IDENTITY_CODE = #{identity_code,jdbcType=VARCHAR}, 
+			IDENTITY_NAME = #{identity_name,jdbcType=VARCHAR},
+			SPACE_TYPE = #{space_type,jdbcType=VARCHAR},
+			SPACE_CODE = #{space_code,jdbcType=VARCHAR},
+			SPACE_NAME = #{space_name,jdbcType=VARCHAR},
+			SPACE_POLYGON_CODE = #{space_polygon_code,jdbcType=VARCHAR},
+			SPACE_POLYGON_NAME = #{space_polygon_name,jdbcType=VARCHAR},
+			LEGEND_CODE = #{legend_code,jdbcType=VARCHAR},
+			LEGEND_NAME = #{legend_name,jdbcType=VARCHAR},
+			SYNC_CRON = #{sync_cron,jdbcType=VARCHAR},
+			GENTITY_DESC = #{gentity_desc, jdbcType=VARCHAR}, 
+			LTS_RUN_NODE = #{lts_run_node, jdbcType=VARCHAR}, 
+			RUNSTATUS = #{runstatus,jdbcType=VARCHAR},
+			SORT_NUM = #{sort_num,jdbcType=NUMERIC},
+			DATA_TYPE = #{data_type,jdbcType=NUMERIC},
+			TASKSTRATEGY = #{taskstrategy, jdbcType=VARCHAR}, 
+			UPDATE_DATE = #{update_date, jdbcType=TIMESTAMP}
+		WHERE GENTITY_ID = #{gentity_id, jdbcType=VARCHAR}
+	</update>
+
+    <!-- 保存标签实体汇聚关联信息 -->
+    <insert id="doSaveEntityGatherRelate" parameterType="java.util.Map">
+        <!-- 先查询,判断数据是否存在，如果不存在就插入,存在就更新 -->
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT COUNT(1) FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T A
+            WHERE A.ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+            AND A.GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+            AND A.ENTITY_FIELD_CODE = #{entity_field_code,jdbcType=VARCHAR}
+            AND A.GENTITY_FIELD_CODE = #{gentity_field_code,jdbcType=VARCHAR}
+            AND A.BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+        </selectKey>
+        <if test='count>0'> <!-- 当临时表已存在改字段，则删除临时表中的数据 -->
+            DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T A
+            WHERE A.ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+            AND A.GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+            AND A.ENTITY_FIELD_CODE = #{entity_field_code,jdbcType=VARCHAR}
+            AND A.GENTITY_FIELD_CODE = #{gentity_field_code,jdbcType=VARCHAR}
+            AND A.BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+        </if>
+        <if test='count==0'>
+            INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T(
+            PKID,
+            ENTITY_ID,
+            ENTITY_FIELD_CODE,
+            ENTITY_FIELD_NAME,
+            GENTITY_ID,
+            GENTITY_FIELD_CODE,
+            GENTITY_FIELD_NAME,
+            BATCHNUM,
+            SORT_NUM,
+            OPT_TYPE
+            )
+            VALUES(
+            #{pkid,jdbcType=VARCHAR},
+            #{entity_id,jdbcType=VARCHAR},
+            #{entity_field_code,jdbcType=VARCHAR},
+            #{entity_field_name,jdbcType=VARCHAR},
+            #{gentity_id,jdbcType=VARCHAR},
+            #{gentity_field_code,jdbcType=VARCHAR},
+            #{gentity_field_name,jdbcType=VARCHAR},
+            #{batchnum,jdbcType=VARCHAR},
+            #{sortnum,jdbcType=DECIMAL},
+            #{opt_type,jdbcType=VARCHAR}
+            )
+        </if>
+    </insert>
+
+    <!-- 删除该汇聚实体对应的实体映射字段信息 -->
+    <delete id="doDeleteEntityGatherRelate" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 删除该汇聚实体对应的实体映射字段信息 -->
+    <delete id="doDeleteGatherRelate" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+		WHERE PKID = #{pkid,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 删除临时表中汇聚实体对应的实体映射字段 -->
+    <delete id="doEmptyGatherEntityMapping" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+		AND   ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 保存删除的数据到临时映射表 -->
+    <insert id="doSynEmptyGatherEntityMapping" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T(
+				PKID, 
+				ENTITY_ID,
+				ENTITY_FIELD_CODE, 
+				ENTITY_FIELD_NAME, 
+				GENTITY_ID, 
+				GENTITY_FIELD_CODE, 
+				GENTITY_FIELD_NAME,
+				BATCHNUM,
+				OPT_TYPE
+		)
+		SELECT
+			'${@ths.project.util.CommUtil@getCreatePKID()}',
+			ENTITY_ID,
+			ENTITY_FIELD_CODE,
+			ENTITY_FIELD_NAME,
+			GENTITY_ID,
+			GENTITY_FIELD_CODE,
+			GENTITY_FIELD_NAME,
+			#{batchnum, jdbcType=VARCHAR},
+			#{opt_type, jdbcType=VARCHAR}
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+		AND   ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+	</insert>
+
+
+    <!-- 同步实体中属性字段映射数据 -->
+    <insert id="doSynEntityGatherMapping" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING(
+			PKID, 
+			ENTITY_ID, 
+			ENTITY_FIELD_ID, 
+			ENTITY_FIELD_CODE, 
+			ENTITY_FIELD_NAME, 
+			GENTITY_ID, 
+			GENTITY_FIELD_ID, 
+			GENTITY_FIELD_CODE, 
+			GENTITY_FIELD_NAME, 
+			SORT_NUM,
+			UPDATE_DATE
+		)
+		SELECT
+			PKID, 
+			ENTITY_ID, 
+			ENTITY_FIELD_CODE, 
+			ENTITY_FIELD_CODE, 
+			ENTITY_FIELD_NAME, 
+			GENTITY_ID, 
+			GENTITY_FIELD_CODE, 
+			GENTITY_FIELD_CODE, 
+			GENTITY_FIELD_NAME,
+			SORT_NUM,
+			#{updatetime,jdbcType=TIMESTAMP }
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+		AND   ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+		AND   BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+		AND   OPT_TYPE = '1'
+	</insert>
+
+
+    <!-- 保存删除的数据到临时映射表 -->
+    <insert id="doSynMappingDataTmp" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T(
+				PKID, 
+				ENTITY_ID,
+				ENTITY_FIELD_CODE, 
+				ENTITY_FIELD_NAME, 
+				GENTITY_ID, 
+				GENTITY_FIELD_CODE, 
+				GENTITY_FIELD_NAME,
+				BATCHNUM,
+				OPT_TYPE
+		)
+		SELECT
+			#{uuid, jdbcType=VARCHAR},
+			ENTITY_ID,
+			ENTITY_FIELD_CODE,
+			ENTITY_FIELD_NAME,
+			GENTITY_ID,
+			GENTITY_FIELD_CODE,
+			GENTITY_FIELD_NAME,
+			#{batchnum, jdbcType=VARCHAR},
+			#{opt_type, jdbcType=VARCHAR}
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING
+		WHERE PKID = #{pkid}
+	</insert>
+
+    <!-- 同步删除临时表中的数据到->实体映射关系字段 -->
+    <delete id="doSynDeleteGatherMapping" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING 
+		WHERE EXISTS 
+		(
+			SELECT 1
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T T 
+			WHERE ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING.ENTITY_ID = T.ENTITY_ID 
+			AND ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING.ENTITY_FIELD_CODE = T.ENTITY_FIELD_CODE 
+			AND ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING.GENTITY_ID = T.GENTITY_ID 
+			AND ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING.GENTITY_FIELD_CODE = T.GENTITY_FIELD_CODE 
+			AND GENTITY_ID = #{gentity_id, jdbcType=VARCHAR} 
+			AND BATCHNUM = #{batchnum, jdbcType=VARCHAR}
+			AND OPT_TYPE='2'
+		)
+	</delete>
+
+    <!-- 校验实体是否包含了标识字段关系 -->
+    <select id="doEntityFieldValid" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			SUM(TOTAL) AS TOTAL
+		FROM(
+			SELECT
+				COUNT(1) AS TOTAL
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING_T
+			WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+			AND   ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+			AND   BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+			AND   GENTITY_FIELD_CODE = #{identity_code,jdbcType=VARCHAR}
+			AND   OPT_TYPE = '1'
+			
+			UNION ALL
+			
+			SELECT
+				COUNT(1) AS TOTAL
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING A
+			WHERE 
+			NOT EXISTS(
+				SELECT 1 FROM TTAG.T_TAG_ENTITYMAPPING_T B 
+				WHERE A.ENTITY_ID = B.ENTITY_ID 
+				AND A.GENTITY_ID = B.GENTITY_ID 
+				AND A.GENTITY_FIELD_CODE = B.GENTITY_FIELD_CODE 
+				AND A.ENTITY_FIELD_CODE = B.ENTITY_FIELD_CODE
+				AND B.OPT_TYPE = '2'
+				AND B.BATCHNUM = #{batchnum,jdbcType=VARCHAR}
+			)
+			AND   A.GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+			AND   A.ENTITY_ID = #{entity_id,jdbcType=VARCHAR}
+			AND   A.GENTITY_FIELD_CODE = #{identity_code,jdbcType=VARCHAR}
+		)A
+	</select>
+
+    <!-- 删除已存在的汇聚实体字段信息 -->
+    <delete id="doDeleteEntityGatherField" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD
+		WHERE ENTITY_ID = #{gentity_id, jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 保存汇聚实体字段 -->
+    <insert id="doAddEntityField" parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD(
+			PKID,
+			FIELD_CODE,
+			FIELD_NAME,
+			ENTITY_ID
+		)
+		VALUES(
+			#{pkid,jdbcType=VARCHAR},
+			#{entity_field_code,jdbcType=VARCHAR},
+			#{entity_field_name,jdbcType=VARCHAR},
+			#{gentity_id,jdbcType=VARCHAR}
+		)
+	</insert>
+
+    <!-- 删除主表标签实体信息 -->
+    <delete id="doDeleteEntityGatherMapping" parameterType="java.util.Map">
+        DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING
+        WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+        AND ENTITY_ID NOT IN(
+        <foreach collection="entity_ids" item="entity_id" separator=",">
+            #{entity_id}
+        </foreach>
+        )
+    </delete>
+
+    <!-- 汇聚实体删除部分 开始 -->
+    <!-- 删除标签实体汇聚信息 -->
+    <delete id="doDelGEntityData" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 删除实体映射的字段信息 -->
+    <delete id="doDelEntityMapping" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING
+		WHERE GENTITY_ID = #{gentity_id,jdbcType=VARCHAR}
+	</delete>
+
+    <!-- 删除已存在的汇聚实体字段信息 -->
+    <delete id="doDelGEntityField" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD
+		WHERE ENTITY_ID = #{gentity_id, jdbcType=VARCHAR}
+	</delete>
+    <!-- 汇聚实体删除部分 结束 -->
+
+    <!-- 管理汇聚实体标签部分 开始 -->
+    <select id="getSearchGEntityList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        *
+        FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER T
+        WHERE 1 = 1
+        <if test="ids != null">
+            AND GENTITY_ID IN
+            <foreach collection="ids" item="gentity_id" index="index" open="(" separator="," close=")">
+                #{gentity_id,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test='gentity_name!=null and gentity_name!="" '>
+            <bind name="pattern" value="'%' + _parameter.gentity_name + '%'"/>
+            AND GENTITY_NAME like #{pattern,jdbcType=VARCHAR}
+        </if>
+        <if test="RUNSTATUS != null and RUNSTATUS != ''">
+            AND RUNSTATUS = #{RUNSTATUS,jdbcType=VARCHAR}
+        </if>
+        <if test="orderBySortNum != null">
+            ORDER BY SORT_NUM
+        </if>
+    </select>
+
+    <select id="getGatherData" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        T.*
+        FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER T
+        WHERE 1 = 1
+        <if test="ENTITY_ID != null and ENTITY_ID != ''">
+            AND T.GENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR}
+        </if>
+        <if test="ENTITY_CODE != null and ENTITY_CODE != ''">
+            AND T.GENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!-- 管理汇聚实体标签部分 结束 -->
+
+
+    <!-- 获取实体的标签列表信息 -->
+    <select id="getEntityTagListInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			TAG_CODE FIELD_CODE,
+			TAG_NAME FIELD_NAME
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+		WHERE ENTITY_ID = #{entity_id,jdbcType=VARCHAR} 
+	</select>
+
+
+    <!-- 获取汇聚实体-实体映射关系 -->
+    <select id="getEntityGatherMapping" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        C.ENTITY_CODE,
+        A.GENTITY_FIELD_CODE,
+        A.ENTITY_FIELD_CODE
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYMAPPING A
+        LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER B ON A.GENTITY_ID = B.GENTITY_ID
+        LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY C ON A.ENTITY_ID = C.ENTITY_ID
+        WHERE B.GENTITY_CODE = #{gentity_code,jdbcType=VARCHAR}
+        <if test='entity_code != null and entity_code !=""'>
+            AND C.ENTITY_CODE = #{entity_code,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>
+

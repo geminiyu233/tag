@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bean="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+<!-- 使用MethodInvokingJobDetailFactoryBean，任务类可以不实现Job接口，通过targetMethod指定调用方法-->
+<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="group" value="job_work"/>
+    <property name="name" value="job_work_name"/>
+    <!--false表示等上一个任务执行完后再开启新的任务-->
+    <property name="concurrent" value="false"/>
+    <property name="targetObject">
+        <ref bean="tagRangeCacheJob"/>
+    </property>
+    <property name="targetMethod">
+        <value>run</value>
+    </property>
+</bean>
+
+<!--  调度触发器 -->
+<bean id="myTrigger"
+      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="name" value="work_default_name"/>
+    <property name="group" value="work_default"/>
+    <property name="jobDetail">
+        <ref bean="jobDetail" />
+    </property>
+    <property name="cronExpression">
+        <value>0 0 20 * * ? *</value>
+    </property>
+</bean>
+
+<!-- job的配置开始 -->
+<bean id="tagLogJobDetail"
+	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<property name="targetObject"><ref bean="tagLogCollectJob" /></property>
+	<property name="targetMethod"><value>run</value></property>
+	<!--concurrent=false  表示 不做并发执行 一个任务未完成下一个任务等待上一个任务-->
+	<property name="concurrent"><value>false</value></property>
+</bean>
+<!-- job的配置结束 -->
+
+<!-- 调度的配置开始每天7点执行 0 0 7 * * ? 测试 每分钟一次 0 0/1 * * * ?-->
+<bean id="tagLogJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	<property name="jobDetail"><ref bean="tagLogJobDetail" /></property>
+	<property name="cronExpression"><value>0 0 4 * * ?</value></property>
+</bean>	
+
+<!-- 调度工厂 -->
+<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+        <list>
+            <ref bean="myTrigger"/>
+            <ref bean="tagLogJobTrigger"/>
+        </list>
+    </property>
+</bean>
+
+</beans>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 字典管理 -->
+<mapper namespace="ths.project.tag.dictionary.mapper.dictionaryManagerMapper">
+	<!-- 查询字典 -->
+	<select id="getDictionaryInfo"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				T.* 
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY T
+			WHERE 1=1
+		<if test='pkcode != null and pkcode != ""'>
+			AND T.PKCODE=#{pkcode,jdbcType=VARCHAR}
+		</if>
+		<if test='dictionarycode != null and dictionarycode != ""'>
+			AND T.DICTIONARYCODE=#{dictionarycode,jdbcType=VARCHAR}
+		</if>
+		<if test='dictionaryparentcode != null and dictionaryparentcode != ""'>
+			AND T.DICTIONARYPARENTCODE=#{dictionaryparentcode,jdbcType=VARCHAR}
+		</if>
+		<if test='dictionaryname != null and dictionaryname != ""'>
+			<bind name="like_dictionaryname" value="'%' + _parameter.dictionaryname + '%'" />     	
+			AND T.DICTIONARYNAME LIKE #{like_dictionaryname,jdbcType=VARCHAR}
+		</if>
+		<if test='dictionarycatalogcode != null and dictionarycatalogcode != ""'>
+			AND T.DICTIONARYCATALOGCODE=#{dictionarycatalogcode,jdbcType=VARCHAR}
+		</if>
+		<if test='isavaliable != null and isavaliable != ""'>
+			AND T.ISAVALIABLE=#{isavaliable,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<!-- 保存或者更新规则信息-->
+	<insert id="saveOrModifyDictionary" parameterType="java.util.Map" >
+		<!-- 先查询,判断数据是否存在，如果不存在就插入,存在就更新 -->
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			SELECT COUNT(1) FROM ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY A WHERE A.PKCODE = #{pkcode, jdbcType=VARCHAR}
+		</selectKey>
+		<if test="count>0"> <!-- 当审核信息存在是不做任何处理 -->
+			UPDATE ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY SET
+				<trim suffixOverrides=",">
+					<if test='_parameter.containsKey("dictionarycode")'>
+						DICTIONARYCODE=#{dictionarycode,jdbcType=VARCHAR}, 
+					</if>
+					<if test='_parameter.containsKey("dictionaryparentcode")'>
+						DICTIONARYPARENTCODE=#{dictionaryparentcode,jdbcType=VARCHAR}, 
+					</if>
+					<if test='_parameter.containsKey("dictionaryname")'>
+						DICTIONARYNAME=#{dictionaryname,jdbcType=VARCHAR}, 
+					</if>
+					<if test='_parameter.containsKey("dictionarycatalogcode")'>
+						DICTIONARYCATALOGCODE=#{dictionarycatalogcode,jdbcType=INTEGER}, 
+					</if>
+					<if test='_parameter.containsKey("dictionarysortindex")'>
+						DICTIONARYSORTINDEX=#{dictionarysortindex,jdbcType=INTEGER}, 
+					</if>
+					<if test='_parameter.containsKey("isavaliable")'>
+						ISAVALIABLE=#{isavaliable,jdbcType=VARCHAR}, 
+					</if>
+					<if test='_parameter.containsKey("dictionarydescription")'>
+						DICTIONARYDESCRIPTION=#{dictionarydescription,jdbcType=VARCHAR}, 
+					</if>
+					<if test='_parameter.containsKey("outup")'>
+						<choose>
+							<when test="outup!=''">
+								OUTUP=#{outup,jdbcType=INTEGER},
+							</when>
+							<otherwise>
+								OUTUP=null,
+							</otherwise>
+						</choose>
+					</if>
+					<if test='_parameter.containsKey("outdown")'>
+						<choose>
+							<when test="outup!=''">
+								OUTDOWN=#{outdown,jdbcType=INTEGER},
+							</when>
+							<otherwise>
+								OUTDOWN=null,
+							</otherwise>
+						</choose>
+					</if>
+					<if test='_parameter.containsKey("updatetime")'>
+						UPDATETIME=#{updatetime,jdbcType=DATE},
+					</if>
+				</trim>
+			WHERE  PKCODE = #{pkcode ,jdbcType=VARCHAR}
+		</if>
+		<if test="count==0">
+			INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test='_parameter.containsKey("pkcode")'>
+					PKCODE,
+				</if>
+				<if test='_parameter.containsKey("dictionarycode")'>
+					DICTIONARYCODE,
+				</if>
+				<if test='_parameter.containsKey("dictionaryparentcode")'>
+					DICTIONARYPARENTCODE,
+				</if>
+				<if test='_parameter.containsKey("dictionaryname")'>
+					DICTIONARYNAME,
+				</if>
+				<if test='_parameter.containsKey("dictionarycatalogcode")'>
+					DICTIONARYCATALOGCODE ,
+				</if>
+				<if test='_parameter.containsKey("dictionarysortindex")'>
+					DICTIONARYSORTINDEX,
+				</if>
+				<if test='_parameter.containsKey("isavaliable")'>
+					ISAVALIABLE,
+				</if>
+				<if test='_parameter.containsKey("dictionarydescription")'>
+					DICTIONARYDESCRIPTION,
+				</if>
+				<if test='_parameter.containsKey("outup")'>
+					OUTUP,
+				</if>
+				<if test='_parameter.containsKey("outdown")'>
+					OUTDOWN,
+				</if>
+				<if test='_parameter.containsKey("updatetime")'>
+					UPDATETIME,
+				</if>
+			</trim>
+			<trim prefix=" VALUES (" suffix=")" suffixOverrides=",">
+				<if test='_parameter.containsKey("pkcode")'>
+					#{pkcode,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("dictionarycode")'>
+					#{dictionarycode,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("dictionaryparentcode")'>
+					#{dictionaryparentcode,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("dictionaryname")'>
+					#{dictionaryname,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("dictionarycatalogcode")'>
+					#{dictionarycatalogcode,jdbcType=INTEGER}, 
+				</if>
+				<if test='_parameter.containsKey("dictionarysortindex")'>
+					#{dictionarysortindex,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("isavaliable")'>
+					#{isavaliable,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("dictionarydescription")'>
+					#{dictionarydescription,jdbcType=VARCHAR}, 
+				</if>
+				<if test='_parameter.containsKey("outup")'>
+					#{outup,jdbcType=DECIMAL}, 
+				</if>
+				<if test='_parameter.containsKey("outdown")'>
+					#{outdown,jdbcType=DECIMAL}, 
+				</if>
+				<if test='_parameter.containsKey("updatetime")'>
+					#{updatetime,jdbcType=DATE},
+				</if>
+            </trim>
+		</if>
+    </insert>
+    
+    <!-- 删除字典信息 -->
+	<delete id="deleteDictionary" parameterType="java.util.Map">
+		DELETE ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY
+		WHERE 1=1 
+		AND (
+			<foreach collection="pkcodes" item="pk_code" separator="OR">
+				PKCODE = #{pk_code,jdbcType=VARCHAR}
+			</foreach>
+		)
+	</delete>
+	
+	<!-- 校验数据是否存在 -->
+	<select id="getCheckByCode" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+      		COUNT(1) CNUM
+      	FROM ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY
+      	WHERE  1=1 
+    	<if test='dictionarycode != null and dictionarycode != ""'> 
+			AND DICTIONARYCODE = #{dictionarycode,jdbcType=VARCHAR}
+		</if>
+		<if test='dictionarycatalogcode != null and dictionarycatalogcode != ""'> 
+			AND DICTIONARYCATALOGCODE = #{dictionarycatalogcode,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

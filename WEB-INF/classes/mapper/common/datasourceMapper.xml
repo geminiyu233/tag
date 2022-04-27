@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  数据源配置管理 -->
+<mapper namespace="ths.project.tag.entity.mapper.datasourceMapper">
+	
+	<!-- 获取数据源配置信息 -->
+	<select id="getDataSourceInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+	      		PKID, 
+	      		DATASOURCECODE, 
+	      		DATASOURCENAME, 
+	      		ADAPTERCODE, 
+	      		ADAPTERNAME, 
+	      		DIRVERCLASS, 
+	      		JDBCURL, 
+	      		USERNAME, 
+	      		PASSWORD, 
+	      		SORTNO, 
+	      		REMARKS, 
+	      		UPDATETIME
+	      	FROM ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE
+	      	WHERE 1=1
+      		<if test="datasourcecode != null and datasourcecode != ''">
+      			<bind name="pattern" value="'%' + _parameter.datasourcecode + '%'" />
+      			AND DATASOURCECODE LIKE #{pattern,jdbcType=VARCHAR} 
+      		</if>
+      		<if test="datasourcename != null and datasourcename != ''">
+      			<bind name="pattern2" value="'%' + _parameter.datasourcename + '%'" />
+      			AND DATASOURCENAME LIKE #{pattern2,jdbcType=VARCHAR} 
+      		</if>
+      		<if test="pkid != null and pkid != ''">
+      			AND PKID = #{pkid}
+      		</if>
+      	ORDER BY SORTNO ASC
+	</select>
+	
+	<!-- 校验数据源编码名称是否存在 -->
+	<select id="getCheckByCode" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+      		COUNT(1) CNUM
+      	FROM ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE
+      	WHERE  1=1 
+    	<if test="datasourcecode != null and datasourcecode != ''">
+      			AND DATASOURCECODE = #{datasourcecode}
+      	</if>
+      	<if test="datasourcename != null and datasourcename != ''">
+      			AND DATASOURCENAME = #{datasourcename}
+      	</if>
+	</select>
+	
+    <!-- 保存或者更新数据源配置信息 -->
+	<insert id="saveOrModifyDataSource" parameterType="java.util.Map" >
+		<!-- 先查询,判断数据是否存在，如果不存在就插入,存在就更新 -->
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			SELECT COUNT(1) FROM ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE A WHERE A.PKID = #{pkid}
+		</selectKey>
+		<if test="count>0"> <!-- 当审核信息存在是不做任何处理 -->
+			UPDATE ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE SET
+				<trim suffixOverrides=",">
+					<if test="_parameter.containsKey('datasourcecode')">
+						DATASOURCECODE=#{datasourcecode,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('datasourcename')">
+						DATASOURCENAME=#{datasourcename,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('adaptercode')">
+						ADAPTERCODE=#{adaptercode,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('adaptername')">
+						ADAPTERNAME=#{adaptername,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('dirverclass')">
+						DIRVERCLASS=#{dirverclass,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('jdbcurl')">
+						JDBCURL=#{jdbcurl,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('username')">
+						USERNAME=#{username,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('password')">
+						PASSWORD=#{password,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('sortno')">
+						SORTNO=#{sortno,jdbcType=INTEGER}, 
+					</if>
+					<if test="_parameter.containsKey('remarks')">
+						REMARKS=#{remarks,jdbcType=VARCHAR}, 
+					</if>
+					<if test="_parameter.containsKey('updatetime')">
+						UPDATETIME=#{updatetime,jdbcType=TIMESTAMP}, 
+					</if>
+				</trim>
+			WHERE PKID = #{pkid}
+		</if>
+		<if test="count==0">
+			INSERT INTO ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="_parameter.containsKey('pkid')">
+					PKID, 
+				</if>
+				<if test="_parameter.containsKey('datasourcecode')">
+					DATASOURCECODE, 
+				</if>
+				<if test="_parameter.containsKey('datasourcename')">
+					DATASOURCENAME, 
+				</if>
+				<if test="_parameter.containsKey('adaptercode')">
+					ADAPTERCODE, 
+				</if>
+				<if test="_parameter.containsKey('adaptername')">
+					ADAPTERNAME, 
+				</if>
+				<if test="_parameter.containsKey('dirverclass')">
+					DIRVERCLASS, 
+				</if>
+				<if test="_parameter.containsKey('jdbcurl')">
+					JDBCURL, 
+				</if>
+				<if test="_parameter.containsKey('username')">
+					USERNAME, 
+				</if>
+				<if test="_parameter.containsKey('password')">
+					PASSWORD, 
+				</if>
+				<if test="_parameter.containsKey('sortno')">
+					SORTNO, 
+				</if>
+				<if test="_parameter.containsKey('remarks')">
+					REMARKS, 
+				</if>
+				<if test="_parameter.containsKey('updatetime')">
+					UPDATETIME, 
+				</if>
+			</trim>
+			<trim prefix=" VALUES (" suffix=")" suffixOverrides=",">
+				<if test="_parameter.containsKey('pkid')">
+					#{pkid,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('datasourcecode')">
+					#{datasourcecode,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('datasourcename')">
+					#{datasourcename,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('adaptercode')">
+					#{adaptercode,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('adaptername')">
+					#{adaptername,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('dirverclass')">
+					#{dirverclass,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('jdbcurl')">
+					#{jdbcurl,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('username')">
+					#{username,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('password')">
+					#{password,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('sortno')">
+					#{sortno,jdbcType=INTEGER}, 
+				</if>
+				<if test="_parameter.containsKey('remarks')">
+					#{remarks,jdbcType=VARCHAR}, 
+				</if>
+				<if test="_parameter.containsKey('updatetime')">
+					#{updatetime,jdbcType=TIMESTAMP}, 
+				</if>
+            </trim>
+		</if>
+    </insert>
+    
+	<!-- 删除数据源配置信息 -->
+	<delete id="deleteDatasouce" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE
+		WHERE 1=1 
+		AND (
+			<foreach collection="pkids" item="pk_id" separator="OR">
+				PKID = #{pk_id}
+			</foreach>
+		)
+	</delete>
+	
+</mapper>

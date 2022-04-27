@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.define.mapper.defineMapper">
+	<insert id="insertGroup"  parameterType="java.util.Map">
+		INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+		(
+			GROUP_ID,
+			GROUP_NAME,
+			PARENT_ID,
+			SORT,
+			ENTITY_ID,
+			GOURP_DESC
+		)
+		VALUES
+		(
+			#{GROUP_ID,jdbcType=VARCHAR},
+			#{GROUP_NAME,jdbcType=VARCHAR},
+			#{PARENT_ID,jdbcType=VARCHAR},
+			#{SORT,jdbcType=NUMERIC},
+			#{ENTITY_ID,jdbcType=VARCHAR},
+			#{GOURP_DESC,jdbcType=VARCHAR}		
+		)
+	</insert>
+	
+	<update id="updateGroup"  parameterType="java.util.Map">
+		UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP 
+		SET 
+			GROUP_NAME =#{GROUP_NAME,jdbcType=VARCHAR},
+			PARENT_ID  =#{PARENT_ID,jdbcType=VARCHAR},
+			SORT       =#{SORT,jdbcType=NUMERIC},
+			GOURP_DESC =#{GOURP_DESC,jdbcType=VARCHAR} 
+		WHERE GROUP_ID =#{GROUP_ID,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 查询实体所有分组 -->
+	<select id="findEntityGroup"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT GROUP_ID,GROUP_NAME FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP T
+		WHERE ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+	</select>		
+	
+	<!-- 更新分组的目录树路径 -->
+	<update id="updateGroupPath"  parameterType="java.util.Map">
+		UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP 
+		SET 
+			PATH =#{PATH,jdbcType=VARCHAR}
+		WHERE GROUP_ID =#{GROUP_ID,jdbcType=VARCHAR}
+	</update>	
+	
+	<!-- 查询所有子节点 -->
+	<select id="searchSubGroups"  parameterType="java.util.Map" resultType="java.util.Map">
+	<!-- SELECT GROUP_ID, GROUP_NAME, PARENT_ID, SORT, GOURP_DESC, ENTITY_ID, PATH,LEVEL FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+    CONNECT BY PRIOR GROUP_ID =  PARENT_ID START WITH  GROUP_ID =#{GROUP_ID,jdbcType=VARCHAR}-->
+
+    WITH TAB( GROUP_ID, GROUP_NAME, PARENT_ID, SORT, GOURP_DESC, ENTITY_ID, PATH,"LEVEL" ) AS(
+        SELECT
+            GROUP_ID,
+            GROUP_NAME,
+            PARENT_ID,
+            SORT,
+            GOURP_DESC,
+            ENTITY_ID,
+            PATH,
+            1 AS "LEVEL"
+        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+        WHERE GROUP_ID = #{GROUP_ID,jdbcType=VARCHAR}
+        UNION ALL
+        SELECT
+            B.GROUP_ID,
+            B.GROUP_NAME,
+            B.PARENT_ID,
+            B.SORT,
+            B.GOURP_DESC,
+            B.ENTITY_ID,
+            B.PATH,
+            A."LEVEL" + 1  AS "LEVEL"
+        FROM TAB A, ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP B
+        WHERE B.PARENT_ID=A.GROUP_ID
+    )
+    SELECT * FROM TAB
+</select>
+
+<!-- 查询所有父节点 -->
+	<select id="searchSupGroups"  parameterType="java.util.Map" resultType="java.util.Map">
+	<!--SELECT  GROUP_ID, GROUP_NAME, PARENT_ID, SORT, GOURP_DESC, ENTITY_ID, PATH,LEVEL FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+    CONNECT BY GROUP_ID = PRIOR PARENT_ID START WITH  GROUP_ID =#{GROUP_ID,jdbcType=VARCHAR}-->
+
+    WITH TAB( GROUP_ID, GROUP_NAME, PARENT_ID, SORT, GOURP_DESC, ENTITY_ID, PATH,"LEVEL" ) AS(
+		SELECT
+			GROUP_ID,
+			GROUP_NAME,
+			PARENT_ID,
+			SORT,
+			GOURP_DESC,
+			ENTITY_ID,
+			PATH,
+			1 AS "LEVEL"
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+		WHERE GROUP_ID = #{GROUP_ID,jdbcType=VARCHAR}
+		UNION ALL
+		SELECT
+			B.GROUP_ID,
+			B.GROUP_NAME,
+			B.PARENT_ID,
+			B.SORT,
+			B.GOURP_DESC,
+			B.ENTITY_ID,
+			B.PATH,
+			A."LEVEL" + 1  AS "LEVEL"
+		FROM TAB A, ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP B
+		WHERE A.PARENT_ID=B.GROUP_ID
+	)
+	SELECT * FROM TAB
+</select>
+
+<select id="searchGroupList"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        T.*,
+        (CASE WHEN P.GROUP_NAME IS NULL THEN '标签树' ELSE P.GROUP_NAME END) PARENT_NAME
+    FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP T
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP P ON T.PARENT_ID = P.GROUP_ID
+    WHERE 1=1
+    <if test='id!=null and id!="" '>
+        AND T.PARENT_ID = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test='ENTITY_ID!=null and ENTITY_ID!="" '>
+        AND T.ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR}
+    </if>
+    <if test='GROUP_NAME!=null and GROUP_NAME!="" '>
+        <bind name="pattern" value="'%' + _parameter.GROUP_NAME + '%'" />
+        AND T.GROUP_NAME like #{pattern,jdbcType=VARCHAR}
+    </if>
+</select>
+
+<select id="getGroup"  parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        T.*,
+        (CASE WHEN P.GROUP_NAME IS NULL THEN '标签树' ELSE P.GROUP_NAME END) PARENT_NAME
+    FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP T
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP P ON T.PARENT_ID = P.GROUP_ID
+    WHERE T.GROUP_ID = #{GROUP_ID,jdbcType=VARCHAR}
+</select>
+
+<delete id="deleteGroup" parameterType="java.util.Map">
+    DELETE
+    FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+    WHERE GROUP_ID IN
+    <foreach collection="array" item="GROUP_ID"  index="index"  open="(" separator="," close=")">
+            #{GROUP_ID,jdbcType=VARCHAR}
+    </foreach>
+</delete>
+
+
+<insert id="insertTag"  parameterType="Tag">
+    INSERT INTO ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+    (
+        TAG_ID,
+        GROUP_ID,
+        ENTITY_ID,
+        TAG_NAME,
+        TAG_CODE,
+        CODE_TYPE,
+        CODE_COLOR,
+        TAG_WEIGHT,
+        SORT,
+        TAG_DESC,
+        RANGE_TYPE,
+        RANGE_SOURCEKEY,
+        RANGE_SOURCENAME,
+        RANGE_VALUE,
+        MAINTAIN_CRON,
+        STATUS,
+        RULE_TYPE,
+        DATASET_ID,
+        DATASET_NAME,
+        DATASET_FIELDID,
+        DATASET_FIELDNAME,
+        DATASET_JOIN_ID,
+        DATASET_JOIN_NAME,
+        SQLDATA_SOUCE,
+        SQLDATA_SQL,
+        SQLDATA_REMARK,
+        SQLDATA_SOUCENAME,
+        RANGE_PARENT_TAG_ID,
+        TAG_VALUE_TYPE,
+        VALUE_TYPE,
+        CREATE_DATE,
+        LTS_RUN_NODE,
+        LTS_RUN_TYPE,
+        ISBOOLEAN,
+        UPDATE_DATE
+    )
+    VALUES
+    (
+        #{tagId,jdbcType=VARCHAR},
+        #{groupId,jdbcType=VARCHAR},
+        #{entityId,jdbcType=VARCHAR},
+        #{tagName,jdbcType=VARCHAR},
+        #{tagCode,jdbcType=VARCHAR},
+        #{codeType,jdbcType=VARCHAR},
+        #{codeColor,jdbcType=VARCHAR},
+        #{tagWeight,jdbcType=VARCHAR},
+        #{sort,jdbcType=NUMERIC},
+        #{tagDesc,jdbcType=VARCHAR},
+        #{rangeType,jdbcType=VARCHAR},
+        #{rangeSourcekey,jdbcType=VARCHAR},
+        #{rangeSourcename,jdbcType=VARCHAR},
+        #{rangeValue,jdbcType=VARCHAR},
+        #{maintainCron,jdbcType=VARCHAR},
+        #{status,jdbcType=NUMERIC},
+        #{ruleType,jdbcType=VARCHAR},
+        #{datasetId,jdbcType=VARCHAR},
+        #{datasetName,jdbcType=VARCHAR},
+        #{datasetFieldid,jdbcType=VARCHAR},
+        #{datasetFieldname,jdbcType=VARCHAR},
+        #{datasetJoinId,jdbcType=VARCHAR},
+        #{datasetJoinName,jdbcType=VARCHAR},
+        #{sqldataSouce,jdbcType=VARCHAR},
+        #{sqldataSql,jdbcType=VARCHAR},
+        #{sqldataRemark,jdbcType=VARCHAR},
+        #{sqldataSoucename,jdbcType=VARCHAR},
+        #{rangeParentTagId,jdbcType=VARCHAR},
+        #{tagValueType,jdbcType=VARCHAR},
+        #{valueType,jdbcType=VARCHAR},
+        #{createDate,jdbcType=TIMESTAMP},
+        #{ltsRunNode,jdbcType=VARCHAR},
+        #{ltsRunType,jdbcType=VARCHAR},
+        #{isboolean,jdbcType=VARCHAR},
+        #{updateDate,jdbcType=TIMESTAMP}
+    )
+</insert>
+
+<update id="updateTag"  parameterType="Tag">
+    UPDATE ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+    SET
+        GROUP_ID=#{groupId,jdbcType=VARCHAR},
+        TAG_NAME=#{tagName,jdbcType=VARCHAR},
+        TAG_CODE=#{tagCode,jdbcType=VARCHAR},
+        CODE_TYPE=#{codeType,jdbcType=VARCHAR},
+        CODE_COLOR=#{codeColor,jdbcType=VARCHAR},
+        TAG_WEIGHT=#{tagWeight,jdbcType=VARCHAR},
+        SORT=#{sort,jdbcType=NUMERIC},
+        TAG_DESC=#{tagDesc,jdbcType=VARCHAR},
+        RANGE_TYPE=#{rangeType,jdbcType=VARCHAR},
+        RANGE_SOURCEKEY=#{rangeSourcekey,jdbcType=VARCHAR},
+        RANGE_SOURCENAME=#{rangeSourcename,jdbcType=VARCHAR},
+        RANGE_VALUE=#{rangeValue,jdbcType=VARCHAR},
+        MAINTAIN_CRON=#{maintainCron,jdbcType=VARCHAR},
+        STATUS=#{status,jdbcType=VARCHAR},
+        RULE_TYPE=#{ruleType,jdbcType=VARCHAR},
+        DATASET_ID=#{datasetId,jdbcType=VARCHAR},
+        DATASET_NAME=#{datasetName,jdbcType=VARCHAR},
+        DATASET_FIELDID=#{datasetFieldid,jdbcType=VARCHAR},
+        DATASET_FIELDNAME=#{datasetFieldname,jdbcType=VARCHAR},
+        DATASET_JOIN_ID=#{datasetJoinId,jdbcType=VARCHAR},
+        DATASET_JOIN_NAME=#{datasetJoinName,jdbcType=VARCHAR},
+        SQLDATA_SOUCE=#{sqldataSouce,jdbcType=VARCHAR},
+        SQLDATA_SQL=#{sqldataSql,jdbcType=VARCHAR},
+        SQLDATA_REMARK=#{sqldataRemark,jdbcType=VARCHAR},
+        SQLDATA_SOUCENAME=#{sqldataSoucename,jdbcType=VARCHAR},
+        RANGE_PARENT_TAG_ID=#{rangeParentTagId,jdbcType=VARCHAR},
+        TAG_VALUE_TYPE=#{tagValueType,jdbcType=VARCHAR},
+        VALUE_TYPE=#{valueType,jdbcType=VARCHAR},
+        LTS_RUN_NODE=#{ltsRunNode,jdbcType=VARCHAR},
+        LTS_RUN_TYPE=#{ltsRunType,jdbcType=VARCHAR},
+        ISBOOLEAN=#{isboolean,jdbcType=VARCHAR},
+        UPDATE_DATE=#{updateDate,jdbcType=TIMESTAMP}
+    WHERE TAG_ID =#{tagId,jdbcType=VARCHAR}
+</update>
+
+<select id="searchTagList"  parameterType="java.util.Map" resultType="Tag">
+    SELECT
+        T.*,
+        P.GROUP_NAME,TAGTYPE.DICTIONARYNAME CODETYPENAME
+        ,TAGVALUETYPE.DICTIONARYNAME TAGVALUETYPENAME
+        ,TAGCOLOR.DICTIONARYNAME CODECOLORNAME
+
+    FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE T
+        <if test='topicCode!=null and topicCode!="" '>
+            JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG tpt ON T.TAG_ID=tpt.TAG_ID
+            JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC tp ON tpt.TOPIC_ID=tp.TOPIC_ID
+        </if>
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP P ON T.GROUP_ID = P.GROUP_ID
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY TAGTYPE ON T.CODE_TYPE=TAGTYPE.DICTIONARYCODE
+    AND TAGTYPE.ISAVALIABLE = '1' AND TAGTYPE.DICTIONARYCATALOGCODE='tagType'
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY TAGVALUETYPE ON T.TAG_VALUE_TYPE=TAGVALUETYPE.DICTIONARYCODE
+    AND TAGVALUETYPE.ISAVALIABLE = '1' AND TAGVALUETYPE.DICTIONARYCATALOGCODE='tagValueType'
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY TAGCOLOR ON T.CODE_COLOR=TAGCOLOR.DICTIONARYCODE
+    AND TAGCOLOR.ISAVALIABLE = '1' AND TAGCOLOR.DICTIONARYCATALOGCODE='tagColor'
+    WHERE 1=1
+    <if test='topicCode!=null and topicCode!="" '>
+        AND tp.TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+    </if>
+    <if test='id!=null and id!="" '>
+        <bind name="pid" value="'%' + _parameter.id + '%'" />
+        AND (P.PATH like #{pid,jdbcType=VARCHAR} OR P.PATH IS NULL)
+    </if>
+    <if test='ENTITY_ID!=null and ENTITY_ID!="" '>
+        AND T.ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR}
+    </if>
+    <if test='STATUS!=null and STATUS!="" '>
+        AND T.STATUS = #{STATUS,jdbcType=VARCHAR}
+    </if>
+    <if test='CODE_TYPE!=null and CODE_TYPE!="" '>
+        AND T.CODE_TYPE = #{CODE_TYPE,jdbcType=VARCHAR}
+    </if>
+    <if test='RULE_TYPE!=null and RULE_TYPE!="" '>
+        AND T.RULE_TYPE = #{RULE_TYPE,jdbcType=VARCHAR}
+    </if>
+
+    <if test='tagName!=null and tagName!="" '>
+        <bind name="pattern" value="'%' + _parameter.tagName + '%'" />
+        AND T.TAG_NAME like #{pattern,jdbcType=VARCHAR}
+    </if>
+
+    <if test='valueType!=null and valueType!="" '>
+        AND T.VALUE_TYPE = #{valueType,jdbcType=VARCHAR}
+    </if>
+    <if test='tagType!=null and tagType!="" '>
+        AND T.CODE_TYPE = #{tagType,jdbcType=VARCHAR}
+    </if>
+    <if test='tagValueType!=null and tagValueType!="" '>
+        AND T.TAG_VALUE_TYPE = #{tagValueType,jdbcType=VARCHAR}
+    </if>
+    <if test='tagColor!=null and tagColor!="" '>
+        AND T.CODE_COLOR = #{tagColor,jdbcType=VARCHAR}
+    </if>
+    <if test='ruleType!=null and ruleType!="" '>
+        AND T.RULE_TYPE = #{ruleType,jdbcType=VARCHAR}
+    </if>
+
+    <if test='orderBySort=="true" '>
+        ORDER BY T.SORT
+    </if>
+</select>
+
+<select id="getTag"  parameterType="java.util.Map" resultType="Tag">
+    SELECT
+        T.*,
+        P.GROUP_NAME,
+        PT.TAG_NAME RANGE_PARENT_TAG_NAME
+    FROM
+        ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE T
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP P ON T.GROUP_ID = P.GROUP_ID
+    LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE PT ON T.RANGE_PARENT_TAG_ID = PT.TAG_ID
+    WHERE 1=1
+    <if test='TAG_ID !=null and TAG_ID!="" '>
+        AND T.TAG_ID = #{TAG_ID,jdbcType=VARCHAR}
+    </if>
+    <if test='TAG_CODE !=null and TAG_CODE!="" '>
+        AND T.TAG_CODE = #{TAG_CODE,jdbcType=VARCHAR}
+    </if>
+</select>
+<!-- 标签基本信息 -->
+	<select id="getTagMap"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			T.*
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE T
+		WHERE T.TAG_ID = #{TAG_ID,jdbcType=VARCHAR} 
+	</select>	
+	<delete id="deleteTag" parameterType="java.util.Map">
+		DELETE
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE 
+		WHERE 
+		<choose>
+			<when test="tagIds != null">
+				TAG_ID IN 
+				<foreach collection="tagIds" item="TAG_ID"  index="index"  open="(" separator="," close=")">
+				        #{TAG_ID,jdbcType=VARCHAR}
+				</foreach>
+			</when>
+			<otherwise>
+				GROUP_ID IN 
+				<foreach collection="groupIds" item="GROUP_ID"  index="index"  open="(" separator="," close=")">
+				        #{GROUP_ID,jdbcType=VARCHAR}
+				</foreach>		
+			</otherwise>
+		</choose>
+	</delete>		
+	<delete id="deleteTopicTag" parameterType="java.util.Map">
+		DELETE FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG 
+		WHERE TAG_ID IN 
+		<choose>
+			<when test="tagIds != null">
+				<foreach collection="tagIds" item="TAG_ID"  index="index"  open="(" separator="," close=")">
+				        #{TAG_ID,jdbcType=VARCHAR}
+				</foreach>
+			</when>
+			<otherwise>
+				(SELECT TAG_ID FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE WHERE GROUP_ID IN
+				<foreach collection="groupIds" item="GROUP_ID"  index="index"  open="(" separator="," close=")">
+				        #{GROUP_ID,jdbcType=VARCHAR}
+				</foreach>	
+				)	
+			</otherwise>
+		</choose>
+	</delete>	
+	
+	<select id="searchEntityTree"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT * FROM (
+			<if test='NOROOT == null'>
+			SELECT 'root' as "id",ENTITY_NAME as "name", null as "pId",'group' as "iconSkin",'true' as "open",null as SORT,null as "tagCode"
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY
+			WHERE ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+			UNION ALL
+			<!-- 汇聚实体根目录 -->
+			SELECT 'root' as "id",GENTITY_NAME as "name", null as "pId",'group' as "iconSkin",'true' as "open",null as SORT,null as "tagCode"
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER
+			WHERE GENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+			UNION ALL
+			</if>
+			SELECT GROUP_ID as "id", GROUP_NAME as "name", PARENT_ID as "pId",'group' as "iconSkin",'true' as "open",SORT,null as "tagCode"
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP
+			WHERE ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+			<if test='TYPE != "group"'>
+			UNION ALL 
+			SELECT TAG_ID as "id", TAG_NAME as "name", GROUP_ID as "pId",'tag' as "iconSkin",'false' as "open",SORT,TAG_CODE as "tagCode"
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+			WHERE GROUP_ID IS NOT NULL AND ENTITY_ID =#{ENTITY_ID,jdbcType=VARCHAR}
+				<if test='STATUS!=null and STATUS!="" '>
+					AND STATUS = #{STATUS,jdbcType=VARCHAR} 
+				</if>	
+			</if>
+		) TT
+		ORDER BY
+		<choose>
+			<when test='_databaseId == "mysql"'>
+				TT.iconSkin,TT.SORT,TT.id
+			</when>
+			<otherwise>
+				TT."iconSkin",TT.SORT,TT."id"
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getTagRange"  parameterType="java.util.Map"   resultType="java.util.Map">
+		SELECT DEFINE.TAG_NAME,DEFINE.TAG_CODE,DEFINE.RANGE_TYPE,DEFINE.RANGE_VALUE,DATASOURCE.DIRVERCLASS,DATASOURCE.JDBCURL,DATASOURCE.USERNAME,DATASOURCE.PASSWORD FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE DEFINE 
+			LEFT OUTER JOIN ${DCP_DB_TPUBLIC_SCHEMA}.T_Q_DATASOURCE DATASOURCE ON DEFINE.RANGE_SOURCEKEY = DATASOURCE.PKID
+		WHERE DEFINE.STATUS = 1
+		<if test='TAG_CODE !=null and TAG_CODE!="" '>
+			AND  DEFINE.TAG_CODE= #{TAG_CODE,jdbcType=VARCHAR} 
+		</if>
+		ORDER BY DEFINE.UPDATE_DATE DESC
+	</select>
+</mapper>
+

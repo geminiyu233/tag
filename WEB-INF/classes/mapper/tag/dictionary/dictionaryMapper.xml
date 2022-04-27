@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  -->
+<mapper namespace="ths.project.tag.dictionary.mapper.dictionaryMapper">
+	
+	<!-- 行业字典 -->
+	<select id="listTrade" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			TRADECODE AS "id",TRADENAME AS "name",PARENTCODE AS "pId" 
+		FROM ${DCP_DB_TCODE_SCHEMA}.T_COD_TRADE
+		ORDER BY TRADECODE ASC
+	</select>
+	
+		<!-- 行政区字典 -->
+	<select id="listRegion" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			REGIONCODE AS "id",REGIONNAME AS "name",PARENTCODE AS "pId" 
+		FROM ${DCP_DB_TCODE_SCHEMA}.T_COD_REGION
+		WHERE 1 = 1
+		<if test='PARENTCODE != null and PARENTCODE != ""'>
+			<bind name="prcode" value="PARENTCODE+'%'" />
+			AND (REGIONCODE like #{prcode} OR PARENTCODE like #{prcode}) 
+		</if>
+		ORDER BY REGIONCODE ASC
+	</select>
+	
+		<!-- 流域字典 -->
+	<select id="listWSystem" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			WSYSTEMCODE AS "id",WSYSTEMNAME AS "name",PARENTCODE AS "pId" 
+		FROM ${DCP_DB_TCODE_SCHEMA}.T_COD_WSYSTEM
+		ORDER BY WSYSTEMCODE ASC
+	</select>
+
+	<!-- 主题行业字典 -->
+	<select id="listDimTrade" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			TRADE_CODE AS "id",TRADE_NAME AS "name",PARENT_TRADE_CODE AS "pId"
+		FROM ${DCP_DB_DIM_TCODE_SCHEMA}.T_COD_TRADE
+		ORDER BY TRADE_CODE ASC
+	</select>
+
+	<!-- 主题行政区字典 -->
+	<select id="listDimRegion" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		REGION_CODE AS "id",REGION_NAME AS "name",PARENT_REGION_CODE AS "pId"
+		FROM ${DCP_DB_DIM_TCODE_SCHEMA}.T_COD_REGION
+		WHERE 1 = 1
+		<if test='PARENTCODE != null and PARENTCODE != ""'>
+			<bind name="prcode" value="PARENTCODE+'%'" />
+			AND (REGION_CODE like #{prcode} OR PARENT_REGION_CODE like #{prcode})
+		</if>
+		ORDER BY REGION_CODE ASC
+	</select>
+
+	<!-- 主题流域字典 -->
+	<select id="listDimWSystem" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			WSYSTEM_CODE AS "id",WSYSTEM_NAME AS "name",PARENT_WSYSTEM_CODE AS "pId"
+		FROM ${DCP_DB_DIM_TCODE_SCHEMA}.T_COD_WSYSTEM
+		ORDER BY WSYSTEM_CODE ASC
+	</select>
+	
+</mapper>

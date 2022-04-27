@@ -1,0 +1,174 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="/WEB-INF/jsp/_common/taglib.jsp"%>
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<title>详情页</title>
+		<%@ include file="/WEB-INF/jsp/_common/commonCSS.jsp"%>
+		<%@ include file="/WEB-INF/jsp/_common/commonJS.jsp"%>
+		<!--页面自定义的CSS，请放在这里 -->
+		<style type="text/css">
+			.formcell-label {
+				text-align: center;
+				position: relative;
+				z-index: 1;
+				padding-left: 12px;
+				padding-right: 12px;
+			}
+			
+			.formcell-label :first-child {
+				display: inline-block;
+				background: #fafafa;
+				line-height: 36px;
+				font-size: 13px;
+			}
+			.formcell-label :nth-child(2){
+				display: block;
+				position: absolute;
+				z-index: -1;
+				top: 50%;
+				left: 12px;
+				right: 12px;
+				border-top: 1px solid #eeeeee;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				//加载附件
+				$('[formcell_type="FILE"]').each(function(){
+					var _this_file = $(this);
+					$.ajax({
+	            		url: ctx + '/eform/formdesign/formdesign_main_filelist.vm',
+	            		data:{'businessKey': '#literal()${#end businessKey #literal()}#end', inputFileId: _this_file.attr("id")},
+	            		dataType:'json',
+	            		type:'post',
+	            		success:function(response){
+	            			if(response.length > 0){
+	            				for(var i = 0; i < response.length; i++){
+	            					_this_file.append("<div class=\"tag\">" + response[i].FILE_NAME + "<button type=\"button\" class=\"close\" onclick=\"jdp_eform_downFile(this, '" + response[i].FILE_ID + "');\"><i class=\"ace-icon fa fa-download green smaller-70\"></i></button></div>");
+	            				}
+	            			}
+	            		}
+	            	});
+				});
+			});
+			
+			//文件下载
+			function jdp_eform_downFile(obj, fileId){
+				var form = $("#exportForm");
+				$("#fileId").val(fileId);
+				form.submit();
+			}
+			
+			function goBack() {
+				parent.doSearch();
+			}
+		</script>
+	</head>
+	<body>
+		<div class="main-container" id="main-container">
+		    <div class="main-content">
+		        <div class="main-content-inner fixed-page-header fixed-40">
+		            <div class="page-toolbar align-right">
+		                <button type="button" class="btn btn-xs btn-danger btn-xs-ths" id="btnReturn" onclick="goBack()">
+		                    <i class="ace-icon fa fa-reply"></i>返回
+		                </button>
+						<div class="space-2"></div>
+						<hr class="no-margin">
+		            </div>
+		        </div>
+		        <div class="main-content-inner padding-page-content">
+		            <div class="page-content">
+		            	<form action="#literal()${#end ctx #literal()}#end/eform/formdesign/formdesign_main_exportfile.vm" style="display: none;" target="" method="post" id="exportForm">
+							<input type="hidden" name="fileId" id="fileId"/>
+						</form>
+						<table width="100%" cellpadding="5" cellspacing="0" class="form-table-info">
+			                <tbody>
+		                		<tr style="visibility: hidden;">
+		                			<c:forEach begin="1" end="144" step="1" varStatus="status">
+		                				<td style="width:0.00694%; height: 5px; padding: 0px; border: 0px;">&nbsp;</td>
+		                			</c:forEach>
+			                	</tr>
+#set($Double = 0.0)##
+#set($Integer = 0)##
+#foreach($row in $rows )##
+#set($total_width = 0)##
+			                	<tr>
+#foreach($column in $row.FORMCELLS )##
+#set($total_width=$Integer.parseInt($column.FORMCELL_WIDTH) + $total_width)##
+#if($column.FORMCELL_TYPECODE == "LABEL" )##
+#set($td_width=$Integer.parseInt($column.FORMCELL_WIDTH) * 12 )##
+						       		<td colspan="$td_width" style="width: 0%; background: #fafafa;">
+						            	<div class="formcell-label" #if($column.FORMCELL_STYLE && $column.FORMCELL_STYLE != "")style="$column.FORMCELL_STYLE"#end>
+											<span class="bigger-110">$!column.FORMCELL_DESCR</span>
+											<div #if($column.FORMCELL_LABEL_SHOWLINE == "false")style="display: none;"#end></div>
+										</div>
+						            </td>
+#elseif($column.FORMCELL_TYPECODE == "TABLE" )##
+#if($Integer.parseInt($column.FORMCELL_LABLEWIDTH) > 0)##
+#set($td_width=$Integer.parseInt($column.FORMCELL_WIDTH) * $Integer.parseInt($column.FORMCELL_LABLEWIDTH) )##
+									<td colspan="$td_width" style="width: 0%; background: #fafafa; color: #2b7dbc; text-align: right; padding-right: 10px;" id="${column.FORMCELL_ID}_DESCR">$!column.FORMCELL_DESCR</td>
+#end##
+#set($td_width=$Integer.parseInt($column.FORMCELL_WIDTH) * 12 - $Integer.parseInt($column.FORMCELL_WIDTH) * $Integer.parseInt($column.FORMCELL_LABLEWIDTH))##
+						            <td colspan="$td_width" style="width: 0%; background: #FFFFFF; color: #555555; padding: 0px;" id="${column.FORMCELL_ID}">
+						            	<table width="100%" cellpadding="5" cellspacing="0">
+						            		<tr>
+#foreach($table_column in $column.FORMCELLS )##
+#if($table_column.FORMCELL_TYPECODE != "INPUTHIDDEN")##
+#set($td_width=100 / $column.FORMCELLS.size())##
+#set($isColumnLast=$velocityCount == $column.FORMCELLS.size())##
+#set($isColumnFirst=$velocityCount == 1)##
+						               			<td style="width: $td_width%; background: #fafafa; color: #2b7dbc; text-align: center; border-top: 0px; border-bottom: 0px; #if($isColumnFirst)border-left: 0px;#end #if($isColumnLast)border-right: 0px;#end">$!table_column.FORMCELL_DESCR</td>
+#end##
+#end##
+						       				</tr>
+						       				<c:forEach var="data" items="#literal()${#end multirowtable['${column.TABLE_SCHEMA}.${column.TABLE_CODE}'].row #literal()}#end" varStatus="dataStatus">
+						                		<tr>
+						                				
+#foreach($table_column in $column.FORMCELLS )##
+#set($isColumnFirst=$velocityCount == 1)##
+#set($td_width=100 / $column.FORMCELLS.size())##
+							                		<td style="width: $td_width%; background: #ffffff; color: #555555; text-align: left; #if($isColumnFirst)border-left: 0px;#end <c:if test="#literal()${#end dataStatus.last == true #literal()}#end">border-bottom: 0px;</c:if>">
+#if($table_column.FORMCELL_TYPECODE == "FILE" )
+											            <div class="tags" style="width: 100%; border: 0px;" formcell_type="${table_column.FORMCELL_TYPECODE}" id="${table_column.FORMCELL_ID}_row_#literal()${#end dataStatus.index #literal()}#end">
+											               						
+											            </div>
+#end##
+								            			#literal()${#end data.column['${table_column.FIELD_CODE}_THSNAME'] != null ? data.column['${table_column.FIELD_CODE}_THSNAME'] : data.column['$table_column.FIELD_CODE'] #literal()}#end##
+								            			
+							                		</td>
+#end##
+						                		</tr>
+						                	</c:forEach>
+						            	</table>
+						        	</td>
+#else##
+#if($Integer.parseInt($column.FORMCELL_LABLEWIDTH) > 0)##
+#set($td_width=$Integer.parseInt($column.FORMCELL_WIDTH) * $Integer.parseInt($column.FORMCELL_LABLEWIDTH) )##
+								 	<td colspan="$td_width" style="width: 0%; background: #fafafa; color: #2b7dbc; text-align: right; padding-right: 10px;" id="${column.FORMCELL_ID}_DESCR">$!column.FORMCELL_DESCR</td>
+#end##
+#set($td_width=$Integer.parseInt($column.FORMCELL_WIDTH) * 12 - $Integer.parseInt($column.FORMCELL_WIDTH) * $Integer.parseInt($column.FORMCELL_LABLEWIDTH))##
+									<td colspan="$td_width" style="width: 0%; background: #FFFFFF; color: #555555; text-align: left;" id="${column.FORMCELL_ID}">
+#if($column.FORMCELL_TYPECODE == "FILE" )##
+										<div class="tags" style="width: 100%; border: 0px;" formcell_type="${column.FORMCELL_TYPECODE}" id="${column.FORMCELL_ID}">
+								              						
+								   		</div>
+#end##
+										#literal()${#end table['${column.TABLE_SCHEMA}.${column.TABLE_CODE}'].column['${column.FIELD_CODE}_THSNAME'] != null ? table['${column.TABLE_SCHEMA}.${column.TABLE_CODE}'].column['${column.FIELD_CODE}_THSNAME'] : table['${column.TABLE_SCHEMA}.${column.TABLE_CODE}'].column['${column.FIELD_CODE}'] #literal()}#end##
+										
+									</td>
+#end##
+#end##
+#if($total_width < 12)##
+					            	<td colspan="${(12 - $total_width) * 12 }" style="width:0%; background: #fafafa;">&nbsp;</td>
+#end##
+				               	</tr>
+#end##
+			                </tbody>
+			            </table>
+		         	</div>
+		        </div><!--/.main-content-inner-->
+		    </div><!-- /.main-content -->
+		</div><!-- /.main-container -->
+	</body>
+</html>

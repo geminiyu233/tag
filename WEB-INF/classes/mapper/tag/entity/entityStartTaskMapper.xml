@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 实体任务执行过程 -->
+<mapper namespace="ths.project.tag.entity.mapper.EntityStartTaskMapper">
+
+    <!-- 获取实体汇聚、标签实体 树 -->
+    <select id="getNodeTrees" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM (
+            SELECT
+                    ENTITY_ID NODE_ID,
+                    ENTITY_NAME NODE_NAME,
+                    'ENTITY' NODE_PID,
+                    RUNSTATUS NODE_STATUS,
+                    SORT_NUM
+                FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY
+            UNION ALL
+            SELECT
+                    GENTITY_ID NODE_ID,
+                    GENTITY_NAME NODE_NAME,
+                    'GENTITY' NODE_PID,
+                    RUNSTATUS NODE_STATUS,
+                    SORT_NUM
+                FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER
+            ) TMP
+        ORDER BY TMP.SORT_NUM ASC
+    </select>
+    
+    <!-- 获取标签实体 -->
+    <select id="getEntityList"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		    *
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY
+		WHERE 1 = 1
+		<choose>
+			<when test='entityids != null and entityids.length>0'>
+				AND 
+				<foreach collection="entityids" index="index" item="item" open="(" separator=" OR " close=")">
+					ENTITY_ID = #{item, jdbcType=VARCHAR}
+				</foreach>
+			</when>
+			<otherwise>
+				AND ENTITY_ID = NULL 
+			</otherwise>
+		</choose>
+		AND RUNSTATUS = '1'
+	</select>
+    
+    <!-- 获取汇聚实体的列表 -->
+	<select id="getEntityGatherList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				GENTITY_ID, 
+				GENTITY_NAME, 
+				GENTITY_CODE, 
+				GENTITY_PORTRAIT,  
+				IDENTITY_CODE, 
+				IDENTITY_NAME, 
+				SPACE_CODE, 
+				SPACE_NAME,
+				LEGEND_CODE,
+				LEGEND_NAME,
+				SYNC_CRON, 
+				GENTITY_DESC, 
+				LTS_RUN_NODE, 
+				RUNSTATUS, 
+				SORT_NUM, 
+				DATA_TYPE, 
+				TASKSTRATEGY, 
+				CREATE_DATE, 
+				UPDATE_DATE
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER
+			WHERE 1=1
+			<choose>
+				<when test='gentityids != null and gentityids.length>0'>
+					AND 
+					<foreach collection="gentityids" index="index" item="item" open="(" separator=" OR " close=")">
+						GENTITY_ID = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</when>
+				<otherwise>
+					AND GENTITY_ID = NULL 
+				</otherwise>
+			</choose>
+			AND RUNSTATUS = '1'
+			ORDER BY SORT_NUM ASC, CREATE_DATE DESC
+	</select>
+
+</mapper>
+

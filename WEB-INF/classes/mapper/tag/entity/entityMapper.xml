@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.entity.mapper.entityMapper">
+	<insert id="insert" parameterType="java.util.Map">
+		INSERT
+		INTO
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY(ENTITY_ID,
+			ENTITY_NAME,
+			ENTITY_CODE,
+			ENTITY_PORTRAIT,
+			DATASOURCE_ID,
+			DATASOURCE_NAME,
+			DATATABLE,
+			DATATABLE_NAME,
+			IDENTITY_CODE,
+			IDENTITY_NAME,
+			SYNC_CRON,
+			ENTITY_DESC,
+			LTS_RUN_NODE,
+			RUNSTATUS,
+			SORT_NUM,
+			DATA_TYPE,
+			DATA_SQL,
+		   	SPACE_TYPE,
+			SPACE_CODE,
+			SPACE_NAME,
+			SPACE_POLYGON_CODE,
+        	SPACE_POLYGON_NAME,
+			TASKSTRATEGY,
+			CREATE_DATE,
+			UPDATE_DATE) 
+		VALUES
+			(
+			#{ENTITY_ID,jdbcType=VARCHAR},
+			#{ENTITY_NAME,jdbcType=VARCHAR},
+			#{ENTITY_CODE,jdbcType=VARCHAR},
+			#{ENTITY_PORTRAIT,jdbcType=VARCHAR},
+			#{DATASOURCE_ID,jdbcType=VARCHAR},
+			#{DATASOURCE_NAME,jdbcType=VARCHAR},
+			#{DATATABLE,jdbcType=VARCHAR},
+			#{DATATABLE_NAME,jdbcType=VARCHAR},
+			#{IDENTITY_CODE,jdbcType=VARCHAR},
+			#{IDENTITY_NAME,jdbcType=VARCHAR},
+			#{SYNC_CRON,jdbcType=VARCHAR},
+			#{ENTITY_DESC,jdbcType=VARCHAR},
+			#{LTS_RUN_NODE,jdbcType=VARCHAR},
+			#{RUNSTATUS,jdbcType=VARCHAR},
+			#{SORT_NUM,jdbcType=NUMERIC},
+			#{DATA_TYPE,jdbcType=NUMERIC},
+			#{DATA_SQL,jdbcType=VARCHAR},
+			#{SPACE_TYPE,jdbcType=VARCHAR},
+			#{SPACE_CODE,jdbcType=VARCHAR},
+			#{SPACE_NAME,jdbcType=VARCHAR},
+			#{SPACE_POLYGON_CODE,jdbcType=VARCHAR},
+			#{SPACE_POLYGON_NAME,jdbcType=VARCHAR},
+			#{TASKSTRATEGY,jdbcType=NUMERIC},
+			#{CREATE_DATE,jdbcType=TIMESTAMP},
+			#{UPDATE_DATE,jdbcType=TIMESTAMP}
+			)	
+	</insert>
+	<update id="update"  parameterType="java.util.Map">
+		UPDATE
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY 
+		SET
+			ENTITY_NAME=#{ENTITY_NAME,jdbcType=VARCHAR},
+			ENTITY_CODE=#{ENTITY_CODE,jdbcType=VARCHAR},
+			ENTITY_PORTRAIT=#{ENTITY_PORTRAIT,jdbcType=VARCHAR},
+			DATASOURCE_ID=#{DATASOURCE_ID,jdbcType=VARCHAR},
+			DATASOURCE_NAME=#{DATASOURCE_NAME,jdbcType=VARCHAR},
+			DATATABLE=#{DATATABLE,jdbcType=VARCHAR},
+			DATATABLE_NAME=#{DATATABLE_NAME,jdbcType=VARCHAR},
+			IDENTITY_CODE=#{IDENTITY_CODE,jdbcType=VARCHAR},
+			IDENTITY_NAME=#{IDENTITY_NAME,jdbcType=VARCHAR},
+			SYNC_CRON=#{SYNC_CRON,jdbcType=VARCHAR},
+			ENTITY_DESC=#{ENTITY_DESC,jdbcType=VARCHAR},
+			LTS_RUN_NODE=#{LTS_RUN_NODE,jdbcType=VARCHAR},
+			RUNSTATUS=#{RUNSTATUS,jdbcType=VARCHAR},
+			SORT_NUM=#{SORT_NUM,jdbcType=NUMERIC},
+			DATA_TYPE=#{DATA_TYPE,jdbcType=NUMERIC},
+			DATA_SQL=#{DATA_SQL,jdbcType=VARCHAR},
+			SPACE_TYPE=#{SPACE_TYPE,jdbcType=VARCHAR},
+			SPACE_CODE=#{SPACE_CODE,jdbcType=VARCHAR},
+			SPACE_NAME=#{SPACE_NAME,jdbcType=VARCHAR},
+			SPACE_POLYGON_CODE=#{SPACE_POLYGON_CODE,jdbcType=VARCHAR},
+			SPACE_POLYGON_NAME=#{SPACE_POLYGON_NAME,jdbcType=VARCHAR},
+			TASKSTRATEGY=#{TASKSTRATEGY,jdbcType=NUMERIC},
+			UPDATE_DATE=#{UPDATE_DATE,jdbcType=TIMESTAMP}
+		WHERE ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR} 
+	</update>
+	
+	<select id="searchList"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		    *
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY T
+		WHERE 1 = 1
+		<if test="ids != null">
+			AND ENTITY_ID IN 
+			<foreach collection="ids" item="ENTITY_ID"  index="index"  open="(" separator="," close=")">
+			        #{ENTITY_ID,jdbcType=VARCHAR}
+			</foreach>	
+		</if>
+		<if test='ENTITY_NAME!=null and ENTITY_NAME!="" '>
+			<bind name="pattern" value="'%' + _parameter.ENTITY_NAME + '%'" />
+			AND ENTITY_NAME like #{pattern,jdbcType=VARCHAR} 
+		</if>
+		<if test="RUNSTATUS != null and RUNSTATUS != ''">
+			AND RUNSTATUS = #{RUNSTATUS,jdbcType=VARCHAR} 
+		</if>
+		<if test="orderBySortNum != null">
+			order by sort_num
+		</if>			    
+	</select>
+	
+	<!-- 获取标签实体及汇聚实体列表 -->
+	<select id="getEntityAgList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			A.ENTITY_ID,
+		    A.ENTITY_CODE,
+		    A.ENTITY_NAME,
+		    A.DATATYPE
+		FROM(
+			SELECT
+			    T.ENTITY_ID,
+			    T.ENTITY_CODE,
+			    T.ENTITY_NAME,
+			    T.SORT_NUM,
+			    '1' DATATYPE
+			FROM
+			    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY T
+			
+			UNION
+			
+			SELECT
+			    T.GENTITY_ID GENTITY_ID,
+			    T.GENTITY_CODE ENTITY_CODE,
+			    T.GENTITY_NAME ENTITY_NAME,
+			    T.SORT_NUM,
+			    '2' DATATYPE
+			FROM
+			    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER T
+		)A ORDER BY A.SORT_NUM
+	</select>
+	
+	<select id="get"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			T.*
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY T
+		WHERE 1 = 1
+		<if test="ENTITY_ID != null and ENTITY_ID != ''">
+		AND T.ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR} 
+		</if>
+		<if test="ENTITY_CODE != null and ENTITY_CODE != ''">
+		AND T.ENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR} 
+		</if>	
+		
+	</select>
+	
+	<delete id="delete" parameterType="java.util.Map">
+		DELETE
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY 
+		WHERE ENTITY_ID IN 
+		<foreach collection="array" item="ENTITY_ID"  index="index"  open="(" separator="," close=")">
+		        #{ENTITY_ID,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	
+	<insert id="insertEntityField"  parameterType="java.util.Map">
+		INSERT
+		INTO
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD(PKID,
+			FIELD_CODE,
+			FIELD_NAME,
+			ENTITY_ID) 
+		VALUES
+			(
+			#{PKID,jdbcType=VARCHAR},
+			#{FIELD_CODE,jdbcType=VARCHAR},
+			#{FIELD_NAME,jdbcType=VARCHAR},
+			#{ENTITY_ID,jdbcType=VARCHAR}
+			)	
+	</insert>
+	
+	<select id="searchEntityFieldList"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		    *
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD T
+		WHERE 1 = 1
+		<if test="ENTITY_ID != null and ENTITY_ID != ''">
+		AND T.ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR} 
+		</if>
+		<if test="ENTITY_CODE != null and ENTITY_CODE != ''">
+		AND (
+			T.ENTITY_ID = (SELECT ENTITY_ID FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY WHERE ENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR} )
+			OR
+			T.ENTITY_ID = (SELECT GENTITY_ID FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER WHERE GENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR} )
+			)
+		</if>		
+	</select>	
+	
+	<delete id="deleteEntityField"  parameterType="java.util.Map">
+		DELETE
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYFIELD 
+		WHERE ENTITY_ID IN 
+		<foreach collection="array" item="ENTITY_ID"  index="index"  open="(" separator="," close=")">
+		        #{ENTITY_ID,jdbcType=VARCHAR}
+		</foreach>
+	</delete>	
+	
+	<insert id="insertEntityDataset"  parameterType="java.util.Map">
+		INSERT
+		INTO
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYDATASET(PKID,
+			FIELD_CODE,
+			FIELD_NAME,
+			ENTITY_ID) 
+		VALUES
+			(
+			#{PKID,jdbcType=VARCHAR},
+			#{DATASET_ID,jdbcType=VARCHAR},
+			#{DATASET_NAME,jdbcType=VARCHAR},
+			#{ENTITY_ID,jdbcType=VARCHAR}
+			)	
+	</insert>
+	
+	<select id="searchEntityDatasetList"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		    *
+		FROM
+		    ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYDATASET T
+		WHERE 1 = 1
+		<if test="ENTITY_ID != null and ENTITY_ID != ''">
+		AND T.ENTITY_ID = #{ENTITY_ID,jdbcType=VARCHAR} 
+		</if>
+		<if test="ENTITY_CODE != null and ENTITY_CODE != ''">
+		AND T.ENTITY_ID = (SELECT ENTITY_ID FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY WHERE ENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR} )
+		</if>	
+	</select>	
+	
+	<delete id="deleteEntityDataset"  parameterType="java.util.Map">
+		DELETE
+		FROM
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYDATASET 
+		WHERE ENTITY_ID IN 
+		<foreach collection="array" item="ENTITY_ID"  index="index"  open="(" separator="," close=")">
+		        #{ENTITY_ID,jdbcType=VARCHAR}
+		</foreach>
+	</delete>		
+	
+	
+	<select id="getEntityTagsService" parameterType="java.util.Map"   resultType="java.util.Map">
+		SELECT TAGGROUP.GROUP_ID AS "nodeId",TAGGROUP.GROUP_NAME AS "nodeName",'group' AS "nodeType",
+				TAGGROUP.PARENT_ID AS "parentId",NULL AS "tagId",NULL AS "tagCode",NULL AS "tagStatus",
+				NULL AS "tagValueType",NULL AS "rangeType",NULL AS "rangeService",TAGGROUP.SORT AS "sort",null AS "tagColor"
+				,NULL AS "tagWeight",NULL AS "ruleType"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP TAGGROUP INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY ENTITY ON TAGGROUP.ENTITY_ID = ENTITY.ENTITY_ID
+			WHERE ENTITY.ENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR}
+		UNION ALL
+		SELECT DEFINE.TAG_ID AS "nodeId",DEFINE.TAG_NAME AS "nodeName",'tag' AS "nodeType",
+					DEFINE.GROUP_ID AS "parentId",DEFINE.TAG_ID AS "tagId",DEFINE.TAG_CODE AS "tagCode",DEFINE.STATUS AS "tagStatus",
+					DEFINE.TAG_VALUE_TYPE AS "tagValueType",DEFINE.RANGE_TYPE AS "rangeType",DEFINE.RANGE_VALUE AS "rangeService",DEFINE.SORT AS "sort",CODE_COLOR AS "tagColor"
+					,DEFINE.TAG_WEIGHT "tagWeight",DEFINE.RULE_TYPE "ruleType"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE DEFINE INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY ENTITY ON DEFINE.ENTITY_ID = ENTITY.ENTITY_ID
+			WHERE ENTITY.ENTITY_CODE = #{ENTITY_CODE,jdbcType=VARCHAR} AND DEFINE.STATUS = 1 
+		ORDER BY 
+			"nodeType" ASC,"parentId" ASC,"sort" ASC, "nodeId" ASC
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,393 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="/WEB-INF/jsp/_common/taglib.jsp"%>
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<title>数据表列表</title>
+		<%@ include file="/WEB-INF/jsp/_common/commonCSS.jsp"%>
+		<script type="text/javascript" src="#literal()${#end ctx #literal()}#end/assets/js/eform/eform_custom.js"></script>
+		<!--页面自定义的CSS，请放在这里 -->
+		<style type="text/css">
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="main-content-inner padding-page-content">
+					<div class="page-content">
+						<div class="space-4"></div>
+						<div class="row">
+							<div class="col-xs-12">
+								<form class="form-horizontal" role="form" id="formList"
+									action="#" method="post">
+									<div class="form-group">
+										<label class="col-sm-1 control-label no-padding-right">办理状态</label>
+										<div class="col-sm-3">
+											<select class="form-control"  name="form['HANDLE_STATE']" >
+	                           					<c:forEach items="#literal()${#end handleStates #literal()}#end" var="state" >
+	                           						<option value="#literal()${#end state.dictionary_code #literal()}#end" <c:if test="#literal()${#end state.dictionary_code==form.HANDLE_STATE #literal()}#end">selected</c:if>>#literal()${#end state.dictionary_name #literal()}#end</option>
+	                           					</c:forEach>
+	                                   	    </select>
+										</div>
+#foreach($titleObj in $titleList )##
+#if($titleObj.FIELD_LEVEL && $titleObj.FIELD_LEVEL != '0' && $titleObj.FIELD_QUERY && $titleObj.FIELD_QUERY != '0' && $titleObj.FIELD_INPUTTYPE != 'INPUTHIDDEN')##
+										<label class="col-sm-1 control-label no-padding-right" style="margin-top:10px">${titleObj.FIELD_NAME}</label>
+										<div class="col-sm-3" style="margin-top:10px">
+#set($_THSNAME="${titleObj.FIELD_CODE}_THSNAME")##
+#if(!$titleObj.FIELD_INPUTTYPE || $titleObj.FIELD_INPUTTYPE=='INPUTNUMBER' || $titleObj.FIELD_INPUTTYPE=='TEXTAREA' || $titleObj.FIELD_INPUTTYPE=='INPUT')##
+											<input type="text" class="form-control" 
+													id="QUERY_${titleObj.FIELD_ID}" 
+													name="form['${titleObj.FIELD_CODE}']" 
+													value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" >
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='DATE')##
+											<div class="input-group">
+												<input type="text" class="form-control" 
+														id="QUERY_${titleObj.FIELD_ID}" 
+														name="form['${titleObj.FIELD_CODE}']" 
+														value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end"
+														readonly="readonly">
+												<span class="input-group-btn">
+										  			<button type="button" class="btn btn-white btn-default" 
+															 onclick="WdatePicker({el: 'QUERY_${titleObj.FIELD_ID}', dateFmt: '${titleObj.FIELD_DATETYPE}'});">
+											      	 	<i class="ace-icon fa fa-calendar"></i>
+										       		</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='SELECT' || $titleObj.FIELD_INPUTTYPE=='RADIO' || $titleObj.FIELD_INPUTTYPE=='CHECKBOX')##
+											<select id="QUERY_${titleObj.FIELD_ID}" 
+													name="form['${titleObj.FIELD_CODE}']"  
+													class="form-control">
+												<option value="">--请选择--</option>
+												<c:forEach var="dictionaryObj" items='#literal()${#end dictionarys["$titleObj.FIELD_DICTIONARY"] #literal()}#end'>
+													<option value="#literal()${#end dictionaryObj.dictionary_code #literal()}#end" title="#literal()${#end dictionaryObj.dictionary_name #literal()}#end">
+														#literal()${#end dictionaryObj.dictionary_name #literal()}#end
+													</option>
+												</c:forEach>
+											</select>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='OPENRADIO')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openList(this,'1','${titleObj.FIELD_NAME}','${titleObj.FIELD_DICTIONARY}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='OPENCHECKBOX')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openList(this,'2','${titleObj.FIELD_NAME}','${titleObj.FIELD_DICTIONARY}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='RADIOTREE')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openTree(this,'1','${titleObj.FIELD_NAME}','','','','','ceshisqlzidian','')">
+											   	<span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXTREE')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openTree(this,'2','${titleObj.FIELD_NAME}','','','','','ceshisqlzidian','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='AREATREE')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openTree(this,'1','${titleObj.FIELD_NAME}','ths.jdp.eform.mapper.TreeMapper','jdp_region_tree','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+												       	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='TRADETREE')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openTree(this,'1','${titleObj.FIELD_NAME}','ths.jdp.eform.mapper.TreeMapper','jdp_trade_tree','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='RADIOUSER')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME" name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openUser(this,'1','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXUSER')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openUser(this,'2','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+												   	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='RADIODEPT')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openDept(this,'1','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXDEPT')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"   name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end"  onclick="jdp_eform_openDept(this,'2','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXROLE')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"   name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openRole(this,'2','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+												   	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											    	   	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXPOSI')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']" oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											  	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openPosi(this,'2','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+												   	</button>
+												</span>
+											</div>
+#end##
+#if($titleObj.FIELD_INPUTTYPE=='CHECKBOXGROUP')##
+											<div class="input-group">
+											   	<input type="hidden" id="QUERY_${titleObj.FIELD_ID}" name="form['${titleObj.FIELD_CODE}']"  oldvalue="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end" value="#literal()${#end form.$titleObj.FIELD_CODE #literal()}#end">
+											   	<input type="text" class="form-control" id="QUERY_${titleObj.FIELD_ID}_THSNAME"  name="form['${_THSNAME}']" readonly="readonly" value="#literal()${#end form.$_THSNAME #literal()}#end" onclick="jdp_eform_openGroup(this,'2','${titleObj.FIELD_NAME}','','')">
+											    <span class="input-group-btn">
+											    	<button type="button" class="btn btn-white btn-default" onclick="jdp_eform_clearValue(this)">
+											        	<i class="ace-icon fa fa-remove"></i>
+											    	</button>
+												</span>
+											</div>
+#end##
+										</div>
+#end##
+#end##
+									</div>
+									<div class="form-group">
+									<div class="col-sm-12  align-right">
+										<div class="space-4 hidden-lg hidden-md hidden-sm"></div>
+											<button type="button"
+												class="btn btn-info btn-default-ths pull-right"
+												data-self-js="doSearch(true)">
+												<i class="ace-icon fa fa-search"></i> 搜索
+											</button>
+										</div>
+									</div>
+									<hr class="no-margin">
+									<div class="page-toolbar align-right list-toolbar">
+										<c:if test="#literal()${#end form.HANDLE_STATE == null || form.HANDLE_STATE=='V_JDP_BPM_TODO_TASKS' #literal()}#end">
+											<button type="button" class="btn btn-xs btn-primary btn-xs-ths"
+												id="btnAdd" data-self-js="doEdit();">
+												<i class="ace-icon fa fa-plus"></i> 起草流程
+											</button>
+										</c:if>
+									</div>
+									<table id="listTable" class="table table-bordered table-hover">
+										<thead>
+											<tr>
+												<th class="center" style="width: 30px">
+													<label class="pos-rel"> 
+														<input type="checkbox" class="ace" />
+														<span class="lbl"></span>
+													</label>
+												</th>
+#foreach($titleObj in $titleList )##
+#if($titleObj.FIELD_LEVEL && $titleObj.FIELD_LEVEL!='0')##
+												<th #if($titleObj.FIELD_USERORDERBY=='1') data-sort-col="${titleObj.FIELD_CODE}" #end #if($titleObj.FIELD_LEVEL=='1') class="hidden-sm hidden-xs" #end >
+#if($titleObj.FIELD_IMAGE!='')##
+														<i class="ace-icon fa ${titleObj.FIELD_IMAGE}"></i> <!--列标题图片-->
+#end##
+															${titleObj.FIELD_NAME} 
+#if($titleObj.FIELD_USERORDERBY=='1')##
+														<i class="ace-icon fa fa-sort pull-right"></i>  <!--用户是否可以排序-->
+#end##
+												</th>
+#end##
+#end##
+												<th class="align-center " style="width: 80px">
+												<i class="ace-icon fa fa-wrench"></i> 操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="item" items="#literal()${#end pageInfo.list #literal()}#end">
+												<tr>
+													<td class="center">
+														<label class="pos-rel"> 
+															<input type="checkbox" class="ace" value="#literal()${#end item.${mainPkColumn} #literal()}#end" /> 
+															<span class="lbl"></span>
+														</label>
+													</td>
+#foreach($titleObj in $titleList )##
+#if($titleObj.FIELD_LEVEL && $titleObj.FIELD_LEVEL!='0')##
+													<td #if($titleObj.FIELD_LEVEL=='1') class="hidden-sm hidden-xs" #end #if($titleObj.FIELD_WIDTH) style="width:${titleObj.FIELD_WIDTH}px" #end >
+														#literal()${#end item.${titleObj.FIELD_CODE}_THSNAME == null ? item.${titleObj.FIELD_CODE} : item.${titleObj.FIELD_CODE}_THSNAME #literal()}#end##
+													</td>
+#end##
+#end##
+													<td class=" align-center col-op-ths">
+														<c:if test="#literal()${#end form.HANDLE_STATE=='V_JDP_BPM_TODO_TASKS' #literal()}#end">
+															<button type="button"
+																class="btn btn-sm btn-default btn-white btn-op-ths"
+																title="编辑" data-self-js="doEdit('#literal()${#end item.${mainPkColumn} #literal()}#end','#literal()${#end item.TASK_ID_ #literal()}#end')">
+																<i class="ace-icon fa fa-edit"></i>
+															</button>
+														</c:if>
+														<c:if test="#literal()${#end form.HANDLE_STATE=='V_JDP_BPM_DONE_TASKS' #literal()}#end">
+															<button type="button"
+																class="btn btn-sm btn-default btn-white btn-op-ths"
+																title="查看" data-self-js="doEdit('#literal()${#end item.${mainPkColumn} #literal()}#end','#literal()${#end item.TASK_ID_ #literal()}#end')">
+																<i class="ace-icon fa fa-eye"></i>
+															</button>
+														</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+									<%@ include file="/WEB-INF/jsp/_common/paging.jsp"%>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/.main-content-inner-->
+			</div>
+			<!-- /.main-content -->
+		</div>
+		<!-- /.main-container -->
+	
+		<iframe id="iframeInfo" name="iframeInfo" class="frmContent" src=""
+			style="border: none; display: none" frameborder="0" width="100%"></iframe>
+	
+		<%@ include file="/WEB-INF/jsp/_common/commonJS.jsp"%>
+	
+		<!-- 自己写的JS，请放在这里 -->
+		<script type="text/javascript">
+			//设置iframe自动高
+			autoHeightIframe("iframeInfo");
+			
+			//搜索
+			function doSearch(){
+				if( typeof(arguments[0]) != "undefined" && arguments[0] == true)
+					$("#pageNum").val(1);
+				$("#orderBy").closest("form").submit();
+			}
+			
+			//删除
+   			function doDelete(){
+   				var _ids="";
+   				$('#listTable > tbody > tr > td:first-child :checkbox:checked').each(function(){
+		        	_ids = _ids + $(this).val() + ",";
+		        });
+		        _ids = _ids == "" ? _ids : _ids.substr(0,_ids.length -1 );
+		        if(_ids.length<=0){
+		        	dialog({
+		                title: '提示',
+		                content: '请选择要删除的记录!',
+		                wraperstyle:'alert-info',
+		                width:300,
+		                ok: function () {}
+		            }).showModal();
+		        }else{	
+		        	dialog({
+		                title: '删除',
+		                wraperstyle:'alert-info',
+		                content: '确实要删除选定记录吗?',
+		                width:300,
+		                ok: function () {
+		                	$.ajax({
+		                		url: ctx + '/${classNameLowerCase}/delete.vm',
+		                		data:{'id':_ids,'table_name':'#literal()${#end mainTableCode #literal()}#end','pk_name':'#literal()${#end mainPkColumn #literal()}#end', 'dataSource': '#literal()${#end dataSource #literal()}#end'},
+		                		dataType:'text',
+		                		type:'post',
+		                		success:function(response){
+		                			if(response=="success"){
+		                				dialog({
+		            		                title: '提示',
+		            		                content: '删除成功!',
+		            		                wraperstyle:'alert-info',
+		            		                width:300,
+		            		                ok: function () {doSearch();}
+		            		            }).showModal();
+		                			}
+		                		}
+		                	})			
+		                },
+		                cancel:function(){}
+		            }).showModal();
+		        }
+		        
+   			}
+   			//跳转到编辑
+   			function doEdit(id, taskId){
+   				var _url = ctx + "/${classNameLowerCase}/edit.vm";
+   				if(id == null || id == ""){
+					id = generateUUID();
+   				}
+   				if(!taskId){
+   					taskId="";
+   				}
+   				_url += "#literal()${#end formParam #literal()}#end".replace(/%s/g, id) + "&form['dataSource']=#literal()${#end dataSource #literal()}#end";
+   				_url += "&processDefKey=${processDefKey}&taskId=" + taskId;
+   				$("#main-container").hide();
+		        $("#iframeInfo").attr("src",_url).show();
+   			}
+   	
+			jQuery(function($){
+				//初始化表格的事件，如表头排序，列操作等
+				__doInitTableEvent("listTable");
+			});
+		</script>
+	</body>
+</html>

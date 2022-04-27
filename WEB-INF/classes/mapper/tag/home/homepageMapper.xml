@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 项目首页 -->
+<mapper namespace="ths.project.tag.home.mapper.homepageMapper">
+
+	<!-- 查询标签总量 【标签总量、新增标签（个）、停用标签（个）| 1:中性,2:正面,3 负面 | 标签作业监控】-->
+	<select id="getSumTagInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT * FROM
+			(
+			    SELECT 
+			        COUNT(1) SUMTAG, 
+			        SUM(CASE WHEN CODE_COLOR = 1 OR CODE_COLOR IS NULL THEN 1 ELSE 0 END) ZX_TAG,
+			        SUM(CASE WHEN CODE_COLOR=2 THEN 1 ELSE 0 END) ZM_TAG,
+			        SUM(CASE WHEN CODE_COLOR=3 THEN 1 ELSE 0 END) FM_TAG,
+			        SUM(CASE WHEN STATUS=0 THEN 1 ELSE 0 END) TY_TAG,
+			        SUM(CASE WHEN STATUS != 0 THEN 1 ELSE 0 END) ZC_TAG,
+			        '' XZ_TAG
+		        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+			) A,
+			(
+				SELECT 
+					COUNT(1) ST_TAG 
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY
+			) B,
+			(
+				SELECT YC_STATUS,
+					   ZC_STATUS,
+					   SUM_STATUS,
+					   CASE WHEN SUM_STATUS =0 THEN 0 ELSE CAST(ROUND(YC_STATUS*100.0/SUM_STATUS,2) AS FLOAT) END YCZB,
+				       CASE WHEN SUM_STATUS =0 THEN 0 ELSE CAST(ROUND(ZC_STATUS*100.0/SUM_STATUS,2) AS FLOAT) END ZCZB 
+				FROM 
+					(SELECT 
+						SUM(CASE WHEN A.STATUS=3 THEN 1 ELSE 0 END) YC_STATUS,
+					    SUM(CASE WHEN A.STATUS=1 THEN 1 ELSE 0 END) ZC_STATUS,
+					    COUNT(1) SUM_STATUS
+                	FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a
+                	LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE B ON A.TASK_ID=B.TAG_ID
+                	JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY C ON B.ENTITY_ID=C.ENTITY_ID
+ 					WHERE (A.STATUS = 1 OR A.STATUS=3) 
+ 				<choose>
+					<when test='_databaseId == "mysql"'>
+						AND date_format(A.START_DATE,'%Y-%m-%d') >= date_format(date_add(now(),interval 6 day),'%Y-%m-%d')
+					</when>
+					<when test='_databaseId == "sqlserver"'>
+			  			AND CONVERT(varchar,A.END_DATE,23) &lt;= (SELECT CONVERT(varchar,GETDATE()-6,23))
+			  		</when>
+			  		<otherwise>
+			  			AND TO_CHAR(A.START_DATE,'YYYY-MM-DD') >= TO_CHAR(SYSDATE-6,'YYYY-MM-DD')
+			  		</otherwise>
+				</choose>
+				) t1
+			) C
+	</select>	
+	
+	<!-- 查询实体标签概况 []-->
+	<select id="getEntityTotalInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+       	    ENTITY_ID,
+       	    ENTITY_CODE,
+       	    ENTITY_NAME,
+       	    CASE WHEN SUMTAG IS NULL THEN 0 ELSE SUMTAG END SUMTAG,
+       	    CASE WHEN ZX_TAG IS NULL THEN 0 ELSE ZX_TAG END ZX_TAG,
+       	    CASE WHEN ZM_TAG IS NULL THEN 0 ELSE ZM_TAG END ZM_TAG,
+       	    CASE WHEN FM_TAG IS NULL THEN 0 ELSE FM_TAG END FM_TAG
+       	    FROM 
+       	    (
+			SELECT 
+					A.ENTITY_ID,
+					A.ENTITY_CODE,
+					A.ENTITY_NAME,
+					A.SORT_NUM,
+					B.SUMTAG,
+					B.ZX_TAG,
+					B.ZM_TAG,
+					B.FM_TAG 
+				FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY A
+				LEFT JOIN ( 
+					SELECT
+				        ENTITY_ID,
+				        COUNT(1) SUMTAG, 
+				        SUM(CASE WHEN CODE_COLOR = 1 OR CODE_COLOR IS NULL THEN 1 ELSE 0 END) ZX_TAG,
+				        SUM(CASE WHEN CODE_COLOR=2 THEN 1 ELSE 0 END) ZM_TAG,
+				        SUM(CASE WHEN CODE_COLOR=3 THEN 1 ELSE 0 END) FM_TAG
+			        FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE
+		       		GROUP BY ENTITY_ID
+		       	) B ON A.ENTITY_ID = B.ENTITY_ID
+		 ) t1 ORDER BY SORT_NUM
+	</select>
+	
+	<!-- 实体标签分布-->
+	<select id="getEntityDistInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				A.DICTIONARYCODE,
+				A.DICTIONARYNAME,
+				COUNT(C.ENTITY_ID) NUM_ 
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY A
+			LEFT JOIN  ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE B ON A.DICTIONARYCODE=B.CODE_TYPE
+			LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY C ON B.ENTITY_ID=C.ENTITY_ID
+			<if test="entity_code != null and entity_code != ''">
+				AND C.ENTITY_CODE=#{entity_code}
+			</if>
+			WHERE DICTIONARYCATALOGCODE='tagType'
+			GROUP BY A.DICTIONARYCODE,A.DICTIONARYNAME
+			ORDER BY DICTIONARYNAME
+	</select>
+	
+	
+</mapper>
+

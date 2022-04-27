@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.job.mapper.logMapper">
+	
+	<select id="list"  parameterType="java.util.Map" resultType="java.util.Map">
+		<if test="log_type=='tag'">
+		SELECT
+			A.ENTITY_ID,A.ENTITY_NAME,A.TAG_ID,A.TAG_CODE,A.TAG_NAME,A.START_DATE,A.END_DATE,A.STATUS,A.LOG_ID
+		FROM(
+			<!-- 标签实体 -->
+			SELECT  c.ENTITY_ID,c.ENTITY_NAME,b.TAG_ID,b.TAG_CODE,b.TAG_NAME,a.START_DATE,a.END_DATE,a.STATUS,a.LOG_ID
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a 
+			left join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE b on a.TASK_ID=b.TAG_ID
+			join ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY c on b.ENTITY_ID=c.ENTITY_ID
+			<if test="webtype=='dcm'">
+				join
+				(select toptag.TAG_ID,pic.TOPIC_CODE from ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG toptag
+				join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC pic on toptag.TOPIC_ID=pic.TOPIC_ID
+				where TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+				) t on a.TASK_ID=t.TAG_ID
+			</if>
+			
+			UNION 
+			
+			<!-- 汇聚实体 -->
+			SELECT  c.GENTITY_ID ENTITY_ID,c.GENTITY_NAME ENTITY_NAME,b.TAG_ID,b.TAG_CODE,b.TAG_NAME,a.START_DATE,a.END_DATE,a.STATUS,a.LOG_ID
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a 
+			left join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE b on a.TASK_ID=b.TAG_ID
+			join ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER c on b.ENTITY_ID=c.GENTITY_ID
+			<if test="webtype=='dcm'">
+				join
+				(select toptag.TAG_ID,pic.TOPIC_CODE from ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPICTAG toptag
+				join ${DCP_DB_TTAG_SCHEMA}.T_TAG_TOPIC pic on toptag.TOPIC_ID=pic.TOPIC_ID
+				where TOPIC_CODE=#{topicCode,jdbcType=VARCHAR}
+				) t on a.TASK_ID=t.TAG_ID
+			</if>
+		)A
+		</if>
+		<if test="log_type=='entity'">
+		SELECT
+			A.ENTITY_ID,A.ENTITY_NAME,A.START_DATE,A.END_DATE,A.STATUS,A.LOG_ID
+		FROM(
+			<!-- 标签实体 -->
+			SELECT  c.ENTITY_ID,c.ENTITY_NAME,a.START_DATE,a.END_DATE,a.STATUS,a.LOG_ID
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a 
+			join ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY c on a.TASK_ID=c.ENTITY_ID
+			
+			UNION
+			
+			<!-- 汇聚实体 -->
+			SELECT  c.GENTITY_ID ENTITY_ID,c.GENTITY_NAME ENTITY_NAME,a.START_DATE,a.END_DATE,a.STATUS,a.LOG_ID
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a 
+			join ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITYGATHER c on a.TASK_ID=c.GENTITY_ID
+		)A
+		</if>
+		<where>
+		<if test='keyword!=null and keyword!="" '>
+		<choose>
+			  	<when test='_databaseId == "oracle" or _databaseId == "db2"'>
+			  		AND (
+			  		A.ENTITY_NAME like '%'||#{keyword,jdbcType=VARCHAR}||'%'
+			  		<if test="log_type=='tag'">
+			  		or A.TAG_NAME like '%'||#{keyword,jdbcType=VARCHAR}||'%'
+			  		</if>
+			  		)
+			  	</when>
+				<when test='_databaseId == "sqlserver"'>
+			  		AND (
+			  		A.ENTITY_NAME like '%'+ #{keyword,jdbcType=VARCHAR} +'%'
+			  		<if test="log_type=='tag'">
+			  		or A.TAG_NAME like '%'+ #{keyword,jdbcType=VARCHAR} +'%'
+			  		</if>
+			  		)
+			  	</when>
+			  	<otherwise>
+			  	</otherwise>
+		 </choose>
+		 </if>
+		<if test='status!=null and status!="" '>
+			AND A.STATUS = #{status,jdbcType=VARCHAR} 
+		</if>
+		<if test='start_date!=null and start_date!="" '>
+			AND ${@ths.project.util.MyBatisUtil@setYMDFormat('A.START_DATE', _databaseId)} &gt;= #{start_date,jdbcType=VARCHAR}
+		</if>
+		<if test='end_date!=null and end_date!="" '>
+			AND ${@ths.project.util.MyBatisUtil@setYMDFormat('A.END_DATE', _databaseId)} &lt;= #{end_date,jdbcType=VARCHAR}
+		</if>	
+		</where>	
+		ORDER BY A.START_DATE DESC
+	</select>
+	<select id="get"  parameterType="java.util.Map" resultType="TagJobLog">
+		SELECT a.* FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TASKLOG a 
+		<where>
+		and a.LOG_ID = #{log_id,jdbcType=VARCHAR} 	
+		</where>	
+	</select>		
+		
+</mapper>
+

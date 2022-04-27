@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ths.project.tag.evaluate.mapper.evaluateMapper">
+	
+	<select id="list"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT TT.* FROM (
+		SELECT D.TAG_ID,D.TAG_NAME,D.TAG_CODE,G.PATH,TE.ENTITY_NAME,TE.ENTITY_ID,SUM(E.VISIT_COUNT) VISIT_COUNT
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE E
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE D ON E.TAG_CODE=D.TAG_CODE
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP G ON D.GROUP_ID = G.GROUP_ID
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY TE ON TE.ENTITY_ID=D.ENTITY_ID
+		WHERE E.PERIOD = #{period,jdbcType=NUMERIC}	
+		<if test='entityId!=null and entityId!="" '>
+			AND D.ENTITY_ID = #{entityId,jdbcType=VARCHAR} 
+		</if>		
+		<if test='topNum!=null and topNum!="" '>
+			AND E.RANKING_NUM &lt;= #{topNum,jdbcType=NUMERIC} 
+		</if>	
+		GROUP BY D.TAG_ID,D.TAG_NAME,D.TAG_CODE,G.PATH,TE.ENTITY_NAME,TE.ENTITY_ID
+		) TT 	
+	</select>	
+	
+	<insert id="insert" parameterType="java.util.Map">
+		INSERT INTO
+			${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE(
+			TOPICCODE,
+			TAG_CODE,
+			TAGVALUE,
+			VISIT_COUNT,
+			PERIOD,
+			TAGALIAS
+		)VALUES(
+			#{topicCode,jdbcType=VARCHAR},
+			#{TagCode,jdbcType=VARCHAR},
+			#{TagValue,jdbcType=VARCHAR},
+			#{accessno,jdbcType=VARCHAR},
+			#{period,jdbcType=VARCHAR},
+			#{tagAlias,jdbcType=VARCHAR}
+		)	
+	</insert>
+	
+	<delete id="delete" parameterType="java.util.Map">
+		delete from ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE
+		<where>
+		<if test='PERIOD!=null and PERIOD!="" '>
+		PERIOD = #{PERIOD,jdbcType=VARCHAR}
+		</if>
+		</where>
+	</delete>	
+	
+	<select id="listCount"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT E.*,D.TAG_ID,D.TAG_NAME,G.PATH,TE.ENTITY_NAME 
+		FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE_COUNT E
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE D ON E.TAG_CODE=D.TAG_CODE
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP G ON D.GROUP_ID = G.GROUP_ID
+		INNER JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY TE ON TE.ENTITY_ID=D.ENTITY_ID
+		WHERE 1=1 
+		<if test='entityId!=null and entityId!="" '>
+			AND E.ENTITY_ID = #{entityId,jdbcType=VARCHAR} 
+		</if>		
+		<if test='dataType!=null and dataType!="" '>
+			AND E.DATA_TYPE = #{dataType,jdbcType=VARCHAR} 
+		</if>		
+		<if test='tagName!=null and tagName!="" '>
+			AND D.TAG_NAME like #{tagName,jdbcType=VARCHAR} 
+		</if>			
+	</select>	
+	
+	<insert id="insertCount" parameterType="java.util.Map">
+		INSERT
+		INTO
+		${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE_COUNT(
+			TAG_CODE,
+			ENTITY_ID,
+			DATA_TYPE,
+			DATA_COUNT,
+			DATA_COUNT_PERCENT,
+			CHECK_TIME) 
+		VALUES
+			(
+			#{tagCode,jdbcType=VARCHAR},
+			#{entityId,jdbcType=VARCHAR},
+			#{dataType,jdbcType=VARCHAR},
+			#{tagCount,jdbcType=NUMERIC},
+			#{tagPer,jdbcType=NUMERIC},
+			#{checkTime,jdbcType=TIMESTAMP}
+			)	
+	</insert>
+	
+	<delete id="deleteCount" parameterType="java.util.Map">
+		delete from ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE_COUNT 
+		<where>
+		<if test='entityId!=null and entityId!="" '>
+			AND ENTITY_ID = #{entityId,jdbcType=VARCHAR} 
+		</if>			
+		<if test='dataType!=null and dataType!="" '>
+			AND DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+		</if>
+		</where>
+	</delete>			
+		
+</mapper>
+

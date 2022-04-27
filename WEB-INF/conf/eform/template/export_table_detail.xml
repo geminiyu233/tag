@@ -1,0 +1,174 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ include file="/WEB-INF/jsp/_common/taglib.jsp"%>
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<title></title>
+		<%@ include file="/WEB-INF/jsp/_common/commonCSS.jsp"%>
+		<!--页面自定义的CSS，请放在这里 -->
+		<style>
+			.padding_1 {
+				padding-left: 0px;
+				padding-right: 0px;
+				padding-top: 1px;
+				padding-bottom: 1px;
+			}
+			
+			.form-group.initrow.selected {
+				display: block;
+				border: 2px red dashed;
+			}
+			/* some elements used in demo only */
+			.dropdown-preview {
+				margin: 0 5px;
+				display: inline-block;
+				z-index: 999;
+			}
+			
+			.dropdown-preview>.dropdown-menu {
+				display: block;
+				position: static;
+				margin-bottom: 5px;
+				min-width: 110px;
+				z-index: 999;
+			}
+			
+			.formcell-label {
+				text-align: center;
+				position: relative;
+				z-index: 1;
+				padding-left: 12px;
+				padding-right: 12px;
+			}
+			
+			.formcell-label :first-child {
+				display: inline-block;
+				background: #ffffff;
+				line-height: 36px;
+				font-size: 13px;
+			}
+			.formcell-label :nth-child(2){
+				display: block;
+				position: absolute;
+				z-index: -1;
+				top: 50%;
+				left: 12px;
+				right: 12px;
+				border-top: 1px solid #eeeeee;
+			}
+			span.padding_1 > label.col-sm-0.control-label{
+				display: none;
+			}
+			
+			.tags > .tag > span{
+				word-break: keep-all;
+			    white-space: nowrap;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    display: block;
+			}
+			
+			.formTable{
+				width: 100%; 
+				border: 0px;
+			}
+			
+			.formTable .control-label{
+				padding-left: 0px;
+			}
+			
+			.formTable .checkbox-inline{
+				padding-right: 0px;
+			}
+			
+			.formTable tr.data_tr{
+				height: 38px;
+			}
+			
+			.formTable td{
+				border: 1px solid #000000;
+			}
+			
+			.formTable td[cell_index] > span > div{
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				//加载附件
+				$('[formcell_type="FILE"]').each(function(){
+					var _this_file = $(this);
+					$.ajax({
+	            		url: ctx + '/eform/formdesign/formdesign_main_filelist.vm',
+	            		data:{'businessKey': '#literal()${#end businessKey #literal()}#end', inputFileId: _this_file.attr("id")},
+	            		dataType:'json',
+	            		type:'post',
+	            		success:function(response){
+	            			if(response.length > 0){
+	            				for(var i = 0; i < response.length; i++){
+	            					_this_file.append("<div class=\"tag\">" + response[i].FILE_NAME + "<button type=\"button\" class=\"close\" onclick=\"jdp_eform_downFile(this, '" + response[i].FILE_ID + "');\"><i class=\"ace-icon fa fa-download green smaller-70\"></i></button></div>");
+	            				}
+	            			}
+	            		}
+	            	});
+				});
+				
+				$("#btnSave").hide();
+				changeReadonly();
+			});
+			
+			//文件下载
+			function jdp_eform_downFile(obj, fileId){
+				var form = $("#exportForm");
+				$("#fileId").val(fileId);
+				form.submit();
+			}
+			
+			function goBack() {
+				parent.doSearch();
+			}
+			
+			function changeReadonly(){
+				$("#formInfo").find("select,button,input[type!='text']").prop("disabled",true);
+				$("#formInfo").find("input[type='text'],textarea").prop("readonly",true);
+				$("#formInfo").find("input[type='text'],textarea").prop("onclick","");
+			}
+		</script>
+		<%@ include file="/WEB-INF/jsp/_common/commonJS.jsp"%>
+		<script src="#literal()${#end ctx #literal()}#end/assets/components/jquery/dist/ajaxfileupload.js" type="text/javascript"></script>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="main-content-inner fixed-page-header fixed-40">
+		            <div class="page-toolbar align-right">
+		                <button type="button" class="btn btn-xs btn-danger btn-xs-ths" id="btnReturn" onclick="goBack()">
+		                    <i class="ace-icon fa fa-reply"></i>返回
+		                </button>
+						<div class="space-2"></div>
+						<hr class="no-margin">
+		            </div>
+		        </div>
+				<div class="main-content-inner padding-page-content">
+					<div class="page-content">
+						<div class="space-4"></div>
+						<form class="form-horizontal" role="form" id="formInfo" action="" method="post">
+							<div class="row">
+								<div class=" col-xs-12" id="formHtml">
+									$formHtml
+								</div>
+							</div>
+						</form>
+						<!-- /.row -->
+					</div>
+				</div>
+				<!--/.main-content-inner-->
+			</div>
+			<!-- /.main-content -->
+		</div>
+		<!-- /.main-container -->
+	
+		<script type="text/javascript" src="#literal()${#end ctx #literal()}#end/assets/js/eform/eform_custom.js"></script>
+	</body>
+</html>

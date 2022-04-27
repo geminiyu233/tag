@@ -1,0 +1,646 @@
+## 以下宏为基本控件模板代码（可理解为函数 方法）
+#macro(EXPORT_BASE_INPUT $FORMCELL)
+	<input type="text"
+			class="form-control" 
+			style="height:$!FORMCELL.FORMCELL_HEIGHT"
+			#EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+			data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+			placeholder="$!FORMCELL.FORMCELL_MESSAGE"
+			#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) 
+			#if($!FORMCELL.FORMCELL_READONLY == "true")readonly="readonly"#end/>
+#end
+#macro(EXPORT_BASE_INPUTNUMBER $FORMCELL)
+	<input type="text"
+			class="form-control" 
+			style="height:$!FORMCELL.FORMCELL_HEIGHT"
+			#EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+			data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+			placeholder="$!FORMCELL.FORMCELL_MESSAGE"
+			#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) 
+			#if($!FORMCELL.FORMCELL_READONLY == "true")readonly="readonly"#end/>
+#end
+#macro(EXPORT_BASE_TEXTAREA $FORMCELL)
+	<textarea 
+			#EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+			data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+			placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+			style="width:100%;height:$!FORMCELL.FORMCELL_HEIGHT"
+			#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+			#if($!FORMCELL.FORMCELL_READONLY == "true")readonly="readonly"#end>#EXPORT_FUNC_GET_BIND_VALUE_FOR_TEXTAREA($FORMCELL)</textarea>
+#end
+#macro(EXPORT_BASE_DATE $FORMCELL)
+	<div class="input-group">
+		<input type="hidden" #EXPORT_FUNC_GET_BIND_DATE_FORMAT_NAME($FORMCELL) value="$!FORMCELL.FIELD_DATATYPE:$!FORMCELL.FORMCELL_DATETYPE"/>
+		<input type="text"
+				class="form-control" 
+				style="height:$!FORMCELL.FORMCELL_HEIGHT"
+				#EXPORT_FUNC_GET_BIND_ID($FORMCELL)
+				#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+				data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+				placeholder="$!FORMCELL.FORMCELL_MESSAGE"
+				#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+				#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL)
+				readonly="readonly" #if($!FORMCELL.FORMCELL_READONLY != "true")#EXPORT_FUNC_GET_WDATEPICKER_ONCLICK($FORMCELL)#end/>
+		<span class="input-group-btn">
+	  		<button type="button" class="btn btn-white btn-default" style="height:$!FORMCELL.FORMCELL_HEIGHT" #if($!FORMCELL.FORMCELL_READONLY != "true")#EXPORT_FUNC_GET_WDATEPICKER_ONCLICK($FORMCELL)#end>
+	      		<i class="ace-icon fa fa-calendar"></i>
+	       	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_SELECT $FORMCELL)
+	<select #EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+			class="form-control #if($!FORMCELL.FORMCELL_SELECT_CANEDIT == "true")editable#end"
+			#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL)  
+			data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE">
+		<c:forEach var="dictionary" items='#literal()${#end dictionarys_map["$FORMCELL.FORMCELL_DICTIONARY"] #literal()}#end'>
+			<option value="#literal()${#end dictionary.dictionary_code #literal()}#end"  
+					title="#literal()${#end dictionary.dictionary_name #literal()}#end"
+					#EXPORT_FUNC_VALUE_SELECTED($FORMCELL)
+					>
+				#literal()${#end dictionary.dictionary_name #literal()}#end
+				
+			</option>
+		</c:forEach>
+	</select>
+#end
+#macro(EXPORT_BASE_RADIO $FORMCELL)
+	<div class="checkbox-inline">
+		<c:forEach var="dictionary" items='#literal()${#end dictionarys_map["$FORMCELL.FORMCELL_DICTIONARY"] #literal()}#end'>
+			<label>
+				<input #EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+						#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+						type="radio" class="ace" value="#literal()${#end dictionary.dictionary_code #literal()}#end" 
+				 	#EXPORT_FUNC_VALUE_CHECKED($FORMCELL)
+				 	#if("$!FORMCELL.FORMCELL_REQUIRED" == "true")data-validation-engine="validate[required]"#end##
+				/>
+				<span class="lbl">#literal()${#end dictionary.dictionary_name #literal()}#end</span>
+			</label>
+		</c:forEach>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOX $FORMCELL)
+	<div class="checkbox-inline">
+		<c:forEach var="dictionary" items='#literal()${#end dictionarys_map["$FORMCELL.FORMCELL_DICTIONARY"] #literal()}#end'>
+			<label>
+				<input #EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+						#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+						type="checkbox" class="ace" value="#literal()${#end dictionary.dictionary_code #literal()}#end" 
+				 	#EXPORT_FUNC_VALUE_CHECKED($FORMCELL)
+				 	#if("$!FORMCELL.FORMCELL_REQUIRED" == "true")data-validation-engine="validate[required]"#end##
+				/>
+				<span class="lbl">#literal()${#end dictionary.dictionary_name #literal()}#end</span>
+			</label>
+		</c:forEach>
+	</div>
+#end
+#macro(EXPORT_BASE_INPUTHIDDEN $FORMCELL)
+	<input type="hidden"
+			#EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+			data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+			placeholder="$!FORMCELL.FORMCELL_MESSAGE"
+			#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+			#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+#end
+#macro(EXPORT_BASE_OPENRADIO $FORMCELL)
+	<div class="input-group">
+        <input type="hidden"  
+				#EXPORT_FUNC_GET_BIND_ID($FORMCELL) 
+              	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+              	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+                #EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+        <input type="text" class="form-control" 
+                #EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+                data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+                readonly="readonly"
+                placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+                #EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+                #if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openList(this,'1','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_DICTIONARY','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+                />
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	          		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	      	</button>
+	  	</span>
+	</div>
+#end
+#macro(EXPORT_BASE_OPENCHECKBOX $FORMCELL)
+	<div class="input-group">
+       	<input type="hidden"  
+             	#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+         		#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+         		#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+    	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+              	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+            	readonly="readonly"
+           		placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openList(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_DICTIONARY','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+        		/>
+   		<span class="input-group-btn">
+	       	<button type="button" class="btn btn-white btn-default"
+	            	onclick="jdp_eform_clearValue(this)">
+	         	<i class="ace-icon fa fa-remove"></i>
+	      	</button>
+	   	</span>
+	</div>
+#end
+#macro(EXPORT_BASE_AREATREE $FORMCELL)
+	<div class="input-group">
+   		<input type="hidden"  
+         		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+            	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+         		#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+               	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+              	readonly="readonly"
+              	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+              	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+            	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openTree(this,'1','$!FORMCELL.FORMCELL_DESCR','ths.jdp.eform.mapper.TreeMapper','jdp_region_tree','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+          		/>
+      	<span class="input-group-btn">
+	      	<button type="button" class="btn btn-white btn-default"
+	           		onclick="jdp_eform_clearValue(this)">
+	         	<i class="ace-icon fa fa-remove"></i>
+	      	</button>
+	  	</span>
+  	</div>
+#end
+#macro(EXPORT_BASE_TRADETREE $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+     	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+            	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+            	readonly="readonly"
+             	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+            	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+           		#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openTree(this,'1','$!FORMCELL.FORMCELL_DESCR','ths.jdp.eform.mapper.TreeMapper','jdp_trade_tree','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+             	/>
+       	<span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	        		onclick="jdp_eform_clearValue(this)">
+	         	<i class="ace-icon fa fa-remove"></i>
+	       	</button>
+	  	</span>
+  	</div>
+#end
+#macro(EXPORT_BASE_RADIOTREE $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+              	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openTree(this,'1','$!FORMCELL.FORMCELL_DESCR','','','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT','$!FORMCELL.FORMCELL_DICTIONARY','$!FORMCELL.FORM_ID')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXTREE $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+        <input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+            	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openTree(this,'2','$!FORMCELL.FORMCELL_DESCR','','','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT','$!FORMCELL.FORMCELL_DICTIONARY','$!FORMCELL.FORM_ID')"#end
+         		/>
+       	<span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_RADIOUSER $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openUser(this,'1','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXUSER $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openUser(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_RADIODEPT $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openDept(this,'1','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXDEPT $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openDept(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXROLE $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openRole(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXPOSI $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openPosi(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_CHECKBOXGROUP $FORMCELL)
+	<div class="input-group">
+    	<input type="hidden"  
+        		#EXPORT_FUNC_GET_BIND_ID($FORMCELL)  
+             	#EXPORT_FUNC_GET_BIND_NAME($FORMCELL)
+             	#EXPORT_FUNC_GET_BIND_OLDVALUE($FORMCELL) 
+             	#EXPORT_FUNC_GET_BIND_VALUE($FORMCELL) />
+       	<input type="text" class="form-control"
+            	#EXPORT_FUNC_GET_BIND_ID($FORMCELL true)
+             	data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE"
+           		readonly="readonly"
+            	placeholder="$!FORMCELL.FORMCELL_MESSAGE" 
+             	#EXPORT_FUNC_GET_BIND_VALUE_NAME($FORMCELL)
+             	#if($!FORMCELL.FORMCELL_READONLY != "true")onclick="jdp_eform_openGroup(this,'2','$!FORMCELL.FORMCELL_DESCR','$!FORMCELL.FORMCELL_OPENWIDTH','$!FORMCELL.FORMCELL_OPENHEIGHT')"#end
+         		/>
+        <span class="input-group-btn">
+	    	<button type="button" class="btn btn-white btn-default"
+	         		onclick="jdp_eform_clearValue(this)">
+	        	<i class="ace-icon fa fa-remove"></i>
+	    	</button>
+		</span>
+	</div>
+#end
+#macro(EXPORT_BASE_LABEL $FORMCELL)
+	<div class="formcell-label" #if($!FORMCELL.FORMCELL_STYLE != "")style="$FORMCELL.FORMCELL_STYLE"#end>
+		<span class="bigger-110">$FORMCELL.FORMCELL_DESCR</span>
+		<div #if($!FORMCELL.FORMCELL_LABEL_SHOWLINE == "false")style="display: none;"#end></div>
+	</div>
+#end
+#macro(EXPORT_BASE_FILE $FORMCELL)
+	<label class="ace-file-input">
+    	<input type="file" #EXPORT_FUNC_GET_BIND_ID($FORMCELL) name="jdp_eform_file" onchange="jdp_eform_uploadFile(this);" data-validation-engine="$!FORMCELL.DATAVALIDATIONENGINE">
+        <span class="ace-file-container" data-title="浏览 .." style="text-align: left;">
+        	<span class="ace-file-name" data-title="选择文件...">
+           		<i class=" ace-icon fa fa-upload"></i>
+        	</span>
+        	<div class="tags" style="padding: 1px 1px 0px; width:#if($FORMCELL.FORMCELL_WIDTH > 6) 90% #else 80% #end; display:none; border: 0px;">
+        	</div>
+        </span>
+    </label>
+#end
+#macro(EXPORT_BASE_TABLE $TABLE_FORMCELLS $ROW_INDEX $multi_table_row)
+	<tr index="#literal()${#end $!ROW_INDEX #literal()}#end">
+		##主键列隐藏域
+		#foreach($primaryColumn in $primaryColumns )
+			##此句仅为设置为子表字段（不能删除）
+			#set($primaryColumn.P_FORMCELL_ID = 99999)
+			#set($primaryColumn.TABLE_ROW_INDEX = $!ROW_INDEX)
+			#set($primaryColumn.TABLE_ROW_INDEX_FOR_NAME = "#literal()${#end $!ROW_INDEX #literal()}#end")
+			<input type="hidden" #EXPORT_FUNC_GET_BIND_NAME($primaryColumn) #if($!multi_table_row != "")#EXPORT_FUNC_GET_BIND_VALUE($primaryColumn)#else value="<%=ths.jdp.util.PKUtil.uuid() %>"#end/>
+		#end
+		##外键列隐藏域
+		#foreach($foreignColumn in $foreignColumns )
+			##此句仅为设置为子表字段（不能删除）
+			#set($foreignColumn.P_FORMCELL_ID = 99999)
+			#set($foreignColumn.TABLE_ROW_INDEX = $!ROW_INDEX)
+			#set($foreignColumn.TABLE_ROW_INDEX_FOR_NAME = "#literal()${#end $!ROW_INDEX #literal()}#end")
+			<input type="hidden" #EXPORT_FUNC_GET_BIND_NAME($foreignColumn) #if($!multi_table_row != "")#EXPORT_FUNC_GET_BIND_VALUE($foreignColumn)#else value="#literal()${#end multirowtable['$!foreignColumn.TABLE_CODE'].key['$!foreignColumn.FIELD_CODE'] #literal()}#end"#end />
+		#end
+		##其它列
+		#foreach($table_formcell in $TABLE_FORMCELLS )
+			<td style="padding: 1px;vertical-align: middle; #if($table_formcell.FORMCELL_TYPECODE.equals("INPUTHIDDEN") && $table_formcell.isdesign == false)display: none;#end" $!table_formcell.DESIGNTABLEFORMCELLONCLICK>
+				<div class="col-sm-12 no-padding" style="text-align: center;">
+					#if($!multi_table_row != "")
+						#set($table_formcell.FORMCELL_VALUE = "")
+						#set($table_formcell.FORMCELL_NAME = "")
+						#set($table_formcell.FORMCELL_VALUE = $!multi_table_row.column["$table_formcell.FIELD_CODE"])
+					#end					
+					#set($table_formcell.FORMCELL_NAME = $!multi_table_row.column["${table_formcell.FIELD_CODE}_FORMCELL_NAME"])
+					#set($table_formcell.TABLE_ROW_INDEX = $!ROW_INDEX)
+					#set($table_formcell.TABLE_ROW_INDEX_FOR_NAME = "#literal()${#end $!ROW_INDEX #literal()}#end")
+					#if($table_formcell.FORMCELL_TYPECODE.equals("INPUT"))
+						#EXPORT_BASE_INPUT($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("INPUTNUMBER"))
+						#EXPORT_BASE_INPUTNUMBER($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("TEXTAREA"))
+						#EXPORT_BASE_TEXTAREA($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("DATE"))
+						#EXPORT_BASE_DATE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("RADIO"))
+						#EXPORT_BASE_RADIO($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("SELECT"))
+						#EXPORT_BASE_SELECT($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOX"))
+						#EXPORT_BASE_CHECKBOX($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("INPUTHIDDEN"))
+						<i class="ace-icon fa fa-sliders blue bigger-125 " style="padding-left: 2px; padding-right: 2px;"></i>
+						#EXPORT_BASE_INPUTHIDDEN($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("OPENRADIO"))
+						#EXPORT_BASE_OPENRADIO($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("OPENCHECKBOX"))
+						#EXPORT_BASE_OPENCHECKBOX($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("AREATREE"))
+						#EXPORT_BASE_AREATREE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("TRADETREE"))
+						#EXPORT_BASE_TRADETREE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("RADIOTREE"))
+						#EXPORT_BASE_RADIOTREE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXTREE"))
+						#EXPORT_BASE_CHECKBOXTREE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("RADIOUSER"))
+						#EXPORT_BASE_RADIOUSER($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXUSER"))
+						#EXPORT_BASE_CHECKBOXUSER($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("RADIODEPT"))
+						#EXPORT_BASE_RADIODEPT($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXDEPT"))
+						#EXPORT_BASE_CHECKBOXDEPT($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXROLE"))
+						#EXPORT_BASE_CHECKBOXROLE($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXPOSI"))
+						#EXPORT_BASE_CHECKBOXPOSI($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("CHECKBOXGROUP"))
+						#EXPORT_BASE_CHECKBOXGROUP($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("LABEL"))
+						#EXPORT_BASE_LABEL($table_formcell)
+					#elseif($table_formcell.FORMCELL_TYPECODE.equals("FILE"))
+						#EXPORT_BASE_FILE($table_formcell)
+					#end
+				</div>
+			</td>
+		#end
+		<td class="center" style="padding: 8px 8px;">
+			<a href="javascript:void(0);" onclick="jdp_eform_deleteTableRow(this);" style="text-decoration:none;">
+		   		<i class="ace-icon fa fa-trash"></i>
+		   	</a>
+		</td>
+	</tr>
+#end
+
+## 自定义函数
+## 获取控件绑定名称函数
+#macro(EXPORT_FUNC_GET_BIND_NAME $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+name="multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX_FOR_NAME].key['$FORMCELL.FIELD_CODE']"
+#else
+name="multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX_FOR_NAME].column['$FORMCELL.FIELD_CODE']"
+#end
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+name="table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE']"
+#else
+name="table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE']"
+#end
+#end 
+#end
+## 获取控件绑定id函数
+#macro(EXPORT_FUNC_GET_BIND_ID $FORMCELL $IS_NAME)
+#if($FORMCELL.P_FORMCELL_ID)
+#if($IS_NAME)
+id="$!{FORMCELL.FORMCELL_ID}_row_$!{FORMCELL.TABLE_ROW_INDEX_FOR_NAME}_THSNAME"
+#else
+id="$!{FORMCELL.FORMCELL_ID}_row_$!{FORMCELL.TABLE_ROW_INDEX_FOR_NAME}"
+#end
+#else
+#if($IS_NAME)
+id="$!{FORMCELL.FORMCELL_ID}_THSNAME"
+#else
+id="$!FORMCELL.FORMCELL_ID"
+#end
+#end 
+#end
+## 获取日期控件的onclick事件
+#macro(EXPORT_FUNC_GET_WDATEPICKER_ONCLICK $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+onclick="WdatePicker({el: '$!{FORMCELL.FORMCELL_ID}_row_$!{FORMCELL.TABLE_ROW_INDEX_FOR_NAME}', dateFmt: '$!FORMCELL.FORMCELL_DATETYPE'});"
+#else
+onclick="WdatePicker({el: '$!{FORMCELL.FORMCELL_ID}', dateFmt: '$!FORMCELL.FORMCELL_DATETYPE'});"
+#end 
+#end
+##获取控件绑定值函数
+#macro(EXPORT_FUNC_GET_BIND_VALUE $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+value="#literal()${#end multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+value="#literal()${#end table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#else
+value="#literal()${#end table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#end
+#end 
+#end
+##获取控件绑定OLD值函数
+#macro(EXPORT_FUNC_GET_BIND_OLDVALUE $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+oldValue="#literal()${#end multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+oldValue="#literal()${#end table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#else
+oldValue="#literal()${#end table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE'] #literal()}#end"
+#end
+#end 
+#end
+##获取控件绑定值函数（文本框）
+#macro(EXPORT_FUNC_GET_BIND_VALUE_FOR_TEXTAREA $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+#literal()${#end multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].key['$FORMCELL.FIELD_CODE'] #literal()}#end
+#else
+#literal()${#end multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['$FORMCELL.FIELD_CODE'] #literal()}#end
+#end
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+#literal()${#end table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE'] #literal()}#end
+#else
+#literal()${#end table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE'] #literal()}#end
+#end
+#end 
+#end
+##获取value值的name显示值
+#macro(EXPORT_FUNC_GET_BIND_VALUE_NAME $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+value="#literal()${#end multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['${FORMCELL.FIELD_CODE}_THSNAME'] #literal()}#end"
+#else
+value="#literal()${#end table['$FORMCELL.TABLE_CODE'].column['${FORMCELL.FIELD_CODE}_THSNAME'] #literal()}#end"
+#end 
+#end
+##获取selected c:if判断
+#macro(EXPORT_FUNC_VALUE_SELECTED $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+<c:if test="#literal()${#end fn:contains(multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].key['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">selected="selected"</c:if>
+#else
+<c:if test="#literal()${#end fn:contains(multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">selected="selected"</c:if>
+#end
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+<c:if test="#literal()${#end fn:contains(table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">selected="selected"</c:if>
+#else
+<c:if test="#literal()${#end fn:contains(table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">selected="selected"</c:if>
+#end
+#end 
+#end
+##获取checked c:if判断
+#macro(EXPORT_FUNC_VALUE_CHECKED $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+<c:if test="#literal()${#end fn:contains(multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].key['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">checked="checked"</c:if>
+#else
+<c:if test="#literal()${#end fn:contains(multirowtable['$FORMCELL.TABLE_CODE'].row[$FORMCELL.TABLE_ROW_INDEX].column['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">checked="checked"</c:if>
+#end
+#else
+#if($!FORMCELL.FIELD_ISPRIMARY == "true")
+<c:if test="#literal()${#end fn:contains(table['$FORMCELL.TABLE_CODE'].key['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">checked="checked"</c:if>
+#else
+<c:if test="#literal()${#end fn:contains(table['$FORMCELL.TABLE_CODE'].column['$FORMCELL.FIELD_CODE'], dictionary.dictionary_code) #literal()}#end">checked="checked"</c:if>
+#end
+#end 
+#end
+## 获取日期控件日期格式名称函数
+#macro(EXPORT_FUNC_GET_BIND_DATE_FORMAT_NAME $FORMCELL)
+#if($FORMCELL.P_FORMCELL_ID)
+name="multirowtable['$FORMCELL.TABLE_CODE'].row[#literal()${#end $FORMCELL.TABLE_ROW_INDEX #literal()}#end].dateFormat['$FORMCELL.FIELD_CODE']"
+#else
+name="table['$FORMCELL.TABLE_CODE'].dateFormat['$FORMCELL.FIELD_CODE']"
+#end 
+#end

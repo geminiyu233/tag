@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签工厂</title>
+    <link rel="stylesheet" href="./version/ths-version.css"/>
+    <script src="./version/jquery.js"></script>
+    <script src="./version/ths-version.js"></script>
+</head>
+<body>
+<div id="main">
+    <div class="title">
+        <h1>【标签工厂】版本记录</h1>
+        <p><span value="[+]">[+]新增</span> <span value="[-]">[-]删除</span> <span value="[^]">[^]升级</span> <span
+                value="[#]">[#]修复</span> <span value="[*]">[*]数据库变更</span></p>
+    </div>
+    <div class="content-main">
+        <!--左边滚动栏-->
+        <div class="contentMain-left">
+            <div class="inner">
+                <div class="innerbox">
+                    <p class="innerP" style=";overflow: auto">版本记录<br>
+                    <p class="innerSpan"><span><a href="#V7_1_0">V7_1_0<span color="red">*</span></a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V7_0_0">V7_0_0</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_7">V6_0_1_7</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_6">V6_0_1_6</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_5">V6_0_1_5</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_4">V6_0_1_4</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_3">V6_0_1_3</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_2">V6_0_1_2</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1_1">V6_0_1_1</a></span><br></p>
+                    <p class="innerSpan"><span><a href="#V6_0_1">V6_0_1</a></span><br></p>
+                    </p>
+                    <div class="rightScroll">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--右边内容-->
+        <div class="contentMain-right">
+            <div class="rightTitle" id="V7_1_0">
+                <p class="rightTitleP">V7_1_0<span class="rightTitleTime">20210917</span></p>
+                <p>[+] 增加线面空间数据写入查询功能。</br>
+                    更新脚本：ALTER TABLE "TTAG"."T_TAG_ENTITYGATHER" MODIFY ( "IDENTITY_NAME" VARCHAR2(200 BYTE) )
+                    ;
+                    COMMENT ON COLUMN "TTAG"."T_TAG_ENTITYGATHER"."SPACE_CODE" IS '点字段编码'
+                    ;
+                    ALTER TABLE "TTAG"."T_TAG_ENTITYGATHER" MODIFY ( "SPACE_NAME" VARCHAR2(200 BYTE) );
+                    COMMENT ON COLUMN "TTAG"."T_TAG_ENTITYGATHER"."SPACE_NAME" IS '点字段名称'
+                    ;
+                    ALTER TABLE "TTAG"."T_TAG_ENTITYGATHER" MODIFY ( "LEGEND_NAME" VARCHAR2(200 BYTE) )
+                    ;
+                    ALTER TABLE "TTAG"."T_TAG_ENTITYGATHER"
+                    ADD ( "SPACE_POLYGON_CODE" VARCHAR2(200) NULL,
+                    "SPACE_POLYGON_NAME" VARCHAR2(200) NULL ) ;
+                    COMMENT ON COLUMN "TTAG"."T_TAG_ENTITYGATHER"."SPACE_POLYGON_CODE" IS '线面字段编码';
+                    COMMENT ON COLUMN "TTAG"."T_TAG_ENTITYGATHER"."SPACE_POLYGON_NAME" IS '线面字段名称'
+                    ;
+                    ALTER TABLE "TTAG"."T_TAG_ENTITY" MODIFY ( "ENTITY_NAME" VARCHAR2(500 BYTE) )
+                    ;
+                </p>
+            </div>
+            <div class="rightTitle" id="V7_0_0">
+                <p class="rightTitleP">V7_0_0<span class="rightTitleTime">20210816</span></p>
+                <p>[+] 增加配置中心。</br>
+                    spring-nacos.xml控制读取配置中心的ths_tag_context.properties文件[ths.instance.config.context.enabled --
+                    true:是、false:否]。</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_7">
+                <p class="rightTitleP">V6_0_1_7<span class="rightTitleTime">20210113</span></p>
+                <p>[+] 实体数据获取方式增加，支持SQL。</p>
+                <p>[+] 实体增加对空间点位数据导入的支持</p>
+                <p>[+] 实体增加入库策略（全量、增量）</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_6">
+                <p class="rightTitleP">V6_0_1_6<span class="rightTitleTime">20200811</span></p>
+                <p>[^] mybatis和lts执行节点执行SQL不在绑定schema，但是需要指定当前数据库用户的默认schema是标签数据库表的schema。</p>
+                <p>[^] 增加质量数据源schema配置，修改context_dc.properties，设置质量系统数据表的schema属性jdbc.quality.schema=TQUALITY。</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_5">
+                <p class="rightTitleP">V6_0_1_5<span class="rightTitleTime">20200721</span></p>
+                <p>[#] 自定义查询和维护接口修改-增加tagCode参数</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_4">
+                <p class="rightTitleP">V6_0_1_4<span class="rightTitleTime">20200716</span></p>
+                <p>[#] 修改实体标签数据查询，翻页时列表实体字段丢失的bug。</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_3">
+                <p class="rightTitleP">V6_0_1_3<span class="rightTitleTime">20200709</span></p>
+                <p>[+] 增加节点监控功能</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_2">
+                <p class="rightTitleP">V6_0_1_2<span class="rightTitleTime">20200529</span></p>
+                <p>[+] 增加自定义查询和维护接口</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1_1">
+                <p class="rightTitleP">V6_0_1_1<span class="rightTitleTime">20190315</span></p>
+                <p>[#] 测试bug修改。</p>
+                <p>[^] 增加标签统计接口，详情参考设计文档。</p>
+            </div>
+            <div class="rightTitle" id="V6_0_1">
+                <p class="rightTitleP">V6_0_1<span class="rightTitleTime">20190130</span></p>
+                <p>[^] 程序框架升级-代码前后台分离，java代码发布到maven仓库，通过maven依赖</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

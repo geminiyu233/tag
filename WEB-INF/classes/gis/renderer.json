@@ -1,0 +1,2874 @@
+{
+  "gis": {
+    "tag_kqz_1618797947112": {
+      "sourcefields": "POINT_CODE,POINT_NAME,LONGITUDE,LATITUDE,E9EB83822604B389401F658BFDB62867,5179B0D151893EE45FEC923CBA5BC765,0A07DA11A80B6DF2A530D57933D1BA76",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "html",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "name": "大气站点浓度模板",
+          "fieldDelimiter": ",",
+          "selectedAllFields": {
+            "field1": "E9EB83822604B389401F658BFDB62867"
+          },
+          "xoffset": 8,
+          "yoffset": 9,
+          "defaultSymbol": {
+            "operation": "update",
+            "id": "3VWDswN6gPZaeagU",
+            "name": "大气站点浓度模板",
+            "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+            "templateParams": {
+              "${点位提示}": "POINT_NAME",
+              "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+              "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png"
+            },
+            "description": "这是一段关于该HTML模板的描述",
+            "xoffset": 8,
+            "yoffset": 9
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "1",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": "",
+                "yoffset": ""
+              }
+            },
+            {
+              "value": "2",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-良.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": 12,
+                "yoffset": 12
+              }
+            },
+            {
+              "value": "3",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-轻度.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": 12,
+                "yoffset": 12
+              }
+            },
+            {
+              "value": "4",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-中度.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": 12,
+                "yoffset": 12
+              }
+            },
+            {
+              "value": "5",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-重度.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": 12,
+                "yoffset": 12
+              }
+            },
+            {
+              "value": "6",
+              "symbol": {
+                "htmlTemplate": "<div  style='position:relative; text-align: center;' title='${点位提示}'>\r\n<img style='width:68px; height:68px;' src=\"%{图片}\" />\r\n<div style=\"position:absolute;top:20px;left:0;right:0;z-index:2;;font-family:Microsoft YaHei;font-weight:bold;font-style:normal;font-size:20px;color:#000000;text-align:center;\">${要显示的值}</div></div>",
+                "templateParams": {
+                  "${点位提示}": "POINT_NAME",
+                  "${要显示的值}": "5179B0D151893EE45FEC923CBA5BC765",
+                  "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-严重.png"
+                },
+                "${点位提示}": "5179B0D151893EE45FEC923CBA5BC765",
+                "${要显示的值}": "0A07DA11A80B6DF2A530D57933D1BA76",
+                "%{图片}": "../public/html_template/3VWDswN6gPZaeagU/国控-优.png",
+                "xoffset": 12,
+                "yoffset": 12
+              }
+            }
+          ],
+          "id": "3VWDswN6gPZaeagU",
+          "field1": "E9EB83822604B389401F658BFDB62867"
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=ff91968c5811ec45ae9485b98faaa8bd&POINT_CODE=${POINT_CODE}&vsessionid=${vsessionid}&DATETYPE=HOUR",
+        "width": 362,
+        "height": 250
+      },
+      "legend": [
+        {
+          "name": "优",
+          "icon": "../icons/大气/省控-优.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "良",
+          "icon": "../icons/大气/省控-良.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "轻度污染",
+          "icon": "../icons/大气/省控-轻度.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "中度污染",
+          "icon": "../icons/大气/省控-中度.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "重度污染",
+          "icon": "../icons/大气/省控-重度.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "严重污染",
+          "icon": "../icons/大气/省控-严重.png",
+          "width": 26,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yztgdy_1618381967642": {
+      "industryTagCode": "FBC3712D81F538B892048D2167871A02",
+      "sourcefields": "STANDENTERID,ENTER_NAME,LONGITUDE,LATITUDE,ENTERPRISE_TYPE",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "ENTERPRISE_TYPE",
+          "defaultSymbol": {
+            "type": "esriPMS",
+            "url": "../icons/固定源/污染源-固定源.png",
+            "width": 20,
+            "height": 22,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "2",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/固定源-污水处理厂.png",
+                "contentType": "image/png",
+                "width": 20,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/固定源-危险废物.png",
+                "contentType": "image/png",
+                "width": 20,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "9",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/固定源-垃圾处理厂.png",
+                "contentType": "image/png",
+                "width": 20,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/污染源-工业源.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "7",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/污染源-生活源.png",
+                "contentType": "image/png",
+                "width": 20,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "11",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/固定源/污染源-农业源.png",
+                "contentType": "image/png",
+                "width": 19,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${ENTER_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=33c9df32cf112eb7259cbc645af3e862&STANDENTERID=${STANDENTERID}&vsessionid=${vsessionid}",
+        "width": 430,
+        "height": 386
+      },
+      "legend": [
+        {
+          "name": "其他",
+          "icon": "../icons/固定源/污染源-固定源.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "污水处理厂",
+          "icon": "../icons/固定源/固定源-污水处理厂.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "危险废物处理厂",
+          "icon": "../icons/固定源/固定源-危险废物.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "生活垃圾处理厂",
+          "icon": "../icons/固定源/固定源-垃圾处理厂.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "工业源",
+          "icon": "../icons/固定源/污染源-工业源.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "生活源",
+          "icon": "../icons/固定源/污染源-生活源.png",
+          "width": 20,
+          "height": 22
+        },
+        {
+          "name": "农业源",
+          "icon": "../icons/固定源/污染源-农业源.png",
+          "width": 20,
+          "height": 22
+        }
+      ]
+    },
+    "tag_yztdbssgdm_1622426017937": {
+      "sourcefields": "POINT_CODE,POINT_NAME,LONGITUDE,LATITUDE,A84967D2DD71852C4C8AF540F1AC0BCB,19349DBF132C59BBB9CD7BBF7C956B18",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "html",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "name": "图片HTMl",
+          "fieldDelimiter": ",",
+          "selectedAllFields": {
+            "field1": "A84967D2DD71852C4C8AF540F1AC0BCB",
+            "field2": "19349DBF132C59BBB9CD7BBF7C956B18"
+          },
+          "xoffset": 0,
+          "yoffset": 0,
+          "defaultSymbol": {
+            "id": "6DGciSBOJWoGKLxX",
+            "operation": "update",
+            "name": "图片HTMl",
+            "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+            "templateParams": {
+              "${点位名称}": "POINT_NAME",
+              "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png"
+            },
+            "description": "这是一段关于该HTML模板的描述",
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "1,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅰ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅱ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅲ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅳ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅴ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_劣Ⅴ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅰ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅱ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅲ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅳ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅴ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_劣Ⅴ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_默认1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_默认1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_Ⅰ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_Ⅱ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_Ⅲ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_Ⅳ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_Ⅴ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_劣Ⅴ类1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自_默认1.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅰ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅱ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅲ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅳ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅴ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动劣Ⅴ类.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png"
+                },
+                "${点位名称}": "三明",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ],
+          "id": "6DGciSBOJWoGKLxX",
+          "field1": "A84967D2DD71852C4C8AF540F1AC0BCB",
+          "field2": "19349DBF132C59BBB9CD7BBF7C956B18"
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=a8910f86ba780f9887748289a53ee12b&POINT_CODE=${POINT_CODE}&ASSESSTYPE=monthly&CODE_WQDATASOURCETYPE=surfaceWater&vsessionid=${vsessionid}",
+        "width": 447,
+        "height": 730
+      },
+      "legend": [
+        {
+          "name": "国控",
+          "icon": "../icons/水环境/国图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "A84967D2DD71852C4C8AF540F1AC0BCB",
+          "filterValue": "1"
+        },
+        {
+          "name": "省控",
+          "icon": "../icons/水环境/省图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "A84967D2DD71852C4C8AF540F1AC0BCB",
+          "filterValue": "2"
+        },
+        {
+          "name": "市控",
+          "icon": "../icons/水环境/市图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "A84967D2DD71852C4C8AF540F1AC0BCB",
+          "filterValue": "3"
+        },
+        {
+          "name": "其他",
+          "icon": "../icons/水环境/自动站图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "A84967D2DD71852C4C8AF540F1AC0BCB",
+          "filterValue": "4"
+        }
+      ]
+    },
+    "tag_yztszzdz_1622443732571": {
+      "sourcefields": "POINT_CODE,POINT_NAME,LONGITUDE,LATITUDE,C39B4DC0EB391A92E0538500A8C0A6A0,C3BE380B58D55967E0538500A8C00303",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "html",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "name": "图片HTMl",
+          "fieldDelimiter": ",",
+          "selectedAllFields": {
+            "field1": "C39B4DC0EB391A92E0538500A8C0A6A0",
+            "field2": "C3BE380B58D55967E0538500A8C00303"
+          },
+          "xoffset": 0,
+          "yoffset": 0,
+          "defaultSymbol": {
+            "id": "6DGciSBOJWoGKLxX",
+            "operation": "update",
+            "name": "图片HTMl",
+            "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+            "templateParams": {
+              "${点位名称}": "POINT_NAME",
+              "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png"
+            },
+            "description": "这是一段关于该HTML模板的描述",
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "1,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控1类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控2类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控3类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控4类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动国控劣5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控1类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控2类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控3类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控4类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动省控劣5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "1,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国考无数据.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省考无数据.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控1类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控2类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控3类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控4类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动市控劣5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站1类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站2类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站3类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站4.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站劣5类.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/市考无数据.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动站无数据.png"
+                },
+                "${点位名称}": "POINT_NAME",
+                "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/zdcityk_3.png",
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ],
+          "id": "6DGciSBOJWoGKLxX",
+          "field1": "C39B4DC0EB391A92E0538500A8C0A6A0",
+          "field2": "C3BE380B58D55967E0538500A8C00303"
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=34026f6cbe76523fd7d2a99503cf5991&POINT_CODE=${POINT_CODE}&vsessionid=${vsessionid}",
+        "width": 447,
+        "height": 727
+      },
+      "legend": [
+        {
+          "name": "国控",
+          "icon": "../icons/水环境/国图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "C39B4DC0EB391A92E0538500A8C0A6A0",
+          "filterValue": "1"
+        },
+        {
+          "name": "省控",
+          "icon": "../icons/水环境/省图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "C39B4DC0EB391A92E0538500A8C0A6A0",
+          "filterValue": "2"
+        },
+        {
+          "name": "市控",
+          "icon": "../icons/水环境/市图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "C39B4DC0EB391A92E0538500A8C0A6A0",
+          "filterValue": "3"
+        },
+        {
+          "name": "其他",
+          "icon": "../icons/水环境/自动站图例.png",
+          "width": 26,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "C39B4DC0EB391A92E0538500A8C0A6A0",
+          "filterValue": "4"
+        }
+      ]
+    },
+    "tag_yzthcstjcd_1622455104738": {
+      "sourcefields": "POINT_ID,POINT_NAME,LONGITUDE,LATITUDE,48992CDC2C6A8BA4796DF2987DA9544F",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "48992CDC2C6A8BA4796DF2987DA9544F",
+          "defaultSymbol": {
+            "type": "esriPMS",
+            "url": "../icons/水环境/黑臭水体-无数据.png",
+            "width": 19,
+            "height": 22,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "无黑臭",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/黑臭水体-无黑臭.png",
+                "contentType": "image/png",
+                "width": 19,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "轻度黑臭",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/黑臭水体-轻度黑臭.png",
+                "contentType": "image/png",
+                "width": 19,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "重度黑臭",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/黑臭水体-重度黑臭.png",
+                "contentType": "image/png",
+                "width": 19,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=dbcf3a93faa06cc823692bcc93706d58&POINT_ID=${POINT_ID}&vsessionid=${vsessionid}",
+        "width": 450,
+        "height": 380
+      },
+      "legend": [
+        {
+          "name": "无黑臭",
+          "icon": "../icons/水环境/黑臭水体-无黑臭.png",
+          "width": 22,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "48992CDC2C6A8BA4796DF2987DA9544F",
+          "filterValue": "无黑臭"
+        },
+        {
+          "name": "轻度黑臭",
+          "icon": "../icons/水环境/黑臭水体-轻度黑臭.png",
+          "width": 22,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "48992CDC2C6A8BA4796DF2987DA9544F",
+          "filterValue": "轻度黑臭"
+        },
+        {
+          "name": "重度黑臭",
+          "icon": "../icons/水环境/黑臭水体-重度黑臭.png",
+          "width": 22,
+          "height": 26,
+          "isClickFilter": true,
+          "filterKey": "48992CDC2C6A8BA4796DF2987DA9544F",
+          "filterValue": "重度黑臭"
+        },
+        {
+          "name": "无数据",
+          "icon": "../icons/水环境/黑臭水体-无数据.png",
+          "width": 22,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yztrhhpwk_1622547617683": {
+      "sourcefields": "OUTLET_ID,OUTLET_NAME,LONGITUDE,LATITUDE",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "simple",
+        "rendererInfo": {
+          "type": "simple",
+          "symbol": {
+            "type": "esriPMS",
+            "url": "../icons/污染源/入河排污口.png",
+            "width": 20,
+            "height": 22,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          }
+        }
+      },
+      "tooltip": {
+        "content": "${OUTLET_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=372378c81f186126e8d8831b9d952703&OUTLET_ID=${OUTLET_ID}&vsessionid=${vsessionid}",
+        "width": 447,
+        "height": 245
+      },
+      "legend": [
+        {
+          "name": "入河排污口",
+          "icon": "../icons/污染源/入河排污口.png",
+          "width": 23,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yztsgnqdm_1622510521861": {
+      "sourcefields": "POINT_CODE,POINT_NAME,LONGITUDE,LATITUDE,C3BE380B58D95967E0538500A8C00303",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "C3BE380B58D95967E0538500A8C00303",
+          "defaultSymbol": {
+            "type": "esriPMS",
+            "url": "../icons/水环境/水功能区_无.png",
+            "width": 30,
+            "height": 28,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "1",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_一类.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "2",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_二类.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "3",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_三类.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "4",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_四类.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "5",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_五类.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "6",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/水环境/水功能区_劣五.png",
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=a8910f86ba780f9887748289a53ee12b&POINT_CODE=${POINT_CODE}&ASSESSTYPE=monthly&CODE_WQDATASOURCETYPE=waterFunc&vsessionid=${vsessionid}",
+        "width": 447,
+        "height": 730
+      },
+      "legend": [
+        {
+          "name": "水功能区_无",
+          "icon": "../icons/水环境/水功能区_无.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_一类",
+          "icon": "../icons/水环境/水功能区_一类.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_二类",
+          "icon": "../icons/水环境/水功能区_二类.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_三类",
+          "icon": "../icons/水环境/水功能区_三类.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_四类",
+          "icon": "../icons/水环境/水功能区_四类.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_五类",
+          "icon": "../icons/水环境/水功能区_五类.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "水功能区_劣五",
+          "icon": "../icons/水环境/水功能区_劣五.png",
+          "width": 26,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yyssgdm_1622451385555": {
+      "sourcefields": "POINT_CODE,POINT_NAME,LONGITUDE,LATITUDE,C3BE380B58DB5967E0538500A8C00303,C3BE380B58D75967E0538500A8C00303",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "html",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "name": "图片HTMl",
+          "fieldDelimiter": ",",
+          "selectedAllFields": {
+            "field1": "C3BE380B58DB5967E0538500A8C00303",
+            "field2": "C3BE380B58D75967E0538500A8C00303"
+          },
+          "xoffset": 0,
+          "yoffset": 0,
+          "defaultSymbol": {
+            "id": "6DGciSBOJWoGKLxX",
+            "operation": "update",
+            "name": "图片HTMl",
+            "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+            "templateParams": {
+              "${点位名称}": "POINT_NAME",
+              "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_默认1.png"
+            },
+            "description": "这是一段关于该HTML模板的描述",
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "city,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅰ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅱ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅲ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅳ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_Ⅴ类1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_劣Ⅴ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅰ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅱ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅲ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅳ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_Ⅴ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_劣Ⅴ类_字_42.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "city,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/国_默认1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "county,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/省_默认1.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,1",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅰ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,2",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅱ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,3",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅲ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,4",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅳ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,5",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动Ⅴ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,6",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动劣Ⅴ类.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "town,",
+              "symbol": {
+                "htmlTemplate": "<img title='${点位名称}' style='width:45px;height:45px;cursor: pointer' src='%{图片}'>",
+                "templateParams": {
+                  "${点位名称}": "POINT_NAME",
+                  "%{图片}": "../public/html_template/6DGciSBOJWoGKLxX/自动无数据.png"
+                },
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ],
+          "id": "6DGciSBOJWoGKLxX",
+          "field1": "C3BE380B58DB5967E0538500A8C00303",
+          "field2": "C3BE380B58D75967E0538500A8C00303"
+        }
+      },
+      "tooltip": {
+        "content": "${POINT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=a8910f86ba780f9887748289a53ee12b&POINT_CODE=${POINT_CODE}&ASSESSTYPE=monthly&CODE_WQDATASOURCETYPE=drinkingWater&vsessionid=${vsessionid}",
+        "width": 447,
+        "height": 730
+      },
+      "legend": [
+        {
+          "name": "地级",
+          "icon": "../icons/水环境/国图例.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "县级",
+          "icon": "../icons/水环境/省图例.png",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "name": "乡镇级",
+          "icon": "../icons/水环境/自动站图例.png",
+          "width": 26,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yztyysyd_1622452420184": {
+      "sourcefields": "DRINK_ID,DRINK_NAME,LONGITUDE,LATITUDE",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "simple",
+        "rendererInfo": {
+          "type": "simple",
+          "symbol": {
+            "type": "esriPMS",
+            "url": "../icons/土壤/敏感源-集中饮用水源地.png",
+            "width": 20,
+            "height": 22,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          }
+        }
+      },
+      "tooltip": {
+        "content": "${DRINK_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=5f7fd5d0afd919245c19e6b47aedd361&DRINK_ID=${DRINK_ID}&vsessionid=${vsessionid}",
+        "width": 446,
+        "height": 550
+      },
+      "legend": [
+        {
+          "name": "饮用水源地",
+          "icon": "../icons/土壤/敏感源-集中饮用水源地.png",
+          "width": 26,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yzttrzxzjxm_1622600247125": {
+      "sourcefields": "PROJECT_ID,PROJECT_NAME,LONGITUDE,LATITUDE,PROJECT_STAGE",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "PROJECT_STAGE",
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/监管单位-未监测.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/专项资金-申报库.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "SBK"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/专项资金-储备库.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "CBK"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/专项资金-实施库.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "SSK"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/专项资金-效果评估库.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "XGPGK"
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${PROJECT_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=ba007e583673fc8cf78cc609c7c77230&PROJECT_ID=${PROJECT_ID}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 400
+      },
+      "legend": [
+        {
+          "name": "申报库",
+          "icon": "../icons/土壤/专项资金-申报库.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "储备库",
+          "icon": "../icons/土壤/专项资金-储备库.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "实施库",
+          "icon": "../icons/土壤/专项资金-实施库.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "效果评估库",
+          "icon": "../icons/土壤/专项资金-效果评估库.png",
+          "width": 22,
+          "height": 22
+        }
+      ]
+    },
+    "tag_yzttrhjjcd_1622602173132": {
+      "sourcefields": "NODE_ID,NODENAME,LONGITUDE,LATITUDE,CADC98C2189E6DC7918AB75D8BEAD835",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererInfo": {
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/污染情况-风险等级未知.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "field1": "CADC98C2189E6DC7918AB75D8BEAD835",
+          "type": "uniqueValue",
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染情况-风险等级低.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "1"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染情况-风险等级中.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "2"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染情况-风险等级高.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "3"
+            }
+          ]
+        },
+        "rendererType": "uniqueValue"
+      },
+      "tooltip": {
+        "content": "${NODENAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=b4dcf152db773f17ac7e5a14225b0954&NODE_ID=${NODE_ID}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 320
+      },
+      "legend": [
+        {
+          "height": 22,
+          "icon": "../icons/../icons/土壤/污染情况-风险等级未知.png",
+          "name": "未知风险",
+          "width": 22
+        },
+        {
+          "height": 22,
+          "icon": "../icons/../icons/土壤/污染情况-风险等级低.png",
+          "name": "低于筛选值",
+          "width": 22
+        },
+        {
+          "height": 22,
+          "icon": "../icons/../icons/土壤/污染情况-风险等级中.png",
+          "name": "高于筛选值",
+          "width": 22
+        },
+        {
+          "height": 22,
+          "icon": "../icons/../icons/土壤/污染情况-风险等级高.png",
+          "name": "高于管制值",
+          "width": 22
+        }
+      ]
+    },
+    "tag_yzthjzlyysydd_1622612396954": {
+      "sourcefields": "DRINKWATER_ID,DRINKWATER_NAME,LONGITUDE,LATITUDE,7FA60152DCECCFD663A177C06D56B65D",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "7FA60152DCECCFD663A177C06D56B65D",
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/地下水or饮用水-未监测.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅰ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "1"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅱ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "2"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅲ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "3"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅳ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "4"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅴ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${DRINKWATER_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=157805568ca9d63212ac0843529a2e97&DRINKWATER_ID=${DRINKWATER_ID}&vsessionid=${vsessionid}",
+        "width": 425,
+        "height": 460
+      },
+      "legend": [
+        {
+          "name": "未检测",
+          "icon": "../icons/土壤/地下水or饮用水-未监测.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅰ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅰ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅱ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅱ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅲ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅲ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅳ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅳ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅴ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅴ类.png",
+          "width": 22,
+          "height": 22
+        }
+      ]
+    },
+    "tag_yzthjzldxsjcd_1622615019032": {
+      "sourcefields": "WELL_ID,WELL_NAME,LONGITUDE,LATITUDE,27FEC991A57BCB992DC39D81FA8D61B8",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "27FEC991A57BCB992DC39D81FA8D61B8",
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/地下水or饮用水-未监测.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅰ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "1"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅱ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "2"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅲ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "3"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅳ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "4"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/地下水or饮用水-Ⅴ类.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${WELL_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=43593cf852bc6404ca65483cbda403c0&WELL_ID=${WELL_ID}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 310
+      },
+      "legend": [
+        {
+          "name": "未检测",
+          "icon": "../icons/土壤/地下水or饮用水-未监测.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅰ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅰ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅱ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅱ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅲ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅲ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅳ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅳ类.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "Ⅴ类",
+          "icon": "../icons/土壤/地下水or饮用水-Ⅴ类.png",
+          "width": 22,
+          "height": 22
+        }
+      ]
+    },
+    "tag_yztzdjgdwdk_1622616442079": {
+      "sourcefields": "ENTER_ID,ENTER_NAME,LONGITUDE,LATITUDE",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "simple",
+        "rendererInfo": {
+          "type": "simple",
+          "symbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/监管单位-重点监管.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          }
+        }
+      },
+      "tooltip": {
+        "content": "${ENTER_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=9587a107bfccac5cccecb7491ea842dc&ENTER_ID=${ENTER_ID}&NDTIME=${NDTIME}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 390
+      },
+      "legend": [
+        {
+          "name": "监管单位",
+          "icon": "../icons/土壤/监管单位-重点监管.png",
+          "width": 26,
+          "height": 26
+        }
+      ]
+    },
+    "tag_yztwrdk_1622616685908": {
+      "industryTagCode": "A59431F708C1D2B170944A94BBBB385A",
+      "sourcefields": "SEEMINFO_ID,LANDNAME,LONGITUDE,LATITUDE,7A8221CBAB477619EDE7E80DC0963ADA",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "7A8221CBAB477619EDE7E80DC0963ADA",
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/污染地块-未监测.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-地块调查.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "SURVEP"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-风险评估.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "RISK"
+            },
+            {
+              "value": "RISKCONTROL",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-风险管控.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "RISKCONTROLEFFECT",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-风险管控效果评估.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "REPAIR",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-修复.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "REPAIREFFECT",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-修复效果评估.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "CONTROLREPAIR",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-管控修复.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "CONTROLREPAIREFFECT",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/土壤/污染地块-管控修复效果评估.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${LANDNAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=ca7dd52fc5d62c9cabe390fb90e1c90c&SEEMINFO_ID=${SEEMINFO_ID}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 470
+      },
+      "legend": [
+        {
+          "name": "地块调查",
+          "icon": "../icons/../icons/土壤/污染地块-地块调查.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "SURVEP"
+        },
+        {
+          "name": "风险评估",
+          "icon": "../icons/../icons/土壤/污染地块-风险评估.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "RISK"
+        },
+        {
+          "name": "风险管控",
+          "icon": "../icons/../icons/土壤/污染地块-风险管控.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "RISKCONTROL"
+        },
+        {
+          "name": "风险管控效果评估",
+          "icon": "../icons/../icons/土壤/污染地块-风险管控效果评估.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "RISKCONTROLEFFECT"
+        },
+        {
+          "name": "修复",
+          "icon": "../icons/../icons/土壤/污染地块-修复.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "REPAIR"
+        },
+        {
+          "name": "修复效果评估",
+          "icon": "../icons/../icons/土壤/污染地块-修复效果评估.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "REPAIREFFECT"
+        },
+        {
+          "name": "管控修复",
+          "icon": "../icons/../icons/土壤/污染地块-管控修复.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "CONTROLREPAIR"
+        },
+        {
+          "name": "管控修复效果评估",
+          "icon": "../icons/../icons/土壤/污染地块-管控修复效果评估.png",
+          "width": 22,
+          "height": 22,
+          "isClickFilter": true,
+          "filterKey": "CODE_STAGE",
+          "filterValue": "CONTROLREPAIREFFECT"
+        }
+      ]
+    },
+    "tag_yztzdhyqydk_1622620305909": {
+      "sourcefields": "EN_ID,EN_NAME,LONGITUDE,LATITUDE,D68F679A99C7D16B5EF082CEBABF5906",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "D68F679A99C7D16B5EF082CEBABF5906",
+          "defaultSymbol": {
+            "angle": 0,
+            "height": 22,
+            "type": "esriPMS",
+            "url": "../icons/土壤/监管单位-未监测.png",
+            "width": 22,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/行业企业-在产.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "1"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/行业企业-关闭.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "2"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/行业企业-填埋场.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "3"
+            },
+            {
+              "symbol": {
+                "angle": 0,
+                "contentType": "image/png",
+                "height": 22,
+                "type": "esriPMS",
+                "url": "../icons/土壤/行业企业-尾矿库.png",
+                "width": 22,
+                "xoffset": 0,
+                "yoffset": 0
+              },
+              "value": "4"
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${EN_NAME}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=102de1b1d4526c68a7db06723b2eddc5&EN_ID=${EN_ID}&vsessionid=${vsessionid}",
+        "width": 420,
+        "height": 420
+      },
+      "legend": [
+        {
+          "name": "在产",
+          "icon": "../icons/土壤/行业企业-在产.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "关闭",
+          "icon": "../icons/土壤/行业企业-关闭.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "填埋场",
+          "icon": "../icons/土壤/行业企业-填埋场.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "尾矿库",
+          "icon": "../icons/土壤/行业企业-尾矿库.png",
+          "width": 22,
+          "height": 22
+        }
+      ]
+    },
+    "tag_yztzrbhq_1622620769234": {
+      "sourcefields": "PKID,BHQMC,LONGITUDE,LATITUDE,D84B228BFB166EC9FBCF50DC9A495280",
+      "apiInfo": {
+        "lonCol": "LONGITUDE",
+        "latCol": "LATITUDE"
+      },
+      "renderer": {
+        "rendererType": "uniqueValue",
+        "rendererInfo": {
+          "type": "uniqueValue",
+          "field1": "D84B228BFB166EC9FBCF50DC9A495280",
+          "defaultSymbol": {
+            "type": "esriPMS",
+            "url": "../icons/生态/自然保护区-市.png",
+            "width": 22,
+            "height": 22,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0
+          },
+          "uniqueValueInfos": [
+            {
+              "value": "国家级",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/生态/自然保护区-国.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "省级",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/生态/自然保护区-省.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            },
+            {
+              "value": "市级",
+              "symbol": {
+                "type": "esriPMS",
+                "url": "../icons/生态/自然保护区-市.png",
+                "contentType": "image/png",
+                "width": 22,
+                "height": 22,
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 0
+              }
+            }
+          ]
+        }
+      },
+      "tooltip": {
+        "content": "${BHQMC}",
+        "width": 200
+      },
+      "popup": {
+        "content": "http://192.168.0.140:7070/view/view/show/index.vm?detailFrom=zhcx&screenId=8ed7564a57e5df3b8d634adbd4b5c76f&PKID=${PKID}&vsessionid=${vsessionid}",
+        "width": 461,
+        "height": 305
+      },
+      "legend": [
+        {
+          "name": "国家级",
+          "icon": "../icons/生态/自然保护区-国.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "省级",
+          "icon": "../icons/生态/自然保护区-省.png",
+          "width": 22,
+          "height": 22
+        },
+        {
+          "name": "市级",
+          "icon": "../icons/生态/自然保护区-市.png",
+          "width": 22,
+          "height": 22
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  -->
+<mapper namespace="ths.project.tag.ws.api.mapper.wstagdataMapper">
+	
+	<!-- 根据参数获取字典表数据 -->
+	<select id="getDictionaryInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				TD.PKCODE "dicId",
+				TD.DICTIONARYCODE "dicCode",
+				TD.DICTIONARYPARENTCODE "dicPCode",
+				TD.DICTIONARYNAME "dicName",
+				TD.DICTIONARYCATALOGCODE "dicCatalogCode",
+				TD.ISAVALIABLE "dicStatus"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY TD
+			WHERE  1=1 
+			<if test="dicName!=null and dicName!=''">
+      			<bind name="pattern2" value="'%' + _parameter.dicName + '%'" />
+      			AND TD.DICTIONARYPARENTCODE LIKE #{pattern2,jdbcType=VARCHAR} 
+			</if>
+			<if test="dicStatus!=null and dicStatus!=''" >
+				AND TD.ISAVALIABLE =#{dicStatus,jdbcType=VARCHAR}
+			</if>
+			<if test="dicPCode!=null and dicPCode!=''" >
+				AND TD.DICTIONARYPARENTCODE =#{dicPCode,jdbcType=VARCHAR}
+			</if>
+			<if test="dicCode!=null and dicCode!=''" >
+				AND TD.DICTIONARYCODE =#{dicCode,jdbcType=VARCHAR}
+			</if>
+			<if test="dicCatalogCode!=null and dicCatalogCode!=''" >
+				AND TD.DICTIONARYCATALOGCODE =#{dicCatalogCode,jdbcType=VARCHAR}
+			</if>
+			<if test="dicId!=null and dicId!=''" >
+				AND TD.PKCODE =#{dicId,jdbcType=VARCHAR}
+			</if>
+			ORDER BY TD.DICTIONARYSORTINDEX ASC
+	</select>
+	
+	
+	<!-- 获取标签定义信息 -->
+	<select id="getTagDefineInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				A.TAG_ID "tagId",
+				A.TAG_CODE  "tagCode",
+				A.TAG_NAME "tagName",
+				A.CODE_TYPE "codeType",
+		 		B.DICTIONARYNAME "tagType",
+				A.CODE_COLOR "codeColor",
+				C.DICTIONARYNAME "tagColor",
+				A.TAG_WEIGHT "tagWeight",
+				A.RANGE_VALUE AS "rangeService",
+				A.TAG_VALUE_TYPE AS "tagValueType",
+				A.STATUS "tagStatus",
+				A.SORT "tagSort",
+				A.TAG_DESC "tagDesc"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE A
+			LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY B ON A.CODE_TYPE=B.DICTIONARYCODE AND B.DICTIONARYCATALOGCODE='tagType'
+			LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY C ON A.CODE_COLOR=C.DICTIONARYCODE AND C.DICTIONARYCATALOGCODE='tagColor'
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY TE ON A.ENTITY_ID = TE.ENTITY_ID
+		 	WHERE 1=1
+		 	<if test="tagName!=null and tagName!=''">
+      			<bind name="pattern2" value="'%' + _parameter.tagName + '%'" />
+      			AND A.TAG_NAME  LIKE #{pattern2,jdbcType=VARCHAR} 
+			</if>
+			<if test="tagId!=null and tagId!=''">
+				AND  A.TAG_ID = #{tagId,jdbcType=VARCHAR}
+			</if>
+			<if test="tagIds!=null and tagIds!=''">
+				AND (
+					<foreach collection="tagIds" item="tid" separator="OR">
+						A.TAG_ID = #{tid,jdbcType=VARCHAR}
+					</foreach>
+				)
+			</if>
+			<if test="tagCode!=null and tagCode!=''">
+				AND  A.TAG_CODE = #{tagCode,jdbcType=VARCHAR}
+			</if>
+			<if test="tagCodes!=null and tagCodes!=''">
+				AND (
+					<foreach collection="tagCodes" item="tcode" separator="OR">
+						A.TAG_CODE = #{tcode,jdbcType=VARCHAR}
+					</foreach>
+				)
+			</if>
+		 	<if test="codeType!=null and codeType!=''">
+				AND A.CODE_TYPE = #{codeType,jdbcType=VARCHAR}
+			</if>
+			<if test="tagStatus!=null and tagStatus!=''">
+				AND A.STATUS = #{tagStatus,jdbcType=VARCHAR}
+			</if>
+			<if test="code_color!=null and code_color!=''">
+				AND A.CODE_COLOR = #{code_color ,jdbcType=VARCHAR}
+			</if>
+			<if test="entityCode!=null and entityCode!=''">
+				AND TE.ENTITY_CODE = #{entityCode ,jdbcType=VARCHAR}
+			</if>
+	</select>
+	
+	<!-- 获取标签访问日志信息-->
+	<select id="getTagVisitlog" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			    B.TAG_ID "tagId",
+			    A.TAG_CODE "tagCode",
+				SUM(A.VISIT_COUNT) "visitCount",
+				A.PERIOD "period",
+				B.TAG_NAME "tagName"
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_EVALUATE A
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE B ON A.TAG_CODE=B.TAG_CODE
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY C ON B.ENTITY_ID=C.ENTITY_ID
+			WHERE 1=1 
+		 	<if test="period!=null and period!=''">
+				AND A.PERIOD = #{period,jdbcType=VARCHAR}
+			</if>
+		 	<if test="tagCode!=null and tagCode!=''">
+				AND A.TAG_CODE = #{tagCode,jdbcType=VARCHAR}
+			</if>
+			<if test="tagId!=null and tagId!=''">
+				AND B.TAG_CODE = #{tagId,jdbcType=VARCHAR}
+			</if>
+			<if test="entityCode!=null and entityCode!=''">
+				AND C.ENTITY_CODE = #{entityCode,jdbcType=VARCHAR}
+			</if>
+			GROUP BY B.TAG_ID,A.TAG_CODE,A.PERIOD,B.TAG_NAME
+			ORDER BY SUM(A.VISIT_COUNT) DESC,A.TAG_CODE DESC
+	</select>
+
+	<!-- 获取实体标签树 -->
+	<select id="getTagEntityTree" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				A.GROUP_ID "groupId",
+				A.GROUP_NAME "groupName",
+				A.PARENT_ID "parentId"
+			from ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP a
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY B ON A.ENTITY_ID = B.ENTITY_ID
+			WHERE 1=1 
+		 	<if test="groupId!=null and groupId!=''">
+				AND A.GROUP_ID = #{groupId,jdbcType=VARCHAR}
+			</if>
+		 	<if test="parentId!=null and parentId!=''">
+		 		AND A.PARENT_ID = #{parentId,jdbcType=VARCHAR}
+			</if>
+			<if test="entityCode!=null and entityCode!=''">
+				AND B.ENTITY_CODE = #{entityCode,jdbcType=VARCHAR}
+			</if>
+			<if test="groupIds!=null and groupIds!=''">
+				AND (
+					<foreach collection="groupIds" item="gid" separator="OR">
+						A.GROUP_ID = #{gid,jdbcType=VARCHAR}
+					</foreach>
+				)
+			</if>
+			ORDER BY SORT ASC
+	</select>
+	
+	<!-- 根据实体、标签树获取实体标签定义 -->
+	<select id="getTagDefineGid" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+				A.TAG_ID "tagId",
+				A.TAG_CODE  "tagCode",
+				A.TAG_NAME "tagName",
+				A.CODE_TYPE "codeType",
+		 		D.DICTIONARYNAME "tagType",
+				A.CODE_COLOR "codeColor",
+				A.TAG_WEIGHT "tagWeight",
+				B.GROUP_ID "groupId",
+				B.GROUP_NAME "groupName",
+				B.PARENT_ID "parentId",
+				A.STATUS "tagStatus",
+				A.TAG_VALUE_TYPE "tagValueType",
+				A.ISBOOLEAN "isboolean" 
+			FROM ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGDEFINE A
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_TAGGROUP B ON A.GROUP_ID= B.GROUP_ID
+			JOIN ${DCP_DB_TTAG_SCHEMA}.T_TAG_ENTITY C ON B.ENTITY_ID = C.ENTITY_ID
+			LEFT JOIN ${DCP_DB_TTAG_SCHEMA}.T_CODE_DICTIONARY D ON A.CODE_TYPE=D.DICTIONARYCODE AND D.DICTIONARYCATALOGCODE='tagType'
+		WHERE 1=1
+			<if test='entityCode!=null and entityCode!=""'>
+				AND C.ENTITY_CODE = #{entityCode,jdbcType=VARCHAR}
+			</if>
+			<if test='codeType!=null and codeType!=""'>
+				AND A.CODE_TYPE = #{codeType,jdbcType=VARCHAR}
+			</if>
+			<if test='tagStatus!=null and tagStatus!=""'>
+				AND A.STATUS = #{tagStatus,jdbcType=VARCHAR}
+			</if>
+			<if test='groupId!=null and groupId!=""'>
+				AND B.GROUP_ID = #{group_id,jdbcType=VARCHAR}
+			</if>
+			<if test='groupIds!=null and groupIds!=""'>
+				AND (
+					<foreach collection="groupIds" item="gid" separator="OR">
+						B.GROUP_ID = #{gid,jdbcType=VARCHAR}
+					</foreach>
+				)
+			</if>
+			<if test='tagValueType!=null and tagValueType!=""'>
+				AND A.TAG_VALUE_TYPE = #{tagValueType,jdbcType=VARCHAR}
+			</if>
+		 	<if test='parentId!=null and parentId!=""'>
+		 		AND B.PARENT_ID = #{parentId,jdbcType=VARCHAR}
+			</if>
+			<if test='orderWeight =="true"'>
+				ORDER BY CASE WHEN A.TAG_WEIGHT IS NULL THEN 0 ELSE A.TAG_WEIGHT END DESC
+			</if>
+	</select>
+	
+	
+</mapper>
