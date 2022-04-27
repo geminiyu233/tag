@@ -9,6 +9,80 @@
     <style type="text/css">
 
     </style>
+		    <style>
+					table {
+						width: 100%;
+						table-layout: fixed;
+					}
+					table tr {
+						width: 100%;
+						height: 30px;
+					}
+					td {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+					.td-info {
+						display: none;
+						position: absolute;
+						z-index: 9999999;
+						transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+							top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+						padding: 5px 0 8px 0;
+						border: 0;
+					}
+					.td-info .arrow {
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-color: transparent;
+						border-style: solid;
+						bottom: 3px;
+						border-width: 5px 5px 0;
+						border-top-color: rgba(70, 76, 91, 0.9);
+						left: 50%;
+						margin-left: -5px;
+					}
+					.td-info .text {
+						max-width: 500px;
+						min-height: 34px;
+						padding: 7px 12px;
+						color: #fff;
+						text-align: left;
+						text-decoration: none;
+						background-color: rgba(70, 76, 91, 0.9);
+						border-radius: 4px;
+						box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+						white-space: wrap;
+						box-sizing: border-box;
+						font-size: 12px;
+					}
+					.list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+				</style>
 </head>
 
 <body class="no-skin">
@@ -67,18 +141,24 @@
 								</div>
 								
 								<div class="module-layout">
-	                                <div class="page-toolbar align-right list-toolbar">
-	                                		<c:if test="${isAdmin}">
-	                                        <button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnAdd" data-self-href="edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}">
-	                                            <i class="ace-icon fa fa-plus"></i>
-	                                            添加
-	                                        </button>
-	                                        </c:if>
-	                                        <button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnReturn" data-self-js="goBack()">
-							                    <i class="ace-icon fa fa-reply"></i>
-							                    返回
-							            	</button>
-	                                </div>
+	                        
+																	<div class="page-toolbar align-right list-toolbar" style="display:flex;justify-content:space-between""> 
+																		<div style="" class="list-text">
+																			<i class="list-icon-left"></i>列表<i class="list-icon-right"></i>
+																		</div>
+																		<div class="btn-group">
+																			<c:if test="${isAdmin}">
+																				<button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnAdd" data-self-href="edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}">
+																						<i class="ace-icon fa fa-plus"></i>
+																						添加
+																				</button>
+																				</c:if>
+																				<button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnReturn" data-self-js="goBack()">
+																<i class="ace-icon fa fa-reply"></i>
+																返回
+													</button>
+																		</div>
+																	 </div>  
 	                                <table id="listTable" class="table  table-bordered table-hover">
 	                                    <thead>
 	                                        <tr>
@@ -98,7 +178,7 @@
 	                                                排序
 	                                                <i class="ace-icon fa fa-sort pull-right"></i>
 	                                            </th>
-	                                            <th class="align-center" style="width:250px"><i class="ace-icon fa fa-wrench"></i>
+	                                            <th class="align-center" style="width:250px">
 	                                                操作
 	                                            </th>
 	                                        </tr>
@@ -108,8 +188,8 @@
 	                                    <c:if test="${pageInfo.total <= 0 }"><tr><td class="align-center" colspan="20">没有检索到相关数据！</td></tr></c:if>
 	                                     <c:forEach var="item" items="${pageInfo.list}">
 	                                        <tr>
-	                                            <td>${item.ENTITY_NAME}</td>
-	                                            <td>${item.ENTITY_CODE}</td>
+	                                            <td><span>${item.ENTITY_NAME}</span></td>
+	                                            <td><span>${item.ENTITY_CODE}</span></td>
 	                                            <td  class="align-center">
 	                                               		<c:if test="${item.RUNSTATUS == 1 }">
 	                                                	 	<span class="label label-sm label-success arrowed-in-right min-width-75">
@@ -126,32 +206,32 @@
 	                                            </td>
 	                                            <td class=" align-center col-op-ths">
 	                                            	<button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                    data-self-href="${ctx}/define/main.vm?entitySelect=${item.ENTITY_ID }" data-toggle="tooltip" title="标签定义"><i class="ace-icon fa fa-sitemap" ></i>
+	                                                    data-self-href="${ctx}/define/main.vm?entitySelect=${item.ENTITY_ID }" data-toggle="tooltip" title="标签定义"><i class="ace-icon fa fa-sitemap" ></i>标签定义
 	                                                </button>
 	                                            	<c:if test="${isAdmin}">
 	                                                <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                    data-self-js="startJob('${item.ENTITY_ID }','${item.LTS_RUN_NODE }')" data-toggle="tooltip" title="手动执行"><i class="ace-icon fa fa-play" ></i>
+	                                                    data-self-js="startJob('${item.ENTITY_ID }','${item.LTS_RUN_NODE }')" data-toggle="tooltip" title="手动执行"><i class="ace-icon fa fa-play" ></i>手动执行
 	                                                </button>
 	                                                </c:if>
 	                                                <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                    data-self-href="${ctx}/entity/tag/list.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="标签查询"><i class="ace-icon fa fa-tags"></i>
+	                                                    data-self-href="${ctx}/entity/tag/list.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="标签查询"><i class="ace-icon fa fa-tags"></i>标签查询
 	                                                </button>
 	                                                <c:if test="${isAdmin}">
 	                                                    <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                        data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体编辑"><i class="ace-icon fa fa-pencil" ></i>
+	                                                        data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体编辑"><i class="ace-icon fa fa-pencil" ></i>实体编辑
 	                                                    </button>
 	                                                    <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                            data-self-href="${ctx}/entity/edit.vm?is_copy=true&THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体复制"><i class="ace-icon fa fa-copy" ></i>
+	                                                            data-self-href="${ctx}/entity/edit.vm?is_copy=true&THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体复制"><i class="ace-icon fa fa-copy" ></i>实体复制
 	                                                    </button>
 	                                                </c:if>
 	                                                <c:if test="${!isAdmin}">
 	                                                <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                    data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&?ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体查看"><i class="ace-icon fa fa-search" ></i>
+	                                                    data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&?ENTITY_ID=${item.ENTITY_ID }" data-toggle="tooltip" title="实体查看"><i class="ace-icon fa fa-search" ></i>实体查看
 	                                                </button>
 	                                                </c:if>
 	                                                <c:if test="${isAdmin}">
 	                                                <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
-	                                                    data-self-js="doDeleteOne('${item.ENTITY_ID }')" data-toggle="tooltip" title="实体删除"><i class="ace-icon fa fa-trash" ></i>
+	                                                    data-self-js="doDeleteOne('${item.ENTITY_ID }')" data-toggle="tooltip" title="实体删除"><i class="ace-icon fa fa-trash" ></i>实体删除
 	                                                </button>
 	                                                </c:if>
 	                                            </td>
@@ -225,4 +305,28 @@
 	}
 </script>
 </body>
+<script src="../jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+		$("body").append(template);
+		var tdInfo = $(".td-info");
+		var tdDom = $("td");
+		tdDom.hover(function (e) {
+			var spanWidth = $(this).find('span').width();
+			var domWidth = $(this).width();
+			if (spanWidth > domWidth) {
+					tdInfo.find('.text').text($(this).text());
+					tdInfo.css({
+						left: $(this).offset().left,
+						top: $(this).offset().top - tdInfo.height() - 10,
+						display: 'block'
+					});
+			}
+		});
+		tdDom.mouseleave(function() {
+			tdInfo.hide();
+		});
+	})
+</script>
 </html>

@@ -32,6 +32,80 @@
 	}
 	
     </style>
+		    <style>
+					table {
+						width: 100%;
+						table-layout: fixed;
+					}
+					table tr {
+						width: 100%;
+						height: 30px;
+					}
+					td {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+					.td-info {
+						display: none;
+						position: absolute;
+						z-index: 9999999;
+						transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+							top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+						padding: 5px 0 8px 0;
+						border: 0;
+					}
+					.td-info .arrow {
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-color: transparent;
+						border-style: solid;
+						bottom: 3px;
+						border-width: 5px 5px 0;
+						border-top-color: rgba(70, 76, 91, 0.9);
+						left: 50%;
+						margin-left: -5px;
+					}
+					.td-info .text {
+						max-width: 500px;
+						min-height: 34px;
+						padding: 7px 12px;
+						color: #fff;
+						text-align: left;
+						text-decoration: none;
+						background-color: rgba(70, 76, 91, 0.9);
+						border-radius: 4px;
+						box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+						white-space: wrap;
+						box-sizing: border-box;
+						font-size: 12px;
+					}
+					.list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+				</style>
 </head>
 
 <body class="no-skin">
@@ -81,19 +155,19 @@
                                     		<img src="${ctx}/assets/img/entity-${entity.ENTITY_PORTRAIT }.jpg" style="width:140px; height:85px"/>
                                     		<div class="itemName"><a>${entity.ENTITY_NAME }</a></div>
                                     		<div class="itemTool" >
-                                    			  <a data-self-href="${ctx}/define/main.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&entitySelect=${entity.ENTITY_ID }" data-toggle="tooltip" title="标签定义"><i class="ace-icon fa fa-sitemap"></i></a>
+                                    			  <a data-self-href="${ctx}/define/main.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&entitySelect=${entity.ENTITY_ID }" data-toggle="tooltip" title="标签定义"><i class="ace-icon fa fa-sitemap"></i>标签定义</a>
                                     			 <c:if test="${isAdmin}">
-                                    			  <a data-self-js="startJob('${entity.ENTITY_ID }','${entity.LTS_RUN_NODE }')" data-toggle="tooltip" title="手动执行"><i class="ace-icon fa fa-play" ></i></a>
+                                    			  <a data-self-js="startJob('${entity.ENTITY_ID }','${entity.LTS_RUN_NODE }')" data-toggle="tooltip" title="手动执行"><i class="ace-icon fa fa-play" ></i>手动执行</a>
                                     			 </c:if>
-                                    			  <a data-self-href="${ctx}/entity/tag/list.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="标签查询"><i class="ace-icon fa fa-tags"></i></a>
+                                    			  <a data-self-href="${ctx}/entity/tag/list.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="标签查询"><i class="ace-icon fa fa-tags"></i>标签查询</a>
                                     			  <c:if test="${isAdmin}">
-                                    			  <a data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="实体编辑"><i class="ace-icon fa fa-pencil" ></i></a>
+                                    			  <a data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="实体编辑"><i class="ace-icon fa fa-pencil" ></i>实体编辑</a>
                                     			  </c:if>
                                     			  <c:if test="${!isAdmin}">
-                                    			  <a data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="实体查看"><i class="ace-icon fa fa-search" ></i></a>
+                                    			  <a data-self-href="${ctx}/entity/edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&ENTITY_ID=${entity.ENTITY_ID }"  data-toggle="tooltip" title="实体查看"><i class="ace-icon fa fa-search" ></i>实体查看</a>
                                     			  </c:if>
                                     			 <c:if test="${isAdmin}">
-                                    			  <a data-self-js="doDeleteOne('${entity.ENTITY_ID }')" data-toggle="tooltip" title="实体删除"><i class="ace-icon fa fa-trash" ></i></a>
+                                    			  <a data-self-js="doDeleteOne('${entity.ENTITY_ID }')" data-toggle="tooltip" title="实体删除"><i class="ace-icon fa fa-trash" ></i>实体删除</a>
                                     			 </c:if>
                                     		</div>
                                     	</div>
@@ -153,4 +227,28 @@
 	}
 </script>
 </body>
+<script src="../jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+		$("body").append(template);
+		var tdInfo = $(".td-info");
+		var tdDom = $("td");
+		tdDom.hover(function (e) {
+			var spanWidth = $(this).find('span').width();
+			var domWidth = $(this).width();
+			if (spanWidth > domWidth) {
+					tdInfo.find('.text').text($(this).text());
+					tdInfo.css({
+						left: $(this).offset().left,
+						top: $(this).offset().top - tdInfo.height() - 10,
+						display: 'block'
+					});
+			}
+		});
+		tdDom.mouseleave(function() {
+			tdInfo.hide();
+		});
+	})
+</script>
 </html>

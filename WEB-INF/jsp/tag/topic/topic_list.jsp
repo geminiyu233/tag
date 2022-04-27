@@ -17,6 +17,80 @@
             border-top-color: #1890ff
         }
     </style>
+        <style>
+            table {
+              width: 100%;
+              table-layout: fixed;
+            }
+            table tr {
+              width: 100%;
+              height: 30px;
+            }
+            td {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .td-info {
+              display: none;
+              position: absolute;
+              z-index: 9999999;
+              transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+                top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+              padding: 5px 0 8px 0;
+              border: 0;
+            }
+            .td-info .arrow {
+              position: absolute;
+              width: 0;
+              height: 0;
+              border-color: transparent;
+              border-style: solid;
+              bottom: 3px;
+              border-width: 5px 5px 0;
+              border-top-color: rgba(70, 76, 91, 0.9);
+              left: 50%;
+              margin-left: -5px;
+            }
+            .td-info .text {
+              max-width: 500px;
+              min-height: 34px;
+              padding: 7px 12px;
+              color: #fff;
+              text-align: left;
+              text-decoration: none;
+              background-color: rgba(70, 76, 91, 0.9);
+              border-radius: 4px;
+              box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+              white-space: wrap;
+              box-sizing: border-box;
+              font-size: 12px;
+            }
+            .list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+          </style>
 </head>
 
 <body class="no-skin">
@@ -83,8 +157,12 @@
 								</div>
 								
 								<div class="module-layout">
-                                <div class="page-toolbar align-right list-toolbar">
-                                        <c:if test="${isAdmin}">
+                                    <div class="page-toolbar align-right list-toolbar" style="display:flex;justify-content:space-between""> 
+                                        <div style="" class="list-text">
+                                          <i class="list-icon-left"></i>列表<i class="list-icon-right"></i>
+                                        </div>
+                                        <div class="btn-group">
+                                          <c:if test="${isAdmin}">
                                         <button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnAdd" data-self-href="edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}">
                                             <i class="ace-icon fa fa-plus"></i>
                                             	添加
@@ -94,8 +172,9 @@
                                            		 删除
                                         </button>
                                         </c:if>
-        
-                                    </div>
+                                        </div>
+                                       </div>  
+                         
                                 <table id="listTable" class="table  table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -109,7 +188,7 @@
                                                 主题
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
-                                            <th class="align-center" data-sort-col="ENTITY_NAME"><i class="ace-icon fa fa-folder-o"></i>
+                                            <th class="align-center" data-sort-col="ENTITY_NAME">
                                                 标签实体
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
@@ -117,11 +196,11 @@
                                                 状态
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
-                                            <th class="align-center" style="width:180px;min-width: 180px;" data-sort-col="A.UPDATE_DATE"><i class="ace-icon fa fa-clock-o"></i>
+                                            <th class="align-center" style="width:180px;min-width: 180px;" data-sort-col="A.UPDATE_DATE">
                                                 修改日期
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
-                                            <th class="align-center" style="width:90px"><i class="ace-icon fa fa-wrench"></i>
+                                            <th class="align-center" style="width:90px">
                                                 操作
                                             </th>
                                         </tr>
@@ -139,10 +218,10 @@
                                             </td>
                                             <td class="">
                                                     <!-- <a href="read.vm?TOPIC_ID=${item.TOPIC_ID}"></a> -->
-                                                    ${item.TOPIC_NAME}
+                                                   <span> ${item.TOPIC_NAME}</span>
                                             </td>
                                             <td>
-                                                ${item.ENTITY_NAME}
+                                               <span> ${item.ENTITY_NAME}</span>
                                             </td>
                                             <td  class="align-center">
                                                		<c:if test="${item.STATUS == 10 }">
@@ -162,18 +241,18 @@
                                             	<c:if test="${isAdmin}">
                                                 <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
                                                     data-self-href="edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&TOPIC_ID=${item.TOPIC_ID}" data-toggle="tooltip" title="编辑">
-                                                    <i class="ace-icon fa fa-edit"></i>
+                                                    <i class="ace-icon fa fa-edit"></i>编辑
                                                 </button>
                                                 </c:if>
                                             	<c:if test="${!isAdmin}">
                                                 <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
                                                     data-self-href="edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&TOPIC_ID=${item.TOPIC_ID}" data-toggle="tooltip" title="查看">
-                                                    <i class="ace-icon fa fa-search"></i>
+                                                    <i class="ace-icon fa fa-search"></i>查看
                                                 </button>
                                                 </c:if>
                                                 <button type="button" class="btn btn-sm btn-white btn-info btn-op-ths"
                                                     data-self-href="${ctx}/define/tag/list.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&topicCode=${item.TOPIC_CODE}&stype=topiclist" data-toggle="tooltip" title="主题标签定义">
-                                                    <i class="ace-icon fa fa-tags"></i>
+                                                    <i class="ace-icon fa fa-tags"></i>主题标签定义
                                                 </button>
                                                 <!--
                                                 <button type="button" class="btn btn-sm btn-white btn-success btn-op-ths"
@@ -241,4 +320,28 @@
 	});
 </script>
 </body>
+<script src="../jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+    $("body").append(template);
+    var tdInfo = $(".td-info");
+    var tdDom = $("td");
+    tdDom.hover(function (e) {
+      var spanWidth = $(this).find('span').width();
+      var domWidth = $(this).width();
+      if (spanWidth > domWidth) {
+          tdInfo.find('.text').text($(this).text());
+          tdInfo.css({
+            left: $(this).offset().left,
+            top: $(this).offset().top - tdInfo.height() - 10,
+            display: 'block'
+          });
+      }
+    });
+    tdDom.mouseleave(function() {
+      tdInfo.hide();
+    });
+  })
+</script>
 </html>

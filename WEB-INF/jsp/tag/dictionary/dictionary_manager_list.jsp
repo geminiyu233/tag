@@ -10,6 +10,80 @@
 	    <style type="text/css">
 
 	    </style>
+			    <style>
+						table {
+							width: 100%;
+							table-layout: fixed;
+						}
+						table tr {
+							width: 100%;
+							height: 30px;
+						}
+						td {
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
+						.td-info {
+							display: none;
+							position: absolute;
+							z-index: 9999999;
+							transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+								top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+							padding: 5px 0 8px 0;
+							border: 0;
+						}
+						.td-info .arrow {
+							position: absolute;
+							width: 0;
+							height: 0;
+							border-color: transparent;
+							border-style: solid;
+							bottom: 3px;
+							border-width: 5px 5px 0;
+							border-top-color: rgba(70, 76, 91, 0.9);
+							left: 50%;
+							margin-left: -5px;
+						}
+						.td-info .text {
+							max-width: 500px;
+							min-height: 34px;
+							padding: 7px 12px;
+							color: #fff;
+							text-align: left;
+							text-decoration: none;
+							background-color: rgba(70, 76, 91, 0.9);
+							border-radius: 4px;
+							box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+							white-space: wrap;
+							box-sizing: border-box;
+							font-size: 12px;
+						}
+						.list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+					</style>
 	</head>
 
 	<body class="no-skin">
@@ -62,8 +136,13 @@
 	                               		</div>
 	                                </div>
                                 	<div class="module-layout">
-										<div class="page-toolbar align-right list-toolbar"> 	
-											<c:if test="${isAdmin}">		
+
+										 <div class="page-toolbar align-right list-toolbar" style="display:flex;justify-content:space-between""> 
+											<div style="" class="list-text">
+												<i class="list-icon-left"></i>列表<i class="list-icon-right"></i>
+											</div>
+											<div class="btn-group">
+												<c:if test="${isAdmin}">		
 											<button type="button" class="btn btn-xs btn-primary btn-xs-ths" data-self-href="${ctx }/dictionary/dictionary_manager_edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}"  id="btnAdd">
 												<i class="ace-icon fa fa-plus"></i> 添加
 											</button>
@@ -71,7 +150,8 @@
 	                                            <i class="ace-icon fa fa-trash-o"></i> 删除
 	                                        </button>
 	                                        </c:if>
-		 								</div> 
+											</div>
+		 								</div>  
 		 								
 										<table id="listTable" class="table table-bordered table-hover <c:if test='${pageInfo.total > 0}'>ellipsis-table</c:if>">
 											<thead>
@@ -85,7 +165,7 @@
 													<th class="align-center" style="width:50px;">序号</th>
 													<th class="align-center">字典编码</th>
 													<th class="align-center" data-sort-col="DICTIONARYNAME">
-														<i class="ace-icon fa"></i>字典名称
+														字典名称
 														<i class="ace-icon fa fa-sort pull-right"></i> 
 													</th>											
 													<!-- <th class="align-center">父级编码</th> -->
@@ -96,7 +176,7 @@
 													<th class="align-center" style="width:80px;">下限</th>
 													<th class="align-center" style="width:120px;">描述</th> -->
 													<th class="align-center" style="width:100px;">
-													 	<i class="ace-icon fa fa-wrench"></i>操作
+													 	操作
 													</th>
 												</tr>
 											</thead>
@@ -111,12 +191,12 @@
 					                                                    <span class="lbl"></span>
 					                                                </label>
 					                                            </td>
-																<td class="align-center">${(pageInfo.pageNum - 1) * pageInfo.pageSize + status.index + 1}</td>
-																<td class="align-left">${item.DICTIONARYCODE }</td>
-																<td class="align-left">${item.DICTIONARYNAME }</td>
-																<%-- <td class="align-right">${item.DICTIONARYPARENTCODE }</td> --%>
-																<td class="align-left">${item.DICTIONARYCATALOGCODE }</td>
-																<td class="align-center">${item.DICTIONARYSORTINDEX }</td>
+																<td class="align-center"><span>${(pageInfo.pageNum - 1) * pageInfo.pageSize + status.index + 1}</span></td>
+																<td class="align-left"><span>${item.DICTIONARYCODE }</span></td>
+																<td class="align-left"><span>${item.DICTIONARYNAME }</span></td>
+																<%-- <td class="align-right"><span>${item.DICTIONARYPARENTCODE }</span></td> --%>
+																<td class="align-left"><span>${item.DICTIONARYCATALOGCODE }</span></td>
+																<td class="align-center"><span>${item.DICTIONARYSORTINDEX }</span></td>
 																<td class="align-center">
 																	<c:if test="${item.ISAVALIABLE eq '1'}">是</c:if>
 																	<c:if test="${item.ISAVALIABLE eq '0'}">否</c:if>
@@ -127,16 +207,16 @@
 																<td class="align-center col-op-ths">
 																	<c:if test="${isAdmin}">
 																	<button type="button" class="btn btn-sm btn-info btn-white btn-op-ths" data-toggle="tooltip" title="编辑" data-self-href="${ctx}/dictionary/dictionary_manager_edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&pkcode=${item.PKCODE}"  >
-																		<i class="ace-icon fa fa-edit"></i>
+																		<i class="ace-icon fa fa-edit"></i>编辑
 																	</button>
 																	<button type="button" class="btn btn-sm btn-danger btn-white btn-op-ths" data-toggle="tooltip" title="删除" data-self-js="doDeleteOne('${item.PKCODE}')">
-																		<i class="ace-icon fa fa-trash-o"></i>
+																		<i class="ace-icon fa fa-trash-o"></i>删除
 																	</button>
 																	</c:if>
 																	
 																	<c:if test="${!isAdmin}">
 																	<button type="button" class="btn btn-sm btn-info btn-white btn-op-ths" data-toggle="tooltip" title="查看" data-self-href="${ctx}/dictionary/dictionary_manager_edit.vm?THS_JDP_RES_ID=${THS_JDP_RES_ID}&pkcode=${item.PKCODE}"  >
-																		<i class="ace-icon fa fa-search"></i>
+																		<i class="ace-icon fa fa-search"></i>查看
 																	</button>
 																	</c:if>
 																</td>														
@@ -214,4 +294,28 @@
 	
 		</script>
 	</body>
+	<script src="../jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+      $("body").append(template);
+      var tdInfo = $(".td-info");
+      var tdDom = $("td");
+      tdDom.hover(function (e) {
+        var spanWidth = $(this).find('span').width();
+        var domWidth = $(this).width();
+        if (spanWidth > domWidth) {
+            tdInfo.find('.text').text($(this).text());
+            tdInfo.css({
+              left: $(this).offset().left,
+              top: $(this).offset().top - tdInfo.height() - 10,
+              display: 'block'
+            });
+        }
+      });
+      tdDom.mouseleave(function() {
+        tdInfo.hide();
+      });
+    })
+  </script>
 </html>

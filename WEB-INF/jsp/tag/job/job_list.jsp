@@ -9,6 +9,80 @@
     <style type="text/css">
 
     </style>
+		    <style>
+					table {
+						width: 100%;
+						table-layout: fixed;
+					}
+					table tr {
+						width: 100%;
+						height: 30px;
+					}
+					td {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+					.td-info {
+						display: none;
+						position: absolute;
+						z-index: 9999999;
+						transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+							top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+						padding: 5px 0 8px 0;
+						border: 0;
+					}
+					.td-info .arrow {
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-color: transparent;
+						border-style: solid;
+						bottom: 3px;
+						border-width: 5px 5px 0;
+						border-top-color: rgba(70, 76, 91, 0.9);
+						left: 50%;
+						margin-left: -5px;
+					}
+					.td-info .text {
+						max-width: 500px;
+						min-height: 34px;
+						padding: 7px 12px;
+						color: #fff;
+						text-align: left;
+						text-decoration: none;
+						background-color: rgba(70, 76, 91, 0.9);
+						border-radius: 4px;
+						box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+						white-space: wrap;
+						box-sizing: border-box;
+						font-size: 12px;
+					}
+					.list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+				</style>
 </head>
 
 <body class="no-skin">
@@ -108,37 +182,32 @@
                                	
 								</div>
 								<div class="module-layout">
- 								<div class="page-toolbar align-right list-toolbar">
-                                 <!--//
-                                        <button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnAdd" data-ths-href="TopicEdit.html">
-                                            <i class="ace-icon fa fa-plus"></i>
-                                            添加
-                                        </button>
-                                        <button type="button" class="btn btn-xs btn-danger btn-xs-ths" id="btnDelete">
-                                            <i class="ace-icon fa fa-trash-o"></i>
-                                            删除
-                                        </button>
-                                       //-->
-        
-                                    </div>
+									<div class="page-toolbar align-right list-toolbar" style="display:flex;justify-content:space-between""> 
+                    <div style="" class="list-text">
+                      <i class="list-icon-left"></i>列表<i class="list-icon-right"></i>
+                    </div>
+                    <div class="btn-group">
+                    
+                    </div>
+                   </div>  
                                 <table id="listTable" class="table  table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="align-center" data-sort-col="ENTITY_NAME"><i class="ace-icon fa fa-folder-o"></i>
+                                            <th class="align-center" data-sort-col="ENTITY_NAME">
                                                 	标签实体
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
                                             <c:if test="${log_type == 'tag'}">
-                                            <th class="align-center" data-sort-col="TAG_NAME"><i class="ace-icon fa fa-tag"></i>
+                                            <th class="align-center" data-sort-col="TAG_NAME">
                                                 	标签名称
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
                                             </c:if>
-                                            <th class="align-center hidden-xs hidden-sm" data-sort-col="START_DATE" style="width:180px;min-width: 180px;"><i class="ace-icon fa fa-clock-o"></i>
+                                            <th class="align-center hidden-xs hidden-sm" data-sort-col="START_DATE" style="width:180px;min-width: 180px;">
                                                 	起始时间
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
-                                            <th class="align-center hidden-xs hidden-sm" data-sort-col="END_DATE" style="width:180px;min-width: 180px;"><i class="ace-icon fa fa-clock-o"></i>
+                                            <th class="align-center hidden-xs hidden-sm" data-sort-col="END_DATE" style="width:180px;min-width: 180px;">
                                                 	结束时间
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
@@ -151,7 +220,7 @@
                                                 <i class="ace-icon fa fa-sort pull-right"></i>
                                             </th>
 
-                                            <th class="align-center" style="width:70px"><i class="ace-icon fa fa-wrench"></i>
+                                            <th class="align-center" style="width:70px">
                                               	 	详情
                                             </th>
                                     </thead>
@@ -200,12 +269,12 @@
 						                                    <td class="align-center col-op-ths">
 						                                    	<c:if test="${log_type == 'entity'}">
 						                                        <button type="button" class="btn btn-sm btn-info btn-white btn-op-ths" data-toggle="tooltip" title="详情" onclick="showerror('${item.ENTITY_NAME}','${item.LOG_ID}')">
-							                                    	<i class="ace-icon fa fa-file-text"></i>
+							                                    	<i class="ace-icon fa fa-file-text"></i>详情
 							                                    </button>
 							                                    </c:if>
 							                                    <c:if test="${log_type == 'tag'}">
 							                                    <button type="button" class="btn btn-sm btn-info btn-white btn-op-ths" data-toggle="tooltip" title="详情" onclick="showerror('${item.TAG_NAME}','${item.LOG_ID}')">
-							                                    	<i class="ace-icon fa fa-file-text"></i>
+							                                    	<i class="ace-icon fa fa-file-text"></i>详情
 							                                    </button>
 							                                    </c:if>
 						                                    </td>
@@ -285,4 +354,28 @@
 	}
 </script>
 </body>
+<script src="../jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+		$("body").append(template);
+		var tdInfo = $(".td-info");
+		var tdDom = $("td");
+		tdDom.hover(function (e) {
+			var spanWidth = $(this).find('span').width();
+			var domWidth = $(this).width();
+			if (spanWidth > domWidth) {
+					tdInfo.find('.text').text($(this).text());
+					tdInfo.css({
+						left: $(this).offset().left,
+						top: $(this).offset().top - tdInfo.height() - 10,
+						display: 'block'
+					});
+			}
+		});
+		tdDom.mouseleave(function() {
+			tdInfo.hide();
+		});
+	})
+</script>
 </html>

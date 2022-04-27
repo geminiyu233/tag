@@ -26,6 +26,80 @@
         	font-style: normal;
         }
     </style>
+		    <style>
+					table {
+						width: 100%;
+						table-layout: fixed;
+					}
+					table tr {
+						width: 100%;
+						height: 30px;
+					}
+					td {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+					.td-info {
+						display: none;
+						position: absolute;
+						z-index: 9999999;
+						transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s,
+							top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+						padding: 5px 0 8px 0;
+						border: 0;
+					}
+					.td-info .arrow {
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-color: transparent;
+						border-style: solid;
+						bottom: 3px;
+						border-width: 5px 5px 0;
+						border-top-color: rgba(70, 76, 91, 0.9);
+						left: 50%;
+						margin-left: -5px;
+					}
+					.td-info .text {
+						max-width: 500px;
+						min-height: 34px;
+						padding: 7px 12px;
+						color: #fff;
+						text-align: left;
+						text-decoration: none;
+						background-color: rgba(70, 76, 91, 0.9);
+						border-radius: 4px;
+						box-shadow: 0 1px 6px rgb(0 0 0 / 20%);
+						white-space: wrap;
+						box-sizing: border-box;
+						font-size: 12px;
+					}
+					.list-text {
+			display:flex;
+			align-items:center;
+			font-size:16px;
+			color:#1b7ad9;
+			line-height:32px;
+			font-weight:700
+		}
+		.list-icon-left {
+			display:inline-block;
+			width:17px;
+			height:18px;
+			background:url('../../assets/blue/images/title-left.png') no-repeat;
+			background-size: 100% 100%;
+			margin-right:10px;
+		}
+		.list-icon-right {
+			display:inline-block;
+			width:27px;
+			height:15px;
+			background:url('../../assets/blue/images/title-right.png') no-repeat;
+			background-size: 100% 100%;
+			margin-left:7px
+		}
+				</style>
 </head>
 
 <body class="no-skin">
@@ -156,8 +230,12 @@
                                 </div>
                                 </div>
 								<div class="module-layout">
-                                <div class="page-toolbar align-right list-toolbar">
-                                	<input type="hidden" class="form-control"  id="tagColCode" name="tagColCode" value="${tagColCode }" >
+									<div class="page-toolbar align-right list-toolbar" style="display:flex;justify-content:space-between""> 
+										<div style="" class="list-text">
+											<i class="list-icon-left"></i>列表<i class="list-icon-right"></i>
+										</div>
+										<div class="btn-group">
+											<input type="hidden" class="form-control"  id="tagColCode" name="tagColCode" value="${tagColCode }" >
                                 	<input type="hidden" class="form-control"  id="tagColName" name="tagColName" value="${tagColName }" >
                                     <button type="button" class="btn btn-xs btn-primary btn-xs-ths" id="btnChoose" onclick="chooseTag('checkbox','tagMutiCallBack','tagColCode','tagColName')">
                                         <i class="ace-icon fa fa-check"></i>
@@ -169,13 +247,15 @@
                                         	返回
                                     </button>
                                     </c:if>
-                                </div>
+										</div>
+									 </div>  
+                           
                                 <div id="div_table" style="overflow-x: auto;overflow-y: hidden;">
                                 <table id="simple-table" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                          <c:if test="${empty readonly && isAdmin}">
-                                            <th class="center" style="width:90px"><i class="ace-icon fa fa-wrench"></i>
+                                            <th class="center" style="width:90px">
                                                 	手工标签
                                             </th>
                                          </c:if>
@@ -204,24 +284,24 @@
 														<td class="center">
 														<label class="pos-rel"> 
 															<a type="button" class="btn btn-sm btn-info btn-white btn-op-ths" title="编辑" data-self-js="editTag('${entity.id }')">
-																<i class="ace-icon fa fa-tag"></i>
+																<i class="ace-icon fa fa-tag"></i>编辑
 															</a>
 														</label>
 														</td>
 													</c:if>
-														<td class="align-center">${(pageInfo.pageNum - 1) * pageInfo.pageSize + status.index + 1}</td>
+														<td class="align-center"><span>${(pageInfo.pageNum - 1) * pageInfo.pageSize + status.index + 1}</span></td>
 														<c:forEach var="f" items="${fields}">
 															<c:set var="field_value"><c:out value="${entity[f.FIELD_CODE] }" /></c:set>
-				                                            <td class="align-left"  title='<c:out value="${entity[f.FIELD_CODE] }"></c:out>'>${field_value eq "null"?"":field_value }</td>
+				                                            <td class="align-left"  title='<c:out value="${entity[f.FIELD_CODE] }"></c:out>'><span>${field_value eq "null"?"":field_value }</span></td>
 			                                            </c:forEach>
 			                                            <c:if test="${selectTags == null }">
 				                                            <c:forEach var="t" items="${tags}">
-					                                            <td class="align-left tag-col ${t.tagCode }" title='<c:out value="${entity[t.tagCode] }"></c:out>'>${entity[t.tagCode] }</td>
+					                                            <td class="align-left tag-col ${t.tagCode }" title='<c:out value="${entity[t.tagCode] }"></c:out>'><span>${entity[t.tagCode] }</span></td>
 				                                            </c:forEach>			                                            
 			                                            </c:if>
 			                                            <c:if test="${selectTags != null }">
 				                                            <c:forEach var="t" items="${selectTags}">
-					                                            <td class="align-left tag-col ${t }" title='<c:out value="${entity[t] }"></c:out>'>${entity[t] }</td>
+					                                            <td class="align-left tag-col ${t }" title='<c:out value="${entity[t] }"></c:out>'><span>${entity[t] }</span></td>
 				                                            </c:forEach>			                                            
 			                                            </c:if>
 													</tr>
@@ -480,4 +560,28 @@ var setting = {
 
 </script>
 </body>
+<script src="../jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var template = "<div class='td-info'><div class='arrow'></div><div class='text'></div></div>";
+		$("body").append(template);
+		var tdInfo = $(".td-info");
+		var tdDom = $("td");
+		tdDom.hover(function (e) {
+			var spanWidth = $(this).find('span').width();
+			var domWidth = $(this).width();
+			if (spanWidth > domWidth) {
+					tdInfo.find('.text').text($(this).text());
+					tdInfo.css({
+						left: $(this).offset().left,
+						top: $(this).offset().top - tdInfo.height() - 10,
+						display: 'block'
+					});
+			}
+		});
+		tdDom.mouseleave(function() {
+			tdInfo.hide();
+		});
+	})
+</script>
 </html>
