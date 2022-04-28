@@ -1,5 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <div id="zcz_page" class="no-margin-bottom">
+    <div style="position: relative; height: 18px; margin: 7px 0px; float: left;">  
+           <span>共${pageInfo.pages}页/共${pageInfo.total}条</span>
+    </div>
     <div class="space-4"></div>
     <ul class="page_ul pagination no-margin">
         <li id="zcz_page_li1" num="first"><a href="javascript:void(0)"> <i class="ace-icon fa fa-angle-double-left"></i></a></li>
@@ -17,13 +20,12 @@
 			</select>
 	    </div>
     	<div style="position: relative; height: 18px; margin: 7px 0px; float: left;">  
-           	<span>共${pageInfo.pages}页/共${pageInfo.total}条</span> 跳到第
+           	<span>跳到第</span>
         </div>
         &nbsp;
         <div style="position: relative; height: 26px; margin: 3px 0px; float: right;">
         	<input type="text" id="pageChangeNum" value="${pageInfo.pageNum}"  style="width:35px;height:26px; padding: 1px 4px;"
-            onKeyUp="$.Page.pageChange(this)"> 页
-        <button class="btn  btn-xs  btn-xs-ths"  style="min-width:40px; height: 26px; margin-top: -3px;" onclick="$.Page.submit()">GO</button>
+            onKeyDown="gojump(event)"> 页
         </div>
     </div>
     <input type="hidden" id="pages" name="pages" value="${pageInfo.pages}"/>
@@ -206,7 +208,18 @@
         }
     }
 
-
+    function gojump(e) {
+        var kcode;
+        if(window.event){
+                kcode=e.keyCode;
+            }else if(e.which){
+                kcode=e.which;
+            }
+        if(kcode == 13) {
+            $.Page.pageChange(e.target);
+            $.Page.submit()
+        }
+    }
     jQuery.Page = {
         pageChange: function (o) {
             var $o = $(o);
